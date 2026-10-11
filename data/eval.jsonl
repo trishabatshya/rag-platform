@@ -1,0 +1,45 @@
+{"id":"nw-001","question":"How long is the EU refund window for a first paid subscription?","reference":"14 calendar days","source":"refunds-eu.md","answerable":true}
+{"id":"nw-002","question":"Within how many business days do approved EU refunds return?","reference":"5 business days","source":"refunds-eu.md","answerable":true}
+{"id":"nw-003","question":"How long is the US refund window for a first paid subscription?","reference":"7 calendar days","source":"refunds-us.md","answerable":true}
+{"id":"nw-004","question":"Within how many business days do approved US refunds return?","reference":"10 business days","source":"refunds-us.md","answerable":true}
+{"id":"nw-005","question":"How much does the Pro plan cost per workspace per month?","reference":"19 USD per workspace per month","source":"pro-plan.md","answerable":true}
+{"id":"nw-006","question":"How many member seats are included on Pro?","reference":"5 member seats","source":"pro-plan.md","answerable":true}
+{"id":"nw-007","question":"How much does the Team plan cost per workspace per month?","reference":"79 USD per workspace per month","source":"team-plan.md","answerable":true}
+{"id":"nw-008","question":"How many member seats are included on Team?","reference":"25 member seats","source":"team-plan.md","answerable":true}
+{"id":"nw-009","question":"Does a Free workspace need a credit card?","reference":"A credit card is not required","source":"free-plan.md","answerable":true}
+{"id":"nw-010","question":"How many scheduled automation runs per month does Free include?","reference":"10 scheduled automation runs per month","source":"free-plan.md","answerable":true}
+{"id":"nw-011","question":"After how many days do API keys expire?","reference":"90 days","source":"api-keys.md","answerable":true}
+{"id":"nw-012","question":"Which prefix identifies an API key?","reference":"nw_live_","source":"api-keys.md","answerable":true}
+{"id":"nw-013","question":"What encryption protects customer documents at rest?","reference":"AES-256","source":"security.md","answerable":true}
+{"id":"nw-014","question":"For how many days are Team security audit logs retained?","reference":"180 days","source":"security.md","answerable":true}
+{"id":"nw-015","question":"After how many hours do onboarding invitations expire?","reference":"72 hours","source":"onboarding.md","answerable":true}
+{"id":"nw-016","question":"What is an invited user's default member role?","reference":"viewer","source":"onboarding.md","answerable":true}
+{"id":"nw-017","question":"What monthly document API uptime does the Team SLA guarantee?","reference":"99.9 percent","source":"sla.md","answerable":true}
+{"id":"nw-018","question":"What service credit applies if monthly eligible uptime is below 99.0 percent?","reference":"25 percent of that month's subscription charge","source":"sla.md","answerable":true}
+{"id":"nw-019","question":"What is the maximum size of a single uploaded document?","reference":"10 MB","source":"storage.md","answerable":true}
+{"id":"nw-020","question":"Which document formats can be uploaded?","reference":"Markdown (.md) and plain text (.txt), encoded as UTF-8","source":"storage.md","answerable":true}
+{"id":"nw-021","question":"How often are encrypted document backups taken?","reference":"every 24 hours","source":"backups.md","answerable":true}
+{"id":"nw-022","question":"What is the target document recovery time after verification?","reference":"8 business hours","source":"backups.md","answerable":true}
+{"id":"nw-023","question":"What are the email support opening hours in UTC?","reference":"Monday through Friday from 09:00 to 17:00 UTC","source":"support.md","answerable":true}
+{"id":"nw-024","question":"What is the target first support response time for Team?","reference":"4 business hours","source":"support.md","answerable":true}
+{"id":"nw-025","question":"What algorithm signs outbound webhook requests?","reference":"HMAC-SHA256","source":"integrations.md","answerable":true}
+{"id":"nw-026","question":"At what intervals do failed webhooks retry?","reference":"1 minute, 5 minutes and 30 minutes","source":"integrations.md","answerable":true}
+{"id":"nw-027","question":"How many document API requests per minute does Pro permit?","reference":"60 document API requests per minute per workspace","source":"rate-limits.md","answerable":true}
+{"id":"nw-028","question":"Which header tells a rate-limited API client how long to wait?","reference":"Retry-After","source":"rate-limits.md","answerable":true}
+{"id":"nw-029","question":"In which locations is hosting offered?","reference":"Frankfurt and Virginia","source":"regional-hosting.md","answerable":true}
+{"id":"nw-030","question":"Can a workspace's hosting region be changed after creation?","reference":"A workspace's hosting region cannot be changed after creation","source":"regional-hosting.md","answerable":true}
+{"id":"nw-031","question":"After how many hours does an export download link expire?","reference":"24 hours","source":"data-export.md","answerable":true}
+{"id":"nw-032","question":"What archive format is used for a full document export?","reference":"ZIP archive","source":"data-export.md","answerable":true}
+{"id":"nw-033","question":"How soon after confirming an outage is the initial notification published?","reference":"within 15 minutes","source":"incidents.md","answerable":true}
+{"id":"nw-034","question":"When is a post-incident review published?","reference":"within 5 business days after resolution","source":"incidents.md","answerable":true}
+{"id":"nw-035","question":"For how long after the paid period can a cancelled workspace export documents?","reference":"30 calendar days","source":"offboarding.md","answerable":true}
+{"id":"nw-036","question":"How soon are live documents deleted after permanent deletion confirmation?","reference":"within 7 calendar days","source":"offboarding.md","answerable":true}
+{"id":"nw-037","question":"When in the month are invoices issued?","reference":"the first day of each calendar month","source":"billing.md","answerable":true}
+{"id":"nw-038","question":"Within how many days must an invoice be paid?","reference":"15 calendar days","source":"billing.md","answerable":true}
+{"id":"nw-039","question":"What is the name of the Northwind command-line tool?","reference":"nwctl","source":"product-faq.md","answerable":true}
+{"id":"nw-040","question":"Which timezone do the documentation's scheduled job examples use?","reference":"UTC","source":"product-faq.md","answerable":true}
+{"id":"nw-041","question":"What was Northwind Cloud's revenue in 2025?","reference":"I don't know","source":null,"answerable":false}
+{"id":"nw-042","question":"Who is the chief executive officer of Northwind Cloud?","reference":"I don't know","source":null,"answerable":false}
+{"id":"nw-043","question":"What is the Enterprise subscription price?","reference":"I don't know","source":null,"answerable":false}
+{"id":"nw-044","question":"What is Northwind Cloud's office street address?","reference":"I don't know","source":null,"answerable":false}
+{"id":"nw-045","question":"Which programming language powers the automation scheduler?","reference":"I don't know","source":null,"answerable":false}

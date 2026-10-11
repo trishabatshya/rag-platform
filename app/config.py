@@ -9,6 +9,9 @@ from dotenv import load_dotenv
 ROOT = Path(__file__).resolve().parents[1]
 load_dotenv(ROOT / ".env")
 
+# USD per million tokens: illustrative reference prices, not local-model charges.
+PRICES: dict[str, tuple[float, float]] = {"small": (0.15, 0.60), "large": (2.50, 10.00)}
+
 
 @dataclass(frozen=True)
 class Settings:
@@ -33,7 +36,28 @@ class Settings:
             "EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2"
         )
     )
+    docs_dir: Path = field(
+        default_factory=lambda: Path(os.getenv("RAG_DOCS_DIR", str(ROOT / "data" / "docs_sample")))
+    )
+    state_db: Path = field(
+        default_factory=lambda: Path(
+            os.getenv("RAG_STATE_DB", str(ROOT / "data" / "runtime" / "state.db"))
+        )
+    )
 
     def __post_init__(self) -> None:
         if self.mode not in {"mock", "real"}:
             raise ValueError("RAG_MODE must be mock or real")
+
+
+def compute_cost(model: str, in_tokens: int, out_tokens: int) -> float:
+    """Estimate USD at reference prices; reject models without a configured tier."""
+    settings = Settings()
+    if model == settings.small_model:
+        tier = "small"
+    elif model in {settings.large_model, settings.judge_model, settings.extract_model}:
+        tier = "large"
+    else:
+        raise ValueError(f"No reference price tier configured for model: {model}")
+    input_price, output_price = PRICES[tier]
+    return (in_tokens * input_price + out_tokens * output_price) / 1_000_000

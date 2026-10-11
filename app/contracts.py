@@ -1,7 +1,9 @@
 """Stable types shared by RAG, identity and service implementations."""
 
 from dataclasses import dataclass
-from typing import Protocol, TypedDict
+from typing import Protocol
+
+from typing_extensions import TypedDict
 
 
 @dataclass(frozen=True)

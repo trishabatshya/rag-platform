@@ -8,3 +8,7 @@ __pycache__/
 eval/results/*.csv
 eval/results/*.json
 !eval/results/.gitkeep
+eval/results/*.csv.tmp
+data/runtime/
+data/docs/
+data/eval_candidates.jsonl

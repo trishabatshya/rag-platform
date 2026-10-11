@@ -1,5 +1,6 @@
 """Shared completion interface with lazy real-provider imports."""
 
+import json
 import re
 from dataclasses import dataclass
 from time import perf_counter
@@ -29,6 +30,21 @@ def complete(
         text = (context.group(1).strip() + " [1]") if context else "I don't know"
         if json_mode:
             text = '{"answer": "I don\'t know"}'
+            if "Generate evaluation candidates.\nDOCUMENT:\n" in prompt:
+                document = prompt.split("DOCUMENT:\n", 1)[1]
+                title, _, body = document.partition("\n")
+                text = json.dumps(
+                    {
+                        "items": [
+                            {
+                                "question": (
+                                    f"What does the {title.lstrip('# ').strip()} document describe?"
+                                ),
+                                "reference": body.strip().split("\n\n", 1)[0],
+                            }
+                        ]
+                    }
+                )
         return LLMResult(
             text,
             max(1, len(prompt.split())),
