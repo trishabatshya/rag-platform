@@ -5,8 +5,9 @@ from contextlib import closing
 import pytest
 from fastapi.testclient import TestClient
 
+from app.auth import issue_token
 from app.config import ROOT, Settings
-from app.contracts import Chunk
+from app.contracts import Chunk, CurrentUser
 from app.corpus_state import CorpusState
 from app.ingest import ingest_folder
 from app.main import app
@@ -37,7 +38,12 @@ def test_public_pipeline_shape_and_retrieval():
 def test_ask_response_and_unknown_fields():
     with TestClient(app) as client:
         response = client.post(
-            "/ask", json={"question": "How many seats are included on Pro?", "tenant_id": "spoof"}
+            "/ask",
+            json={"question": "How many seats are included on Pro?", "tenant_id": "spoof"},
+            headers={
+                "Authorization": "Bearer "
+                + issue_token(CurrentUser("acme.admin", "acme", ("employee", "admin")))
+            },
         )
         assert response.status_code == 200
         data = response.json()
@@ -52,12 +58,16 @@ def test_ask_response_and_unknown_fields():
 )
 def test_ask_rejects_invalid_questions(body):
     with TestClient(app) as client:
-        assert client.post("/ask", json=body).status_code == 422
+        headers = {
+            "Authorization": "Bearer "
+            + issue_token(CurrentUser("acme.admin", "acme", ("employee", "admin")))
+        }
+        assert client.post("/ask", json=body, headers=headers).status_code == 422
 
 
 def test_empty_collection_abstains():
     with closing(create_client()) as client:
-        ensure_collection(client)
+        ensure_collection(client, "baseline_chunks")
         result = RAGEngine(client).answer("What is the refund window?", Settings().large_model)
         assert result["answer"] == "I don't know"
         assert result["chunks"] == result["sources"] == []
@@ -82,7 +92,10 @@ def test_context_prompt_and_citation_parsing(monkeypatch):
     assert observed["prompt"].startswith("Context:\n[1]")
     assert "[5]" in observed["prompt"] and "Question: What are the plans?" in observed["prompt"]
     assert "only from" in observed["system"] and "I don't know" in observed["system"]
-    assert result["sources"] == [result["chunks"][1]["source"], result["chunks"][0]["source"]]
+    assert result["sources"] == [
+        result["chunks"][1]["source"],
+        result["chunks"][0]["source"],
+    ]
 
 
 def test_citations_deduplicate_same_source():
@@ -94,13 +107,13 @@ def test_citations_deduplicate_same_source():
 
 def test_baseline_rejects_acl_evidence():
     with closing(create_client()) as client:
-        ensure_collection(client)
+        ensure_collection(client, "baseline_chunks")
         from qdrant_client import models
 
         from app.embed import embed
 
         client.upsert(
-            "chunks",
+            "baseline_chunks",
             [
                 models.PointStruct(
                     id=1, vector=embed(["secret"])[0].tolist(), payload={"tenant_id": "acme"}

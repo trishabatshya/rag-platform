@@ -14,9 +14,10 @@ flowchart LR
 
 A RAG platform for studying permission enforcement, semantic caching and multi-hop
 retrieval with reproducible evaluations. Development follows M0–M5 in TASK.md.
-**Current status: M1 baseline RAG and evaluation harness**; the diagram shows the
-intended completed system. The public-corpus baseline provides ingestion, `/ask`,
-citations and evaluation. Authentication, caching and graph retrieval arrive in M2-M5.
+**Current status: M2 permission-aware multi-tenant RAG**. The API now verifies JWTs,
+filters retrieval by tenant and role/user grants, rechecks evidence and audits retrieval.
+The public Northwind baseline remains available through the offline evaluation harness.
+Caching/routing and graph retrieval in the diagram are planned for M3-M5.
 The mock installation and checks pass on Windows with Python 3.11.9. Docker Compose
 configuration validates; container startup and the real model adapters are unverified.
 Ollama was unavailable in the development environment.
@@ -63,17 +64,24 @@ python tasks.py eval --tag baseline --limit 45
 python tasks.py run
 ```
 
-In a second PowerShell window, send a question:
+The baseline evaluator uses the isolated `baseline_chunks` collection. The authenticated
+HTTP API uses the ACL-protected `chunks` collection and the fictional tenant corpus.
+In a second PowerShell window, log in and send a tenant question:
 
 ```powershell
-$body = @{question="How long is the EU refund window?"} | ConvertTo-Json
-Invoke-RestMethod -Uri http://localhost:8000/ask -Method Post -ContentType "application/json" -Body $body
+$credentials = @{username="acme.engineer"; password="demo-password"} | ConvertTo-Json
+$login = Invoke-RestMethod -Uri http://localhost:8000/auth/login -Method Post -ContentType "application/json" -Body $credentials
+$headers = @{Authorization="Bearer $($login.access_token)"}
+$body = @{question="What deployment cluster does Acme engineering use?"} | ConvertTo-Json
+Invoke-RestMethod -Uri http://localhost:8000/ask -Method Post -Headers $headers -ContentType "application/json" -Body $body
 ```
 
 `POST /ask` accepts only a question and returns answer, cited sources, up to five
 retrieved chunks with provenance and scores, model, token counts and measured latency.
-Blank questions receive HTTP 422. Numbered citations determine `sources`; the complete
-retrieved source list is available in `chunks`. This M1 endpoint is for a public corpus.
+With valid authentication, blank questions receive HTTP 422. Missing, expired or tampered
+tokens receive HTTP 401. Numbered citations determine `sources`; the complete retrieved
+source list is available in `chunks`. Identity comes exclusively from signed JWT claims;
+body fields such as `tenant_id`, `roles` or `user_id` are ignored.
 
 Chunking targets 400 words with 60 words of overlap, preferring paragraph boundaries.
 Re-ingestion replaces a folder's documents, removes stale chunks and bumps a SQLite
@@ -83,7 +91,8 @@ for unchanged chunk positions. Moving the folder changes document IDs.
 
 **Mock indexes are process-local.** A separate `ingest` command demonstrates ingestion
 but cannot populate a future process's in-memory Qdrant. Mock service/evaluation processes
-reload `RAG_DOCS_DIR` on first use. Real ingestion writes to the configured Qdrant server.
+reload their configured corpus on first use: `RAG_DOCS_DIR` for baseline evaluation,
+`RAG_SEED_DIR/documents.json` for the authenticated API. Real ingestion writes to Qdrant.
 Use the same `RAG_STATE_DB` for ingestion and serving so they share corpus version metadata.
 That metadata is currently local SQLite even when the vector server is remote.
 
@@ -92,7 +101,7 @@ For a custom corpus:
 ```powershell
 $env:RAG_DOCS_DIR="C:\My documents\Northwind"
 $env:RAG_STATE_DB="C:\My documents\Northwind state.db"
-python tasks.py ingest
+python tasks.py ingest --corpus baseline
 ```
 
 Use a matching evaluation dataset when evaluating a custom corpus:
@@ -115,6 +124,113 @@ Costs are **estimated at reference prices** from `app/config.py:PRICES`, in USD 
 million input/output tokens. The initial small/large tier values are illustrative
 assumptions, not verified provider list prices or actual local-model charges. Configure
 and document appropriate prices before interpreting a real cost comparison.
+
+## Permission-aware RAG (Project 2)
+
+`data/seed/` contains three fictional tenants (Acme, Globex, Initech), five users per
+tenant and six documents per tenant. The documents cover public FAQs, employee
+onboarding, engineering wikis, confidential HR salaries, board notes and user-only
+contractor instructions. Distinct marker strings make leaks detectable offline.
+All users have the intentionally public **demo-only** password `demo-password`;
+committed user records contain salted PBKDF2-SHA256 hashes, not plaintext passwords.
+
+Demo usernames are `acme.employee`, `acme.engineer`, `acme.hr`, `acme.admin` and
+`acme.contractor`; replace `acme` with `globex` or `initech` for the other tenants.
+Contractors have no role grants and exercise explicit-user access. Administrators have
+no implicit bypass: an explicit-user-only document is not readable by an admin unless
+its metadata also grants that admin access.
+
+Every ACL chunk requires `tenant_id`, `allowed_roles` and `classification`, with optional
+`allowed_users`. The vector query requires tenant equality **and** at least one matching
+role or user grant, using Qdrant's `min_should` with `min_count=1`. Even a `public` document
+requires the same tenant and an explicit grant. Classification is a validated label
+(`public`, `internal`, `confidential`), not an additional inferred clearance system.
+The post-check drops malformed or forbidden evidence, emits a critical log entry, and
+increments the tenant's counter before any context is sent to the LLM.
+
+Run the security checks and benchmark from PowerShell:
+
+```powershell
+$env:RAG_MODE="mock"
+python tasks.py test tests/test_leakage.py
+python tasks.py bench-acl --queries 200
+python tasks.py ingest --corpus seed
+```
+
+The leakage suite parametrizes every seeded user over 40 adversarial questions
+(600 combinations). Its oracle derives forbidden documents and markers from the seed
+data, independently of the production filter. It checks raw vector results, returned
+chunk IDs/text and generated answers, and requires accessible documents to be returned.
+Negative controls disable the filter and then both defenses, proving the oracle detects
+leaks. HTTP tests use genuinely signed local JWTs and cover body spoofing, missing,
+expired, tampered and unsupported-algorithm tokens. These are mock security regression
+tests, not real-model quality or production-scale performance measurements.
+
+The ACL benchmark creates a disposable collection, alternates filtered/unfiltered query
+order over at least 200 pairs, writes per-pair timings and prints median paired overhead.
+It tests that a previously accessible document is absent from the very next query after
+revocation. Filtering timings measure raw vector operations only; they exclude embedding,
+model generation and production audit overhead. Revoke-to-effect timing includes epoch
+increment, payload update and one verification query. All mock rows are labeled `MOCK`.
+The unfiltered path exists only inside this isolated benchmark, never as an API option.
+
+### Administrator endpoints and audit
+
+The verified `admin` role is required for:
+
+- `GET /admin/metrics`: process-local post-check drops for the caller's tenant.
+- `GET /admin/doc-access/{doc_id}?days=30`: exact document access records, tenant-scoped;
+  `days` must be between 1 and 365.
+- `PATCH /admin/docs/{doc_id}/acl`: replace all role/user grants and classification
+  on every chunk of a document in the caller's tenant. Cross-tenant IDs return 404.
+
+For example, after logging in as `acme.admin`, revoke engineering access:
+
+```powershell
+$credentials = @{username="acme.admin"; password="demo-password"} | ConvertTo-Json
+$login = Invoke-RestMethod -Uri http://localhost:8000/auth/login -Method Post -ContentType "application/json" -Body $credentials
+$headers = @{Authorization="Bearer $($login.access_token)"}
+$acl = @{allowed_roles=@("admin"); allowed_users=@(); classification="confidential"} | ConvertTo-Json
+Invoke-RestMethod -Uri http://localhost:8000/admin/docs/acme:engineering-wiki/acl -Method Patch -Headers $headers -ContentType "application/json" -Body $acl
+Invoke-RestMethod -Uri "http://localhost:8000/admin/doc-access/acme:engineering-wiki?days=30" -Headers $headers
+```
+
+Updates wait for Qdrant completion and advance the persisted `cache_epoch` before
+mutation, preparing invalidation for M3. A process-local lock serializes retrieval
+snapshots and admin updates in the single-worker API. Already-running generation can
+finish using its earlier snapshot. Mock ACL edits reset to committed fixtures on process
+restart; SQLite audit history and the epoch persist.
+
+Every authenticated retrieval is committed to `audit_log` before generation, including
+empty results and failed vector queries. Audit failure blocks generation. Records contain
+request ID, UTC time, verified user/tenant, query, delivered chunk/document IDs and model.
+An exact-match evidence index avoids substring matches in document access queries.
+The offline public baseline evaluator and raw isolated benchmark are separate from this
+authenticated request path.
+
+Mock audit uses SQLite at `RAG_AUDIT_DB` even when DATABASE_URL names Postgres. SQLite
+triggers reject UPDATE/DELETE and replacement of existing identities on both audit tables;
+the store exposes append/read only.
+Real mode uses SQLAlchemy/psycopg with PostgreSQL. After table creation, startup applies
+`migrations/001_append_only_audit.sql`, whose statement triggers reject UPDATE, DELETE
+and TRUNCATE. The migration syntax was checked against
+[PostgreSQL 16's trigger documentation](https://www.postgresql.org/docs/16/sql-createtrigger.html),
+but has not been executed against a live server here. A database owner can disable or
+drop triggers; production needs a separate migration owner and restricted application
+role. SQLite file owners can also alter the database outside the application.
+
+Mock JWT signing uses a randomly generated process-local key when `JWT_SECRET` is empty.
+Real mode requires an explicitly configured key of at least 32 bytes. Generate one for
+a local real-mode process without committing it:
+
+```powershell
+$env:JWT_SECRET = python -c "import secrets; print(secrets.token_urlsafe(48))"
+```
+
+For Docker or multiple workers, put the same random key in the ignored `.env`. Default
+token lifetime is one hour (`JWT_TTL_SECONDS`). Demo authentication has no account
+provisioning, refresh/revocation service or login rate limiting; role changes require
+a new token, while document ACL revocation affects the next query immediately.
 
 ## Corpus helpers and human review
 
@@ -161,8 +277,8 @@ before deploying. Container Ollama calls use `host.docker.internal:11434`.
 
 ## Producing real results
 
-No real benchmark has run yet. Baseline ingestion/evaluation are implemented; benchmark,
-dashboard and report commands below require the later milestones.
+No real benchmark has run yet. Baseline ingestion/evaluation and the ACL benchmark are
+implemented; cache, graph, dashboard and report commands require later milestones.
 Real model adapters require sentence-transformers and LiteLLM (optional dependency
 setup and installed-API verification remain pending, as recorded in PROGRESS.md).
 
@@ -173,6 +289,7 @@ Copy-Item .env.example .env
 $env:RAG_MODE="real"
 $env:SMALL_MODEL="ollama/llama3.2:3b"
 $env:LARGE_MODEL="ollama/qwen2.5:7b"
+$env:JWT_SECRET = python -c "import secrets; print(secrets.token_urlsafe(48))"
 docker compose up -d qdrant postgres neo4j
 python tasks.py ingest
 python tasks.py eval
@@ -203,8 +320,12 @@ Dashboard screenshot: pending implementation and a real run.
 Mock embeddings and answers test software contracts, not retrieval quality.
 Ingestion prepares documents before writing, but SQLite and Qdrant are not a single
 transaction: a Qdrant write failure can leave a partially replaced corpus. Re-ingest
-after a failure, and avoid querying while ingestion runs. Authentication is not yet
-implemented; do not load private documents into this baseline.
+after a failure, and avoid querying while ingestion runs. The baseline evaluator remains
+public-only; authenticated tenant data must use ACL ingestion and the separate collection.
+The current epoch store and security counters are local, and the demo service is intended
+for one worker. Production horizontal scaling requires shared invalidation state and
+centralized metrics. Real Qdrant filtering/indexes and PostgreSQL triggers remain untested
+with live services; the implemented security regression checks ran in mock mode.
 The finished evaluation must account for a small corpus, LLM judge bias, estimated
 reference costs, semantic cache false hits, extraction and resolution errors,
 GraphRAG indexing cost, and demo-grade authentication. See DECISIONS.md for trade-offs.

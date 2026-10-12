@@ -40,7 +40,7 @@ class RAGEngine:
     def retrieve(self, question: str) -> list[Chunk]:
         """Retrieve at most five chunks and retain all provenance."""
         points = self.client.query_points(
-            "chunks", query=embed([question])[0].tolist(), limit=5, with_payload=True
+            "baseline_chunks", query=embed([question])[0].tolist(), limit=5, with_payload=True
         ).points
         chunks = []
         for point in points:
@@ -68,17 +68,22 @@ class RAGEngine:
             raise ValueError("Question must not be empty")
         start = perf_counter()
         chunks = self.retrieve(question)
-        context = "\n".join(f"[{index}] {chunk['text']}" for index, chunk in enumerate(chunks, 1))
-        result = complete(f"Context:\n{context}\nQuestion: {question}", model, system=SYSTEM)
-        return RAGResult(
-            answer=result.text,
-            sources=parse_citations(result.text, chunks),
-            chunks=chunks,
-            model=result.model,
-            in_tokens=result.in_tokens,
-            out_tokens=result.out_tokens,
-            latency_ms=(perf_counter() - start) * 1000,
-        )
+        return generate_answer(question, model, chunks, start)
+
+
+def generate_answer(question: str, model: str, chunks: list[Chunk], start: float) -> RAGResult:
+    """Generate only from already-authorized chunks, preserving the shared response shape."""
+    context = "\n".join(f"[{index}] {chunk['text']}" for index, chunk in enumerate(chunks, 1))
+    result = complete(f"Context:\n{context}\nQuestion: {question}", model, system=SYSTEM)
+    return RAGResult(
+        answer=result.text,
+        sources=parse_citations(result.text, chunks),
+        chunks=chunks,
+        model=result.model,
+        in_tokens=result.in_tokens,
+        out_tokens=result.out_tokens,
+        latency_ms=(perf_counter() - start) * 1000,
+    )
 
 
 @lru_cache(maxsize=1)
@@ -87,7 +92,7 @@ def get_engine() -> RAGEngine:
     settings = Settings()
     client = create_client()
     try:
-        ensure_collection(client)
+        ensure_collection(client, "baseline_chunks")
         if settings.mode == "mock":
             ingest_folder(settings.docs_dir, client, CorpusState(settings.state_db))
     except Exception:
@@ -98,6 +103,10 @@ def get_engine() -> RAGEngine:
 
 def rag_pipeline(question: str, model: str, user: CurrentUser | None = None) -> dict:
     """Answer using the process-local baseline engine and stable shared interface."""
+    if user is not None:
+        from app.secure_rag import get_secure_engine
+
+        return get_secure_engine().answer(question, model, user)
     return get_engine().answer(question, model, user)
 
 

@@ -30,7 +30,11 @@ class Settings:
     qdrant_url: str = field(
         default_factory=lambda: os.getenv("QDRANT_URL", "http://localhost:6333")
     )
-    database_url: str = field(default_factory=lambda: os.getenv("DATABASE_URL", "sqlite:///rag.db"))
+    database_url: str = field(
+        default_factory=lambda: os.getenv(
+            "DATABASE_URL", "postgresql+psycopg://rag:devpassword@localhost:5432/rag"
+        )
+    )
     embedding_model: str = field(
         default_factory=lambda: os.getenv(
             "EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2"
@@ -44,10 +48,22 @@ class Settings:
             os.getenv("RAG_STATE_DB", str(ROOT / "data" / "runtime" / "state.db"))
         )
     )
+    seed_dir: Path = field(
+        default_factory=lambda: Path(os.getenv("RAG_SEED_DIR", str(ROOT / "data" / "seed")))
+    )
+    audit_db: Path = field(
+        default_factory=lambda: Path(
+            os.getenv("RAG_AUDIT_DB", str(ROOT / "data" / "runtime" / "audit.db"))
+        )
+    )
+    jwt_secret: str = field(default_factory=lambda: os.getenv("JWT_SECRET", ""))
+    jwt_ttl_seconds: int = field(default_factory=lambda: int(os.getenv("JWT_TTL_SECONDS", "3600")))
 
     def __post_init__(self) -> None:
         if self.mode not in {"mock", "real"}:
             raise ValueError("RAG_MODE must be mock or real")
+        if self.jwt_ttl_seconds <= 0:
+            raise ValueError("JWT_TTL_SECONDS must be positive")
 
 
 def compute_cost(model: str, in_tokens: int, out_tokens: int) -> float:

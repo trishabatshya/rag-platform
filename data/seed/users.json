@@ -1,0 +1,140 @@
+[
+  {
+    "user_id": "acme.employee",
+    "tenant_id": "acme",
+    "roles": [
+      "employee"
+    ],
+    "password_hash": "pbkdf2_sha256$600000$b33b75e703291549de8a7df4c432ed49$1e4371c1ca010901682a60ed1a5486b1224dae37632c7d76c9dd051f2faea9bf",
+    "demo_only": true
+  },
+  {
+    "user_id": "acme.engineer",
+    "tenant_id": "acme",
+    "roles": [
+      "employee",
+      "engineer"
+    ],
+    "password_hash": "pbkdf2_sha256$600000$f70e4b0de68c80c7fd50a07157918060$c82a6237df390fea8f97c5a6d5f82ae388f19b16b01d6c714f9471895a4028d5",
+    "demo_only": true
+  },
+  {
+    "user_id": "acme.hr",
+    "tenant_id": "acme",
+    "roles": [
+      "employee",
+      "hr"
+    ],
+    "password_hash": "pbkdf2_sha256$600000$636ba8971be429f18d745326029c1295$e9f1a65e7774bf8e40f3978b03fb29d0399f487a2e721daf62ba0f475edc68b1",
+    "demo_only": true
+  },
+  {
+    "user_id": "acme.admin",
+    "tenant_id": "acme",
+    "roles": [
+      "employee",
+      "admin"
+    ],
+    "password_hash": "pbkdf2_sha256$600000$f13d943a5160f400c89c154c210dac33$977bebb74cea5dd2e9c24a2a8a09ba0d82173ddffabf36dbee3b891d0c042a5c",
+    "demo_only": true
+  },
+  {
+    "user_id": "acme.contractor",
+    "tenant_id": "acme",
+    "roles": [],
+    "password_hash": "pbkdf2_sha256$600000$62b5672d0e11ed0b9a412697d217059c$f155405c71928169a186c85cbead0d58448d0a9b161579c2f685d8b14467527d",
+    "demo_only": true
+  },
+  {
+    "user_id": "globex.employee",
+    "tenant_id": "globex",
+    "roles": [
+      "employee"
+    ],
+    "password_hash": "pbkdf2_sha256$600000$963b3a4c0d6a7819efd8567d4a66e2ad$c9a8791cb419c2d972368a54a81a5336cd60c6aeea483f4021def8d4da568bc9",
+    "demo_only": true
+  },
+  {
+    "user_id": "globex.engineer",
+    "tenant_id": "globex",
+    "roles": [
+      "employee",
+      "engineer"
+    ],
+    "password_hash": "pbkdf2_sha256$600000$73995de7faa80ec9f20ebd426463f498$d1c9410c16da1fc2527e40447f9d6798dfa3f67d996759d780828747aae02eca",
+    "demo_only": true
+  },
+  {
+    "user_id": "globex.hr",
+    "tenant_id": "globex",
+    "roles": [
+      "employee",
+      "hr"
+    ],
+    "password_hash": "pbkdf2_sha256$600000$a4694a4360312d2785f3c9f915a1d5ab$65e9dd77db3f50a670652ab5bc63c9bcd669e7a1ebe33a2d53ff79d66ea4010f",
+    "demo_only": true
+  },
+  {
+    "user_id": "globex.admin",
+    "tenant_id": "globex",
+    "roles": [
+      "employee",
+      "admin"
+    ],
+    "password_hash": "pbkdf2_sha256$600000$147b5033143962d93786a8d53c06c94c$b65b162482935e5cd2e39c715710480cf8eaf59dceddb5c569a790039ed67c72",
+    "demo_only": true
+  },
+  {
+    "user_id": "globex.contractor",
+    "tenant_id": "globex",
+    "roles": [],
+    "password_hash": "pbkdf2_sha256$600000$54f3526c810318757ed0864709216480$aa37a5962c95a17c961b156d0ca586fcd2913d3f5946b1ca822210dac8347a45",
+    "demo_only": true
+  },
+  {
+    "user_id": "initech.employee",
+    "tenant_id": "initech",
+    "roles": [
+      "employee"
+    ],
+    "password_hash": "pbkdf2_sha256$600000$87106aa3f6066eab91f8e00098f67f16$89fed2cd1cb27f022fe7b1784458e5e59386b26fa1136ff646bd96ef924c6402",
+    "demo_only": true
+  },
+  {
+    "user_id": "initech.engineer",
+    "tenant_id": "initech",
+    "roles": [
+      "employee",
+      "engineer"
+    ],
+    "password_hash": "pbkdf2_sha256$600000$e25ed2908a8d4d709bba2fd26ff1a20b$a86075336f067bcadda8f3e38175c4f5934d67add09bbe9b7f605d0739a6501b",
+    "demo_only": true
+  },
+  {
+    "user_id": "initech.hr",
+    "tenant_id": "initech",
+    "roles": [
+      "employee",
+      "hr"
+    ],
+    "password_hash": "pbkdf2_sha256$600000$4331b46847d6a7bd962d65f8c878cffa$0141aee0e59d57d23be6872112c5bae948a529cf27673f0639445d93c20cd647",
+    "demo_only": true
+  },
+  {
+    "user_id": "initech.admin",
+    "tenant_id": "initech",
+    "roles": [
+      "employee",
+      "admin"
+    ],
+    "password_hash": "pbkdf2_sha256$600000$f3e3b0ec12c7e17f8913785ced0bb68a$21ee0eed2f59ff42fa04d191bc79b028ba2e1dfba38f83ca8062d8e593445d5b",
+    "demo_only": true
+  },
+  {
+    "user_id": "initech.contractor",
+    "tenant_id": "initech",
+    "roles": [],
+    "password_hash": "pbkdf2_sha256$600000$c661c1573c8721e85d391437cfb19d6a$14887a981940b9a20ff4f56b3e7084a70bbbd0f4bd5bbc538ab46a65a0db0df2",
+    "demo_only": true
+  }
+]

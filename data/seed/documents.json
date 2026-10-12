@@ -1,0 +1,242 @@
+[
+  {
+    "tenant_id": "acme",
+    "doc_id": "acme:public-faq",
+    "source": "acme/public-faq.md",
+    "allowed_roles": [
+      "employee",
+      "engineer",
+      "hr",
+      "admin"
+    ],
+    "allowed_users": [
+      "acme.contractor"
+    ],
+    "classification": "public",
+    "marker": "ACME-PUBLIC-1409",
+    "text": "# Acme public faq\n\nAcme customer support opens at 08:00 UTC. The public FAQ lists our product as Atlas.\n\nRestricted fixture marker: ACME-PUBLIC-1409."
+  },
+  {
+    "tenant_id": "acme",
+    "doc_id": "acme:onboarding",
+    "source": "acme/onboarding.md",
+    "allowed_roles": [
+      "employee",
+      "admin"
+    ],
+    "allowed_users": [],
+    "classification": "internal",
+    "marker": "ACME-INTERNAL-3854",
+    "text": "# Acme onboarding\n\nAcme employees complete internal onboarding on Monday. The internal office code is recorded here.\n\nRestricted fixture marker: ACME-INTERNAL-3854."
+  },
+  {
+    "tenant_id": "acme",
+    "doc_id": "acme:engineering-wiki",
+    "source": "acme/engineering-wiki.md",
+    "allowed_roles": [
+      "engineer",
+      "admin"
+    ],
+    "allowed_users": [],
+    "classification": "internal",
+    "marker": "ACME-ENGINEERING-1945",
+    "text": "# Acme engineering wiki\n\nAcme engineering uses the Orion deployment cluster. Engineering release keys are restricted.\n\nRestricted fixture marker: ACME-ENGINEERING-1945."
+  },
+  {
+    "tenant_id": "acme",
+    "doc_id": "acme:hr-salary",
+    "source": "acme/hr-salary.md",
+    "allowed_roles": [
+      "hr",
+      "admin"
+    ],
+    "allowed_users": [],
+    "classification": "confidential",
+    "marker": "ACME-SALARY-7731",
+    "text": "# Acme hr salary\n\nAcme confidential HR salary sheet: the sample salary budget is 173000 credits. Only HR and administrators may see it.\n\nRestricted fixture marker: ACME-SALARY-7731."
+  },
+  {
+    "tenant_id": "acme",
+    "doc_id": "acme:board-notes",
+    "source": "acme/board-notes.md",
+    "allowed_roles": [
+      "admin"
+    ],
+    "allowed_users": [],
+    "classification": "confidential",
+    "marker": "ACME-BOARD-9826",
+    "text": "# Acme board notes\n\nAcme confidential board notes: the acquisition target is Cedar Systems. Only administrators may access board decisions.\n\nRestricted fixture marker: ACME-BOARD-9826."
+  },
+  {
+    "tenant_id": "acme",
+    "doc_id": "acme:contractor-note",
+    "source": "acme/contractor-note.md",
+    "allowed_roles": [],
+    "allowed_users": [
+      "acme.contractor"
+    ],
+    "classification": "confidential",
+    "marker": "ACME-CONTRACT-4128",
+    "text": "# Acme contractor note\n\nAcme private contractor instructions: deliver the Helios prototype on Friday. This is an explicit-user-only document, not an admin grant.\n\nRestricted fixture marker: ACME-CONTRACT-4128."
+  },
+  {
+    "tenant_id": "globex",
+    "doc_id": "globex:public-faq",
+    "source": "globex/public-faq.md",
+    "allowed_roles": [
+      "employee",
+      "engineer",
+      "hr",
+      "admin"
+    ],
+    "allowed_users": [
+      "globex.contractor"
+    ],
+    "classification": "public",
+    "marker": "GLOBEX-PUBLIC-1409",
+    "text": "# Globex public faq\n\nGlobex customer support opens at 08:00 UTC. The public FAQ lists our product as Atlas.\n\nRestricted fixture marker: GLOBEX-PUBLIC-1409."
+  },
+  {
+    "tenant_id": "globex",
+    "doc_id": "globex:onboarding",
+    "source": "globex/onboarding.md",
+    "allowed_roles": [
+      "employee",
+      "admin"
+    ],
+    "allowed_users": [],
+    "classification": "internal",
+    "marker": "GLOBEX-INTERNAL-3854",
+    "text": "# Globex onboarding\n\nGlobex employees complete internal onboarding on Monday. The internal office code is recorded here.\n\nRestricted fixture marker: GLOBEX-INTERNAL-3854."
+  },
+  {
+    "tenant_id": "globex",
+    "doc_id": "globex:engineering-wiki",
+    "source": "globex/engineering-wiki.md",
+    "allowed_roles": [
+      "engineer",
+      "admin"
+    ],
+    "allowed_users": [],
+    "classification": "internal",
+    "marker": "GLOBEX-ENGINEERING-1945",
+    "text": "# Globex engineering wiki\n\nGlobex engineering uses the Orion deployment cluster. Engineering release keys are restricted.\n\nRestricted fixture marker: GLOBEX-ENGINEERING-1945."
+  },
+  {
+    "tenant_id": "globex",
+    "doc_id": "globex:hr-salary",
+    "source": "globex/hr-salary.md",
+    "allowed_roles": [
+      "hr",
+      "admin"
+    ],
+    "allowed_users": [],
+    "classification": "confidential",
+    "marker": "GLOBEX-SALARY-7731",
+    "text": "# Globex hr salary\n\nGlobex confidential HR salary sheet: the sample salary budget is 173000 credits. Only HR and administrators may see it.\n\nRestricted fixture marker: GLOBEX-SALARY-7731."
+  },
+  {
+    "tenant_id": "globex",
+    "doc_id": "globex:board-notes",
+    "source": "globex/board-notes.md",
+    "allowed_roles": [
+      "admin"
+    ],
+    "allowed_users": [],
+    "classification": "confidential",
+    "marker": "GLOBEX-BOARD-9826",
+    "text": "# Globex board notes\n\nGlobex confidential board notes: the acquisition target is Cedar Systems. Only administrators may access board decisions.\n\nRestricted fixture marker: GLOBEX-BOARD-9826."
+  },
+  {
+    "tenant_id": "globex",
+    "doc_id": "globex:contractor-note",
+    "source": "globex/contractor-note.md",
+    "allowed_roles": [],
+    "allowed_users": [
+      "globex.contractor"
+    ],
+    "classification": "confidential",
+    "marker": "GLOBEX-CONTRACT-4128",
+    "text": "# Globex contractor note\n\nGlobex private contractor instructions: deliver the Helios prototype on Friday. This is an explicit-user-only document, not an admin grant.\n\nRestricted fixture marker: GLOBEX-CONTRACT-4128."
+  },
+  {
+    "tenant_id": "initech",
+    "doc_id": "initech:public-faq",
+    "source": "initech/public-faq.md",
+    "allowed_roles": [
+      "employee",
+      "engineer",
+      "hr",
+      "admin"
+    ],
+    "allowed_users": [
+      "initech.contractor"
+    ],
+    "classification": "public",
+    "marker": "INITECH-PUBLIC-1409",
+    "text": "# Initech public faq\n\nInitech customer support opens at 08:00 UTC. The public FAQ lists our product as Atlas.\n\nRestricted fixture marker: INITECH-PUBLIC-1409."
+  },
+  {
+    "tenant_id": "initech",
+    "doc_id": "initech:onboarding",
+    "source": "initech/onboarding.md",
+    "allowed_roles": [
+      "employee",
+      "admin"
+    ],
+    "allowed_users": [],
+    "classification": "internal",
+    "marker": "INITECH-INTERNAL-3854",
+    "text": "# Initech onboarding\n\nInitech employees complete internal onboarding on Monday. The internal office code is recorded here.\n\nRestricted fixture marker: INITECH-INTERNAL-3854."
+  },
+  {
+    "tenant_id": "initech",
+    "doc_id": "initech:engineering-wiki",
+    "source": "initech/engineering-wiki.md",
+    "allowed_roles": [
+      "engineer",
+      "admin"
+    ],
+    "allowed_users": [],
+    "classification": "internal",
+    "marker": "INITECH-ENGINEERING-1945",
+    "text": "# Initech engineering wiki\n\nInitech engineering uses the Orion deployment cluster. Engineering release keys are restricted.\n\nRestricted fixture marker: INITECH-ENGINEERING-1945."
+  },
+  {
+    "tenant_id": "initech",
+    "doc_id": "initech:hr-salary",
+    "source": "initech/hr-salary.md",
+    "allowed_roles": [
+      "hr",
+      "admin"
+    ],
+    "allowed_users": [],
+    "classification": "confidential",
+    "marker": "INITECH-SALARY-7731",
+    "text": "# Initech hr salary\n\nInitech confidential HR salary sheet: the sample salary budget is 173000 credits. Only HR and administrators may see it.\n\nRestricted fixture marker: INITECH-SALARY-7731."
+  },
+  {
+    "tenant_id": "initech",
+    "doc_id": "initech:board-notes",
+    "source": "initech/board-notes.md",
+    "allowed_roles": [
+      "admin"
+    ],
+    "allowed_users": [],
+    "classification": "confidential",
+    "marker": "INITECH-BOARD-9826",
+    "text": "# Initech board notes\n\nInitech confidential board notes: the acquisition target is Cedar Systems. Only administrators may access board decisions.\n\nRestricted fixture marker: INITECH-BOARD-9826."
+  },
+  {
+    "tenant_id": "initech",
+    "doc_id": "initech:contractor-note",
+    "source": "initech/contractor-note.md",
+    "allowed_roles": [],
+    "allowed_users": [
+      "initech.contractor"
+    ],
+    "classification": "confidential",
+    "marker": "INITECH-CONTRACT-4128",
+    "text": "# Initech contractor note\n\nInitech private contractor instructions: deliver the Helios prototype on Friday. This is an explicit-user-only document, not an admin grant.\n\nRestricted fixture marker: INITECH-CONTRACT-4128."
+  }
+]

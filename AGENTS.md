@@ -41,7 +41,8 @@ milestone order; consult PROGRESS.md before invoking later targets.
 
 ## Layout
 
-- app/: configuration, embeddings, completions, vector store, then RAG/auth/ACL/cache/service.
+- app/: config, embeddings, completions, vector store, baseline RAG, auth, ACL,
+  secure_rag, append-only audit; cache/service arrive in later milestones.
 - graphrag/: dataset, schema, extraction, resolution, storage and retrieval.
 - data/: docs_sample, seed, eval.jsonl, cache_pairs, router_labels.jsonl, graph_fixture.
 - scripts/: corpus/data helpers and report generator.
@@ -49,6 +50,7 @@ milestone order; consult PROGRESS.md before invoking later targets.
 - tests/: offline contracts and regression suites.
 - docs/: interview study notes.
 - tasks.py / Makefile: portable tasks; Dockerfile / docker-compose.yml: deployment.
+- migrations/: PostgreSQL append-only audit enforcement.
 
 Shared contracts: `embed(list[str]) -> np.ndarray` (float32, normalized, n x 384),
 `complete(prompt, model, system=None, json_mode=False) -> LLMResult`.
@@ -74,5 +76,37 @@ processes reload RAG_DOCS_DIR because Qdrant's in-memory index is process-local.
 RAG_STATE_DB persists corpus versions and ingestion manifests; use pathlib for paths,
 UTF-8 for text and newline="" for CSV. Close SQLite and vector handles on every exit.
 Human-review all candidates before removing needs_review; never silently use drafts
-in the reviewed evaluation. Baseline /ask accepts public documents only; verified JWTs,
-ACL retrieval and audit are M2 scope. Do not claim the baseline implements those controls.
+in the reviewed evaluation. Baseline evaluation is isolated in baseline_chunks;
+the HTTP /ask endpoint requires verified JWTs and uses ACL-protected chunks.
+
+## M2 commands and security boundaries
+
+```powershell
+$env:RAG_MODE="mock"
+python tasks.py test tests/test_leakage.py
+python tasks.py bench-acl --queries 200
+python tasks.py ingest --corpus seed
+python -m scripts.make_seed
+```
+
+Default ingestion loads both corpora; --corpus baseline selects the public evaluator.
+Seed regeneration creates fresh random PBKDF2 salts for demo-only users. No real secret
+may be committed. JWT_SECRET may be empty in mock mode (random process-local key);
+real authentication requires >=32 bytes, e.g. PowerShell:
+`$env:JWT_SECRET = python -c "import secrets; print(secrets.token_urlsafe(48))"`.
+Use the same key in all workers. Mock audit always uses RAG_AUDIT_DB (SQLite);
+real audit requires a PostgreSQL DATABASE_URL and installs migrations automatically.
+
+Do not add an API option to disable filtering or use request-body identity. The Qdrant
+filter must require tenant equality and at least one role/user grant. Public labels do
+not grant cross-tenant access; admin is not a universal bypass. Validate metadata before
+any ACL write; bare documents must never enter the ACL collection. Audit before generation,
+including empty/failed retrievals, and fail closed if audit cannot commit. Admin access
+queries and mutations must remain tenant-scoped. ACL changes bump the persisted epoch
+before mutation. Cache-hit audit/invalidation integration will be implemented in M3/M5.
+
+The leakage oracle must read seed grants directly rather than production ACL functions.
+Test raw query results, response chunks and answer markers, plus positive access and
+negative controls. Benchmark unfiltered calls belong only in a disposable collection
+and measure raw operations, not authenticated end-to-end latency. Mock metrics must never
+be promoted into README real-result tables.

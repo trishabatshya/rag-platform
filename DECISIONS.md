@@ -67,3 +67,56 @@
   HTML main-content extraction is outside this optional helper. Candidate generation
   validates JSON, labels every draft needs_review, and never overwrites the golden
   evaluation. Mock candidates are templates, not reviewed new evaluation facts.
+
+## M2
+
+- **Collection isolation:** keep M1's public evaluator in baseline_chunks; the HTTP API
+  uses chunks exclusively and always requires a verified JWT. This preserves the public
+  evaluation without weakening tenant filters or ingesting anonymous evidence into the
+  ACL collection. The public baseline and isolated raw benchmark are not authenticated
+  request paths; every authenticated retrieval is audited.
+- **ACL semantics:** tenant equality AND (role intersection OR explicit user grant).
+  Use Qdrant MinShould(min_count=1), verified in installed 1.19.1 source. A public label
+  never bypasses tenant matching. Classification is descriptive; grants determine access.
+  Empty grants deny everyone. Admin has no implicit grant, including for user-only docs.
+- **Seed IDs:** explicit tenant-prefixed IDs prevent ingestion collisions across
+  tenants. Every secure chunk inherits validated metadata. Bare folder ingestion cannot
+  write to chunks; server payload indexes cover tenant, roles, users and doc_id, and
+  installed-client init_options guard unsupported indexing in local memory mode.
+- **Defense validation:** 15 identities x 40 adversarial queries check raw vector results
+  and returned chunk/answer evidence using grants from committed seed data. Positive
+  access assertions prevent a deny-all implementation from passing. Disabling the filter
+  makes the raw-result oracle fail while the post-check blocks the response; disabling
+  both defenses makes the response oracle fail. These controls are test-only monkeypatches.
+- **JWT/passwords:** HS256 only; verify signature, exp, iat and strict claim types.
+  PBKDF2-SHA256 uses 600000 iterations and random per-user salts. Demo passwords are
+  deliberately public and no production account management is provided. Empty JWT_SECRET
+  produces a random process-local key only in mock mode; real mode requires >=32 bytes.
+  Old role claims remain valid until token expiration; document ACL changes are immediate.
+- **Audit:** SQLAlchemy writes the immutable record and exact document index in one
+  transaction before generation. Retrieval errors are logged; failed audit commits block
+  generation. Dropped forbidden chunks are not linked as delivered evidence; the record
+  contains a violation count and critical logs contain IDs, not document text. Exact joins
+  avoid JSON substring matches, and reads require verified admin plus tenant equality.
+- **Database enforcement:** SQLite UPDATE/DELETE triggers were executed in tests.
+  Existing-identity INSERT guards also reject REPLACE, which can otherwise bypass
+  SQLite DELETE triggers when recursive triggers are off.
+  PostgreSQL statement triggers also reject TRUNCATE; startup applies the SQL migration.
+  Syntax checked against [PostgreSQL 16 documentation](https://www.postgresql.org/docs/16/sql-createtrigger.html),
+  but no live PostgreSQL migration run occurred. Schema/file owners can still disable
+  protections; use restricted runtime credentials and a separate migration owner in production.
+- **Revocation/epoch:** bump the SQLite cache_epoch before waited Qdrant mutation, so
+  even partial failures invalidate future cache entries. A process-local lock serializes
+  retrieval snapshots and API mutations. Generation already in flight can finish its
+  snapshot; mock process restart restores seeded ACLs. Epoch metadata is currently local,
+  so shared invalidation must precede horizontally scaled caching in later milestones.
+- **Benchmark scope:** at least 200 paired queries alternate order in a disposable
+  collection; no production ACLs are changed and no unfiltered contents are written to
+  output. Filtering timings exclude embedding/generation/audit. Revoke timing includes
+  epoch update, waited payload write and one verification query. Negative paired timings
+  from noise are retained, not clamped. Every mock output is labeled and remains outside
+  README's real-results table.
+- **Installed versions/limits:** inspected PyJWT 2.15.1, SQLAlchemy 2.1.4 and Qdrant 1.19.1
+  APIs; installed and pinned psycopg 3.3.6 and PyYAML 6.0.3. Windows mock tests exercise
+  JWTs, SQLite triggers and in-memory filters. Live Qdrant payload indexes/filters,
+  PostgreSQL trigger execution, real models and hosted GitHub Actions remain unverified.

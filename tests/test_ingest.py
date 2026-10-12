@@ -61,7 +61,7 @@ def test_ingestion_version_count_and_payload(tmp_path):
     with closing(create_client()) as client:
         first = ingest_folder(folder, client, state)
         assert first == {"documents": 3, "chunks": 2, "corpus_version": 1}
-        points, _ = client.scroll("chunks", limit=20)
+        points, _ = client.scroll("baseline_chunks", limit=20)
         ids = {point.id for point in points}
         assert {point.payload["source"] for point in points} == {"a.md", "Nested notes/unicode.txt"}
         assert all(
@@ -69,7 +69,7 @@ def test_ingestion_version_count_and_payload(tmp_path):
             for point in points
         )
         assert ingest_folder(folder, client, state)["corpus_version"] == 2
-        points, _ = client.scroll("chunks", limit=20)
+        points, _ = client.scroll("baseline_chunks", limit=20)
         assert {point.id for point in points} == ids
         assert all(point.payload["corpus_version"] == 2 for point in points)
         assert CorpusState(Settings().state_db).version == 2
@@ -85,11 +85,11 @@ def test_shortened_and_deleted_documents_leave_no_stale_chunks(tmp_path):
     state = CorpusState(Settings().state_db)
     with closing(create_client()) as client:
         first = ingest_folder(folder, client, state)
-        assert client.count("chunks").count == first["chunks"] == 4
+        assert client.count("baseline_chunks").count == first["chunks"] == 4
         long.write_text("Short replacement", encoding="utf-8")
         removed.unlink()
         assert ingest_folder(folder, client, state)["chunks"] == 1
-        points, _ = client.scroll("chunks", limit=20)
+        points, _ = client.scroll("baseline_chunks", limit=20)
         assert len(points) == 1 and points[0].payload["text"] == "Short replacement"
 
 
@@ -105,7 +105,7 @@ def test_preparation_failure_does_not_change_index_or_version(tmp_path):
         with pytest.raises(UnicodeDecodeError):
             ingest_folder(folder, client, state)
         assert state.version == 1
-        assert client.scroll("chunks")[0][0].payload["text"] == "Good original document"
+        assert client.scroll("baseline_chunks")[0][0].payload["text"] == "Good original document"
 
 
 def test_missing_or_empty_folder(tmp_path):
