@@ -182,3 +182,69 @@
   offline. The seed-derived oracle also covers 600 cached-service combinations in addition
   to M2's 600 retrieval cases. Live Qdrant/PostgreSQL, real LLM/router quality, GPU/model
   setup and hosted GitHub Actions remain unverified; no mock metrics are real results.
+
+## M4 GraphRAG
+
+- **Scope:** standalone public-corpus pipeline and three-system evaluator; no graph mode
+  is added to authenticated `/ask` before M5. Graph ACLs would need chunk/edge-evidence
+  grants and filtering before expansion. Namespace isolation is not permission checking.
+- **Data/API:** inspected installed datasets 5.1.0 load_dataset/shuffle/select signatures
+  and a current HotpotQA viewer row's context/supporting_facts dict fields. Use the
+  namespaced dataset ID, distractor config, validation split and seeded shuffle/select.
+  Also accept historical pair fields. Join sentences per paragraph, deduplicate identical
+  title/text and index distinct paragraphs under the same title. A full real download
+  was not attempted. Network failures visibly fall back unless --no-fallback is supplied;
+  malformed data does not silently become fixture data. Single-hop is <=1 unique gold
+  title for HotpotQA, which may yield no single-hop rows; fixture labels are authored.
+- **Fixture honesty:** twelve fictional film/director/birthplace bridges and three
+  organization/location questions have query-like event distractors. Annotated paragraph
+  extraction simulates perfect extraction with zero LLM calls/tokens. Rules parse only
+  retrieved text for mock answers and the question for mock planning; question gold
+  labels never reach indexing, retrieval or generation. This narrow fixture proves
+  plumbing/sanity, not generalization, GraphRAG quality or reference cost savings.
+- **Extraction:** three retries means four maximum attempts. Strict Pydantic entity and
+  relation literals reject unknown types, extra fields and dangling endpoints. Provider
+  exceptions are normalized only around complete(); invalid JSON calls count in usage.
+  Failed chunks remain vector evidence but have no graph extraction. Persist only validated
+  successes atomically with pathlib. Hash includes mode/model/text/schema and mock annotation,
+  so a mock run never contaminates real extraction. Corrupt cache entries are rebuilt.
+  New extraction tokens/cost and extraction wall time are separate from total indexing time;
+  reference indexing cost excludes embedding/storage/local compute. Failed unreturned
+  completions have unknown usage, not fabricated counts.
+- **Resolution/risk:** rapidfuzz token_set_ratio("Chris Nolan", "Christopher Nolan") is
+  only 78.57 in installed 3.14.6, so PERSON first-token Chris is explicitly normalized to
+  Christopher before the required >=92 match. Christopher Norton stays separate. Grouping
+  is type-scoped, complete-link and deterministic; longest original name is canonical.
+  **Known failing-risk case:** John Smith and John Adam Smith score 100 as token subsets
+  and merge even if they are different people. Chris may also be a different person's
+  full name. Without disambiguating attributes this cannot be solved by name threshold
+  alone; the regression explicitly exposes this risk and the report requires human review.
+  Optional cosine >=0.97 merging is off by default and can add false merges.
+- **Storage:** inspected NetworkX 3.6.1 MultiDiGraph and Neo4j 6.4.0 driver APIs and official
+  vector-index documentation. Target Neo4j 5-compatible CREATE VECTOR INDEX / queryNodes,
+  not the newer server-only SEARCH syntax. Typed Entity keys and Chunk keys include an
+  owned run namespace to prevent cross-run graph paths and destructive global cleanup.
+  REL stores relation type and supporting chunk_id. Constraints/indexes remain; owned
+  nodes are deleted on close. ANN namespace overfetch may miss neighbors; insufficient
+  candidates fall back to exact owned vectors. This is for small public experiments.
+- **Retrieval:** vector baseline returns six of top fifteen without graph/reranking.
+  Hybrid links whole canonical/alias phrases, expands undirected REL paths of length
+  zero through two, deduplicates candidates and reranks. Graph-connected entity names
+  enrich the reranker question in both modes so the lexical mock can resolve bridges;
+  real cross-encoder benefit still needs an ablation. Only selected-chunk, link-relevant
+  triples reach generation. Both systems have the same six-paragraph generation budget.
+- **Decomposition:** planner returns up to four validated steps using prior-answer
+  placeholders. Sequential vector retrieval isolates the decomposition baseline from
+  graph expansion. Stop at intermediate abstention; invalid plans fall back to original
+  question. Count planner plus every step's completed tokens; union evidence across steps
+  for supporting recall. Decomposition may use more total evidence/tokens than a one-shot
+  system; report that trade-off, rather than claiming identical compute budgets.
+- **Evaluation:** SQuAD normalization/EM/multiset F1 and unique-title recall are tested
+  with hand-computed examples. Record actual data origin, mode, subset sizes and null
+  metrics for empty subsets. First-use query latency includes model loading. Failure
+  review shows up to ten observed answer/evidence failures, never fabricated rows; leave
+  categories blank for humans. Generated merge/review artifacts are ignored; save filled
+  review elsewhere before rerunning. Live Neo4j tests opt in via NEO4J_URI and do not
+  silently fall back. Real extraction/generation/embedding/reranking, full HotpotQA load,
+  live Neo4j and hosted CI remain unverified; optional real model dependencies from M0
+  are still pending because this environment lacks Ollama/model setup.

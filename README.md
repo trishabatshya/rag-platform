@@ -9,16 +9,18 @@ flowchart LR
     Retrieval --> Router[Small or large local model]
     Router --> Answer[Answer with citations]
     API --> Audit[Append only audit log]
-    Graph[Graph expansion and reranking] --> Retrieval
+    PublicCorpus[Public multi-hop corpus] --> Graph[Graph expansion and reranking]
+    Graph --> PublicAnswer[Standalone short answer]
 ```
 
 A RAG platform for studying permission enforcement, semantic caching and multi-hop
 retrieval with reproducible evaluations. Development follows M0–M5 in TASK.md.
-**Current status: M3 semantic caching and cost-aware routing**. The API verifies JWTs,
+**Current status: M4 GraphRAG**. The API verifies JWTs,
 isolates cached answers by permission scope, filters/rechecks retrieval, selects a model
 and escalates weak answers. Retrieval and cache hits are audited and requests measured.
 The public Northwind baseline remains available through the offline evaluation harness.
-Graph retrieval and final reporting remain planned for M4-M5.
+Standalone GraphRAG now compares vector, graph-hybrid and decomposition retrieval.
+Final integration and report generation remain planned for M5.
 The mock installation and checks pass on Windows with Python 3.11.9. Docker Compose
 configuration validates; container startup and the real model adapters are unverified.
 Ollama was unavailable in the development environment.
@@ -47,8 +49,8 @@ On POSIX: `python3.11 -m venv .venv`, activate `.venv/bin/activate`, then run
 
 All targets work through `python tasks.py TARGET` or `make TARGET`:
 `install`, `test`, `lint`, `up`, `down`, `ingest`, `run`, `eval`, `bench-cache`,
-`bench-acl`, `bench-graph`, `dashboard`, `report`. Later feature targets are wired
-now; their modules will be implemented in the milestones listed in PROGRESS.md.
+`bench-acl`, `bench-graph`, `dashboard`, `report`. Only `report` awaits M5;
+consult PROGRESS.md for validation scope.
 Extra arguments are forwarded, for example `python tasks.py test -q`.
 
 ## Baseline RAG and evaluation
@@ -367,6 +369,96 @@ Replace `baseline_TIMESTAMP.csv` with a CSV produced by your evaluation. Samplin
 seeded and does not overwrite existing human work. An untouched sample has no agreement
 score, rather than claiming that human validation occurred.
 
+## GraphRAG: public multi-hop evaluation
+
+Project 3 runs separately from `/ask`; its public corpus has no ACLs. Vector retrieval
+returns six of its top fifteen paragraphs. Hybrid retrieval links whole entity names
+and aliases, expands up to two relationship hops, combines vector and graph evidence,
+reranks to six paragraphs and supplies up to ten evidence-backed triples. Real reranking
+uses `cross-encoder/ms-marco-MiniLM-L-6-v2`; mock reranking uses lexical overlap.
+Graph-reached entity names enrich the reranker query in both modes. Decomposition plans
+up to four subquestions, substitutes earlier answers, retrieves with the vector baseline
+at each step, and stops on an unsupported intermediate answer. All three return the
+same response fields, with a short answer phrase and retrieved titles as sources.
+
+The authored fixture has 39 fictional paragraphs, 12 bridge questions, 3 single-hop
+questions and query-like distractors. Mock extraction validates paragraph annotations;
+mock generation reads retrieved text only, never gold answers or supporting labels.
+Its perfect annotations and narrow completion rules make it a software sanity fixture,
+not a held-out quality evaluation. The acceptance test checks that hybrid supporting-title
+recall is at least the vector baseline; no mock scores appear in the real results table.
+
+```powershell
+$env:RAG_MODE="mock"
+python tasks.py bench-graph
+python tasks.py bench-graph --dataset fixture --n 15 --seed 42
+python tasks.py test tests/test_graph_metrics.py tests/test_graph_dataset.py tests/test_graph_extract_resolve.py tests/test_graph_store.py tests/test_graph_retrieve_decompose.py tests/test_graph_benchmark.py -q
+```
+
+Outputs in `eval/results/`: timestamped `project3_*.csv`, `summary_project3.json`,
+`merge_groups.txt` and `failure_analysis_project3.md`. The summary separates all,
+multi-hop and single-hop questions, EM, SQuAD-style token F1, unique supporting-title
+recall, query latency/tokens/reference cost and one-time indexing usage/time.
+Decomposition includes planner and every completed step's tokens and combined evidence.
+Absent subsets have null metrics. Query latency includes retrieval and model loading on
+first use; indexing excludes query-time reranker loading. Inspect failures manually:
+
+```powershell
+python -m scripts.failure_analysis eval/results/project3_TIMESTAMP.csv --output eval/results/failure_analysis_project3.md
+```
+
+Use the actual CSV filename. The review exports up to ten answer or evidence failures
+per system; categories stay empty for human review, and fewer available failures are
+explicitly counted. Generated outputs are ignored by Git. Do not overwrite a completed
+human review without saving it elsewhere first.
+
+After installing/validating the real model dependencies and starting Ollama and Neo4j:
+
+```powershell
+$env:RAG_MODE="real"
+$env:NEO4J_URI="bolt://localhost:7687"
+$env:NEO4J_USER="neo4j"
+$env:NEO4J_PASSWORD="devpassword"
+$env:GRAPH_EXTRACT_CACHE="data/runtime/graph_extract"
+python tasks.py bench-graph --dataset hotpotqa --n 150 --seed 42 --no-fallback
+python tasks.py test tests/test_graph_store.py -m integration -q
+```
+
+The loader uses `datasets.load_dataset("hotpotqa/hotpot_qa", "distractor", split="validation")`,
+then seeded shuffle/select. Installed Dataset APIs and a current
+[HotpotQA viewer example](https://huggingface.co/datasets/hotpotqa/hotpot_qa) were inspected.
+Current dict-of-lists and historical pair-list fields are supported. Sentence lists are
+joined into one paragraph per context title; distinct paragraphs sharing a title get
+different `title::index` IDs. Single-hop means at most one unique supporting title for
+HotpotQA; the fixture uses authored labels. HotpotQA generally needs multiple titles,
+so its single-hop subset may be empty. Without `--no-fallback`, a download/cache failure
+loads the fixture and records the fallback reason and actual data origin prominently.
+Fallback never changes runtime mode: real-mode fixture extraction still uses the LLM.
+
+Extraction uses a fixed typed Pydantic schema, an initial attempt plus three retries,
+and logs/skips graph extraction on final failure while preserving vector evidence.
+Disk-cache keys include text hash, model, runtime mode and schema; mock keys also include
+annotations. Cache hits add no new extraction tokens/reference cost. Mock annotation
+extraction has zero LLM calls, not invented indexing tokens. Indexing time is measured;
+reference cost covers new extraction completions, excluding embeddings/storage/compute.
+Resolution groups names by type at rapidfuzz score >=92, chooses the longest canonical
+name, and writes merge groups. The optional `--embedding-resolution` cosine pass is
+off by default. Review nickname/subset-name false-merge risks in DECISIONS.md.
+
+Neo4j uses typed Entity/Chunk constraints, MERGE, evidence-bearing REL edges and a
+384-dimensional cosine `chunk_embeddings` index. The implementation targets Neo4j 5's
+[vector index procedure](https://neo4j.com/docs/cypher-manual/current/indexes/search-indexes/vector-indexes/).
+Each benchmark owns a fresh namespace and removes only its nodes when finished, leaving
+shared indexes/constraints. Vector ANN overfetches and filters that namespace, with an
+owned-vector exact fallback if too few candidates survive. This small-corpus convenience
+is not permission enforcement. Integration tests skip only when `NEO4J_URI` is unset;
+an opted-in unavailable service fails visibly. Unit tests exercise NetworkX and driver
+parameter contracts, but live Neo4j and real model quality remain unverified here.
+
+Protecting tenant graph data would require ACLs on chunks and edge evidence, filtering
+chunk nodes before expansion and checking every evidence path before generation. Public
+GraphRAG must not be pointed at the protected tenant corpus. HTTP integration waits for M5.
+
 ## Containers
 
 `docker compose up --build` starts Qdrant, Postgres 16, Neo4j 5 and the API.
@@ -376,8 +468,8 @@ before deploying. Container Ollama calls use `host.docker.internal:11434`.
 
 ## Producing real results
 
-No real benchmark has run yet. Baseline, ACL and cache/router experiments and the
-dashboard are implemented; graph and final report commands require later milestones.
+No real benchmark has run yet. Baseline, ACL, cache/router and graph experiments and the
+dashboard are implemented; final report generation requires M5.
 Real model adapters require sentence-transformers and LiteLLM (optional dependency
 setup and installed-API verification remain pending, as recorded in PROGRESS.md).
 

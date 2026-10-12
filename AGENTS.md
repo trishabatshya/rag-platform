@@ -147,3 +147,38 @@ collections and the same seeded workload across systems. Every output records ru
 mode and repeat ratio, and mock summary numbers never enter README's real-results table.
 The dashboard is a local operator tool; keep unknown quality visibly unknown and mock
 data separate from real data. Streamlit tests use its installed headless AppTest API.
+
+## M4 commands and graph boundaries
+
+```powershell
+$env:RAG_MODE="mock"
+python tasks.py bench-graph --dataset fixture
+$env:GRAPH_EXTRACT_CACHE="data/runtime/graph_extract"
+python -m scripts.failure_analysis eval/results/project3_TIMESTAMP.csv
+```
+
+Use an actual generated CSV filename. GraphRAG is standalone and public-only; no tenant
+ACLs apply, and `/ask` integration waits for M5. Never ingest protected tenant documents
+into this graph. Gold answers/supporting titles are evaluation-only; mock extraction may
+use paragraph annotations, but retrieval/generation must never consult question labels.
+Mock completions operate on supplied evidence, not fixture answers. All outputs must
+record mode and actual dataset origin; fallback does not become a real HotpotQA result.
+
+Extraction means initial attempt plus three retries, strict schema validation and logged
+skip on final failure. Persist successes only. Cache keys isolate mode/model/text/schema
+and mock annotations. Sum every completed extraction call, including invalid JSON; cache
+hits add zero new tokens/cost. Failed extraction preserves vector-only evidence. Indexing
+cost excludes embeddings, reranking, database and local compute charges; label that scope.
+
+Keep entities typed throughout resolution/linking/traversal. Review `merge_groups.txt`:
+nickname aliases and token subsets can merge distinct people. Optional embedding resolution
+is off by default. Every graph relation retains supporting chunk_id; prompt triples must
+come only from selected evidence. Keep bounded two-hop expansion, top15 vectors, top6
+reranked evidence and <=10 prompt triples. Planner usage counts toward decomposition.
+
+Neo4j benchmark nodes are run-namespaced; remove only the owned namespace and close all
+handles, including on failure. Shared indexes/constraints remain. The vector overfetch /
+namespace fallback is not ACL enforcement. Mock uses NetworkX, not a fake live result.
+External tests are `integration` and skip unless NEO4J_URI is explicitly set, e.g.
+PowerShell `$env:NEO4J_URI="bolt://localhost:7687"`. An opted-in missing service must fail.
+The test embeddings are deterministic; live integration tests need only Neo4j, not models.

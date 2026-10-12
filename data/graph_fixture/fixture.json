@@ -1,0 +1,1375 @@
+{
+  "description": "Authored fictional facts; annotations for mock extraction only.",
+  "paragraphs": [
+    {
+      "id": "Amber Signal::0",
+      "title": "Amber Signal",
+      "text": "Mara Vale directed Amber Signal. It is a fictional film about exploration.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Mara Vale",
+            "type": "PERSON"
+          },
+          {
+            "name": "Amber Signal",
+            "type": "WORK"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Mara Vale",
+              "type": "PERSON"
+            },
+            "type": "DIRECTED",
+            "target": {
+              "name": "Amber Signal",
+              "type": "WORK"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Mara Vale::0",
+      "title": "Mara Vale",
+      "text": "Mara Vale was born in Cedar Bay. This filmmaker also writes plays.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Mara Vale",
+            "type": "PERSON"
+          },
+          {
+            "name": "Cedar Bay",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Mara Vale",
+              "type": "PERSON"
+            },
+            "type": "BORN_IN",
+            "target": {
+              "name": "Cedar Bay",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Amber Signal festival::0",
+      "title": "Amber Signal festival",
+      "text": "Amber Signal festival is located in Seabrook. The festival discusses where film directors were born.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Amber Signal festival",
+            "type": "EVENT"
+          },
+          {
+            "name": "Seabrook",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Amber Signal festival",
+              "type": "EVENT"
+            },
+            "type": "LOCATED_IN",
+            "target": {
+              "name": "Seabrook",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Silver Orchard::0",
+      "title": "Silver Orchard",
+      "text": "Elias Reed directed Silver Orchard. It is a fictional film about exploration.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Elias Reed",
+            "type": "PERSON"
+          },
+          {
+            "name": "Silver Orchard",
+            "type": "WORK"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Elias Reed",
+              "type": "PERSON"
+            },
+            "type": "DIRECTED",
+            "target": {
+              "name": "Silver Orchard",
+              "type": "WORK"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Elias Reed::0",
+      "title": "Elias Reed",
+      "text": "Elias Reed was born in Northhaven. This filmmaker also writes plays.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Elias Reed",
+            "type": "PERSON"
+          },
+          {
+            "name": "Northhaven",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Elias Reed",
+              "type": "PERSON"
+            },
+            "type": "BORN_IN",
+            "target": {
+              "name": "Northhaven",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Silver Orchard festival::0",
+      "title": "Silver Orchard festival",
+      "text": "Silver Orchard festival is located in Seabrook. The festival discusses where film directors were born.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Silver Orchard festival",
+            "type": "EVENT"
+          },
+          {
+            "name": "Seabrook",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Silver Orchard festival",
+              "type": "EVENT"
+            },
+            "type": "LOCATED_IN",
+            "target": {
+              "name": "Seabrook",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Quiet Lantern::0",
+      "title": "Quiet Lantern",
+      "text": "Nadia Frost directed Quiet Lantern. It is a fictional film about exploration.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Nadia Frost",
+            "type": "PERSON"
+          },
+          {
+            "name": "Quiet Lantern",
+            "type": "WORK"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Nadia Frost",
+              "type": "PERSON"
+            },
+            "type": "DIRECTED",
+            "target": {
+              "name": "Quiet Lantern",
+              "type": "WORK"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Nadia Frost::0",
+      "title": "Nadia Frost",
+      "text": "Nadia Frost was born in Willowport. This filmmaker also writes plays.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Nadia Frost",
+            "type": "PERSON"
+          },
+          {
+            "name": "Willowport",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Nadia Frost",
+              "type": "PERSON"
+            },
+            "type": "BORN_IN",
+            "target": {
+              "name": "Willowport",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Quiet Lantern festival::0",
+      "title": "Quiet Lantern festival",
+      "text": "Quiet Lantern festival is located in Seabrook. The festival discusses where film directors were born.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Quiet Lantern festival",
+            "type": "EVENT"
+          },
+          {
+            "name": "Seabrook",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Quiet Lantern festival",
+              "type": "EVENT"
+            },
+            "type": "LOCATED_IN",
+            "target": {
+              "name": "Seabrook",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Winter Atlas::0",
+      "title": "Winter Atlas",
+      "text": "Owen Pike directed Winter Atlas. It is a fictional film about exploration.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Owen Pike",
+            "type": "PERSON"
+          },
+          {
+            "name": "Winter Atlas",
+            "type": "WORK"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Owen Pike",
+              "type": "PERSON"
+            },
+            "type": "DIRECTED",
+            "target": {
+              "name": "Winter Atlas",
+              "type": "WORK"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Owen Pike::0",
+      "title": "Owen Pike",
+      "text": "Owen Pike was born in Ashford. This filmmaker also writes plays.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Owen Pike",
+            "type": "PERSON"
+          },
+          {
+            "name": "Ashford",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Owen Pike",
+              "type": "PERSON"
+            },
+            "type": "BORN_IN",
+            "target": {
+              "name": "Ashford",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Winter Atlas festival::0",
+      "title": "Winter Atlas festival",
+      "text": "Winter Atlas festival is located in Seabrook. The festival discusses where film directors were born.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Winter Atlas festival",
+            "type": "EVENT"
+          },
+          {
+            "name": "Seabrook",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Winter Atlas festival",
+              "type": "EVENT"
+            },
+            "type": "LOCATED_IN",
+            "target": {
+              "name": "Seabrook",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Copper Horizon::0",
+      "title": "Copper Horizon",
+      "text": "Leila Moss directed Copper Horizon. It is a fictional film about exploration.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Leila Moss",
+            "type": "PERSON"
+          },
+          {
+            "name": "Copper Horizon",
+            "type": "WORK"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Leila Moss",
+              "type": "PERSON"
+            },
+            "type": "DIRECTED",
+            "target": {
+              "name": "Copper Horizon",
+              "type": "WORK"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Leila Moss::0",
+      "title": "Leila Moss",
+      "text": "Leila Moss was born in Birch Harbor. This filmmaker also writes plays.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Leila Moss",
+            "type": "PERSON"
+          },
+          {
+            "name": "Birch Harbor",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Leila Moss",
+              "type": "PERSON"
+            },
+            "type": "BORN_IN",
+            "target": {
+              "name": "Birch Harbor",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Copper Horizon festival::0",
+      "title": "Copper Horizon festival",
+      "text": "Copper Horizon festival is located in Seabrook. The festival discusses where film directors were born.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Copper Horizon festival",
+            "type": "EVENT"
+          },
+          {
+            "name": "Seabrook",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Copper Horizon festival",
+              "type": "EVENT"
+            },
+            "type": "LOCATED_IN",
+            "target": {
+              "name": "Seabrook",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Hidden Compass::0",
+      "title": "Hidden Compass",
+      "text": "Jonas Wren directed Hidden Compass. It is a fictional film about exploration.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Jonas Wren",
+            "type": "PERSON"
+          },
+          {
+            "name": "Hidden Compass",
+            "type": "WORK"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Jonas Wren",
+              "type": "PERSON"
+            },
+            "type": "DIRECTED",
+            "target": {
+              "name": "Hidden Compass",
+              "type": "WORK"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Jonas Wren::0",
+      "title": "Jonas Wren",
+      "text": "Jonas Wren was born in Fernbridge. This filmmaker also writes plays.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Jonas Wren",
+            "type": "PERSON"
+          },
+          {
+            "name": "Fernbridge",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Jonas Wren",
+              "type": "PERSON"
+            },
+            "type": "BORN_IN",
+            "target": {
+              "name": "Fernbridge",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Hidden Compass festival::0",
+      "title": "Hidden Compass festival",
+      "text": "Hidden Compass festival is located in Seabrook. The festival discusses where film directors were born.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Hidden Compass festival",
+            "type": "EVENT"
+          },
+          {
+            "name": "Seabrook",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Hidden Compass festival",
+              "type": "EVENT"
+            },
+            "type": "LOCATED_IN",
+            "target": {
+              "name": "Seabrook",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Velvet River::0",
+      "title": "Velvet River",
+      "text": "Priya Stone directed Velvet River. It is a fictional film about exploration.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Priya Stone",
+            "type": "PERSON"
+          },
+          {
+            "name": "Velvet River",
+            "type": "WORK"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Priya Stone",
+              "type": "PERSON"
+            },
+            "type": "DIRECTED",
+            "target": {
+              "name": "Velvet River",
+              "type": "WORK"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Priya Stone::0",
+      "title": "Priya Stone",
+      "text": "Priya Stone was born in Maplewick. This filmmaker also writes plays.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Priya Stone",
+            "type": "PERSON"
+          },
+          {
+            "name": "Maplewick",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Priya Stone",
+              "type": "PERSON"
+            },
+            "type": "BORN_IN",
+            "target": {
+              "name": "Maplewick",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Velvet River festival::0",
+      "title": "Velvet River festival",
+      "text": "Velvet River festival is located in Seabrook. The festival discusses where film directors were born.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Velvet River festival",
+            "type": "EVENT"
+          },
+          {
+            "name": "Seabrook",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Velvet River festival",
+              "type": "EVENT"
+            },
+            "type": "LOCATED_IN",
+            "target": {
+              "name": "Seabrook",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Distant Meadow::0",
+      "title": "Distant Meadow",
+      "text": "Felix Hart directed Distant Meadow. It is a fictional film about exploration.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Felix Hart",
+            "type": "PERSON"
+          },
+          {
+            "name": "Distant Meadow",
+            "type": "WORK"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Felix Hart",
+              "type": "PERSON"
+            },
+            "type": "DIRECTED",
+            "target": {
+              "name": "Distant Meadow",
+              "type": "WORK"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Felix Hart::0",
+      "title": "Felix Hart",
+      "text": "Felix Hart was born in Oakmere. This filmmaker also writes plays.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Felix Hart",
+            "type": "PERSON"
+          },
+          {
+            "name": "Oakmere",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Felix Hart",
+              "type": "PERSON"
+            },
+            "type": "BORN_IN",
+            "target": {
+              "name": "Oakmere",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Distant Meadow festival::0",
+      "title": "Distant Meadow festival",
+      "text": "Distant Meadow festival is located in Seabrook. The festival discusses where film directors were born.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Distant Meadow festival",
+            "type": "EVENT"
+          },
+          {
+            "name": "Seabrook",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Distant Meadow festival",
+              "type": "EVENT"
+            },
+            "type": "LOCATED_IN",
+            "target": {
+              "name": "Seabrook",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Morning Beacon::0",
+      "title": "Morning Beacon",
+      "text": "Sofia Lane directed Morning Beacon. It is a fictional film about exploration.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Sofia Lane",
+            "type": "PERSON"
+          },
+          {
+            "name": "Morning Beacon",
+            "type": "WORK"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Sofia Lane",
+              "type": "PERSON"
+            },
+            "type": "DIRECTED",
+            "target": {
+              "name": "Morning Beacon",
+              "type": "WORK"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Sofia Lane::0",
+      "title": "Sofia Lane",
+      "text": "Sofia Lane was born in Pinecrest. This filmmaker also writes plays.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Sofia Lane",
+            "type": "PERSON"
+          },
+          {
+            "name": "Pinecrest",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Sofia Lane",
+              "type": "PERSON"
+            },
+            "type": "BORN_IN",
+            "target": {
+              "name": "Pinecrest",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Morning Beacon festival::0",
+      "title": "Morning Beacon festival",
+      "text": "Morning Beacon festival is located in Seabrook. The festival discusses where film directors were born.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Morning Beacon festival",
+            "type": "EVENT"
+          },
+          {
+            "name": "Seabrook",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Morning Beacon festival",
+              "type": "EVENT"
+            },
+            "type": "LOCATED_IN",
+            "target": {
+              "name": "Seabrook",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Blue Meridian::0",
+      "title": "Blue Meridian",
+      "text": "Amir Wells directed Blue Meridian. It is a fictional film about exploration.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Amir Wells",
+            "type": "PERSON"
+          },
+          {
+            "name": "Blue Meridian",
+            "type": "WORK"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Amir Wells",
+              "type": "PERSON"
+            },
+            "type": "DIRECTED",
+            "target": {
+              "name": "Blue Meridian",
+              "type": "WORK"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Amir Wells::0",
+      "title": "Amir Wells",
+      "text": "Amir Wells was born in Rosehaven. This filmmaker also writes plays.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Amir Wells",
+            "type": "PERSON"
+          },
+          {
+            "name": "Rosehaven",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Amir Wells",
+              "type": "PERSON"
+            },
+            "type": "BORN_IN",
+            "target": {
+              "name": "Rosehaven",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Blue Meridian festival::0",
+      "title": "Blue Meridian festival",
+      "text": "Blue Meridian festival is located in Seabrook. The festival discusses where film directors were born.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Blue Meridian festival",
+            "type": "EVENT"
+          },
+          {
+            "name": "Seabrook",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Blue Meridian festival",
+              "type": "EVENT"
+            },
+            "type": "LOCATED_IN",
+            "target": {
+              "name": "Seabrook",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Golden Echo::0",
+      "title": "Golden Echo",
+      "text": "Clara Finch directed Golden Echo. It is a fictional film about exploration.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Clara Finch",
+            "type": "PERSON"
+          },
+          {
+            "name": "Golden Echo",
+            "type": "WORK"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Clara Finch",
+              "type": "PERSON"
+            },
+            "type": "DIRECTED",
+            "target": {
+              "name": "Golden Echo",
+              "type": "WORK"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Clara Finch::0",
+      "title": "Clara Finch",
+      "text": "Clara Finch was born in Elmford. This filmmaker also writes plays.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Clara Finch",
+            "type": "PERSON"
+          },
+          {
+            "name": "Elmford",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Clara Finch",
+              "type": "PERSON"
+            },
+            "type": "BORN_IN",
+            "target": {
+              "name": "Elmford",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Golden Echo festival::0",
+      "title": "Golden Echo festival",
+      "text": "Golden Echo festival is located in Seabrook. The festival discusses where film directors were born.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Golden Echo festival",
+            "type": "EVENT"
+          },
+          {
+            "name": "Seabrook",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Golden Echo festival",
+              "type": "EVENT"
+            },
+            "type": "LOCATED_IN",
+            "target": {
+              "name": "Seabrook",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Paper Voyage::0",
+      "title": "Paper Voyage",
+      "text": "Theo Brook directed Paper Voyage. It is a fictional film about exploration.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Theo Brook",
+            "type": "PERSON"
+          },
+          {
+            "name": "Paper Voyage",
+            "type": "WORK"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Theo Brook",
+              "type": "PERSON"
+            },
+            "type": "DIRECTED",
+            "target": {
+              "name": "Paper Voyage",
+              "type": "WORK"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Theo Brook::0",
+      "title": "Theo Brook",
+      "text": "Theo Brook was born in Juniper Falls. This filmmaker also writes plays.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Theo Brook",
+            "type": "PERSON"
+          },
+          {
+            "name": "Juniper Falls",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Theo Brook",
+              "type": "PERSON"
+            },
+            "type": "BORN_IN",
+            "target": {
+              "name": "Juniper Falls",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Paper Voyage festival::0",
+      "title": "Paper Voyage festival",
+      "text": "Paper Voyage festival is located in Seabrook. The festival discusses where film directors were born.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Paper Voyage festival",
+            "type": "EVENT"
+          },
+          {
+            "name": "Seabrook",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Paper Voyage festival",
+              "type": "EVENT"
+            },
+            "type": "LOCATED_IN",
+            "target": {
+              "name": "Seabrook",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Lumen Archive::0",
+      "title": "Lumen Archive",
+      "text": "Lumen Archive is located in Clearwater. It preserves fictional local history.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Lumen Archive",
+            "type": "ORG"
+          },
+          {
+            "name": "Clearwater",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Lumen Archive",
+              "type": "ORG"
+            },
+            "type": "LOCATED_IN",
+            "target": {
+              "name": "Clearwater",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Cobalt Guild::0",
+      "title": "Cobalt Guild",
+      "text": "Cobalt Guild is located in Redwood. It preserves fictional local history.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Cobalt Guild",
+            "type": "ORG"
+          },
+          {
+            "name": "Redwood",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Cobalt Guild",
+              "type": "ORG"
+            },
+            "type": "LOCATED_IN",
+            "target": {
+              "name": "Redwood",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Aurora Library::0",
+      "title": "Aurora Library",
+      "text": "Aurora Library is located in Stonehaven. It preserves fictional local history.",
+      "annotation": {
+        "entities": [
+          {
+            "name": "Aurora Library",
+            "type": "ORG"
+          },
+          {
+            "name": "Stonehaven",
+            "type": "PLACE"
+          }
+        ],
+        "relations": [
+          {
+            "source": {
+              "name": "Aurora Library",
+              "type": "ORG"
+            },
+            "type": "LOCATED_IN",
+            "target": {
+              "name": "Stonehaven",
+              "type": "PLACE"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "bridge-01",
+      "question": "Where was the director of Amber Signal born?",
+      "answer": "Cedar Bay",
+      "supporting_titles": [
+        "Amber Signal",
+        "Mara Vale"
+      ],
+      "kind": "multihop",
+      "steps": [
+        "Who directed Amber Signal?",
+        "Where was {answer0} born?"
+      ]
+    },
+    {
+      "id": "bridge-02",
+      "question": "Where was the director of Silver Orchard born?",
+      "answer": "Northhaven",
+      "supporting_titles": [
+        "Silver Orchard",
+        "Elias Reed"
+      ],
+      "kind": "multihop",
+      "steps": [
+        "Who directed Silver Orchard?",
+        "Where was {answer0} born?"
+      ]
+    },
+    {
+      "id": "bridge-03",
+      "question": "Where was the director of Quiet Lantern born?",
+      "answer": "Willowport",
+      "supporting_titles": [
+        "Quiet Lantern",
+        "Nadia Frost"
+      ],
+      "kind": "multihop",
+      "steps": [
+        "Who directed Quiet Lantern?",
+        "Where was {answer0} born?"
+      ]
+    },
+    {
+      "id": "bridge-04",
+      "question": "Where was the director of Winter Atlas born?",
+      "answer": "Ashford",
+      "supporting_titles": [
+        "Winter Atlas",
+        "Owen Pike"
+      ],
+      "kind": "multihop",
+      "steps": [
+        "Who directed Winter Atlas?",
+        "Where was {answer0} born?"
+      ]
+    },
+    {
+      "id": "bridge-05",
+      "question": "Where was the director of Copper Horizon born?",
+      "answer": "Birch Harbor",
+      "supporting_titles": [
+        "Copper Horizon",
+        "Leila Moss"
+      ],
+      "kind": "multihop",
+      "steps": [
+        "Who directed Copper Horizon?",
+        "Where was {answer0} born?"
+      ]
+    },
+    {
+      "id": "bridge-06",
+      "question": "Where was the director of Hidden Compass born?",
+      "answer": "Fernbridge",
+      "supporting_titles": [
+        "Hidden Compass",
+        "Jonas Wren"
+      ],
+      "kind": "multihop",
+      "steps": [
+        "Who directed Hidden Compass?",
+        "Where was {answer0} born?"
+      ]
+    },
+    {
+      "id": "bridge-07",
+      "question": "Where was the director of Velvet River born?",
+      "answer": "Maplewick",
+      "supporting_titles": [
+        "Velvet River",
+        "Priya Stone"
+      ],
+      "kind": "multihop",
+      "steps": [
+        "Who directed Velvet River?",
+        "Where was {answer0} born?"
+      ]
+    },
+    {
+      "id": "bridge-08",
+      "question": "Where was the director of Distant Meadow born?",
+      "answer": "Oakmere",
+      "supporting_titles": [
+        "Distant Meadow",
+        "Felix Hart"
+      ],
+      "kind": "multihop",
+      "steps": [
+        "Who directed Distant Meadow?",
+        "Where was {answer0} born?"
+      ]
+    },
+    {
+      "id": "bridge-09",
+      "question": "Where was the director of Morning Beacon born?",
+      "answer": "Pinecrest",
+      "supporting_titles": [
+        "Morning Beacon",
+        "Sofia Lane"
+      ],
+      "kind": "multihop",
+      "steps": [
+        "Who directed Morning Beacon?",
+        "Where was {answer0} born?"
+      ]
+    },
+    {
+      "id": "bridge-10",
+      "question": "Where was the director of Blue Meridian born?",
+      "answer": "Rosehaven",
+      "supporting_titles": [
+        "Blue Meridian",
+        "Amir Wells"
+      ],
+      "kind": "multihop",
+      "steps": [
+        "Who directed Blue Meridian?",
+        "Where was {answer0} born?"
+      ]
+    },
+    {
+      "id": "bridge-11",
+      "question": "Where was the director of Golden Echo born?",
+      "answer": "Elmford",
+      "supporting_titles": [
+        "Golden Echo",
+        "Clara Finch"
+      ],
+      "kind": "multihop",
+      "steps": [
+        "Who directed Golden Echo?",
+        "Where was {answer0} born?"
+      ]
+    },
+    {
+      "id": "bridge-12",
+      "question": "Where was the director of Paper Voyage born?",
+      "answer": "Juniper Falls",
+      "supporting_titles": [
+        "Paper Voyage",
+        "Theo Brook"
+      ],
+      "kind": "multihop",
+      "steps": [
+        "Who directed Paper Voyage?",
+        "Where was {answer0} born?"
+      ]
+    },
+    {
+      "id": "single-1",
+      "question": "Where is Lumen Archive located?",
+      "answer": "Clearwater",
+      "supporting_titles": [
+        "Lumen Archive"
+      ],
+      "kind": "singlehop",
+      "steps": []
+    },
+    {
+      "id": "single-2",
+      "question": "Where is Cobalt Guild located?",
+      "answer": "Redwood",
+      "supporting_titles": [
+        "Cobalt Guild"
+      ],
+      "kind": "singlehop",
+      "steps": []
+    },
+    {
+      "id": "single-3",
+      "question": "Where is Aurora Library located?",
+      "answer": "Stonehaven",
+      "supporting_titles": [
+        "Aurora Library"
+      ],
+      "kind": "singlehop",
+      "steps": []
+    }
+  ]
+}

@@ -7,6 +7,8 @@ __pycache__/
 .ruff_cache/
 eval/results/*.csv
 eval/results/*.json
+eval/results/merge_groups.txt
+eval/results/failure_analysis_project3.md
 !eval/results/.gitkeep
 eval/results/*.csv.tmp
 data/runtime/

@@ -50,6 +50,10 @@ def complete(
                         ]
                     }
                 )
+        if system in {"GRAPH_ANSWER", "GRAPH_DECOMPOSE"}:
+            from graphrag.mock_llm import graph_completion
+
+            text = graph_completion(prompt, system)
         return LLMResult(
             text,
             max(1, len(prompt.split())),
