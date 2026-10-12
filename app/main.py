@@ -14,6 +14,7 @@ from app.config import Settings
 from app.contracts import CurrentUser, RAGResult
 from app.rag import close_engine
 from app.secure_rag import SecureRAGEngine, close_secure_engine, get_secure_engine
+from app.service import RAGService, close_service, get_service
 
 
 @asynccontextmanager
@@ -22,6 +23,7 @@ async def lifespan(application: FastAPI) -> AsyncIterator[None]:
     try:
         yield
     finally:
+        close_service()
         close_engine()
         close_secure_engine()
 
@@ -48,10 +50,10 @@ class AskRequest(BaseModel):
 def ask(
     body: AskRequest,
     user: Annotated[CurrentUser, Depends(get_current_user)],
-    engine: Annotated[SecureRAGEngine, Depends(get_secure_engine)],
+    service: Annotated[RAGService, Depends(get_service)],
 ) -> RAGResult:
     """Answer using only the caller's verified JWT tenant and role/user grants."""
-    return engine.answer(body.question, Settings().large_model, user)
+    return service.ask(body.question, user).response
 
 
 class LoginRequest(BaseModel):

@@ -1,0 +1,50 @@
+{"id": "near-000", "query_a": "How long is the EU refund window?", "query_b": "How long is the US refund window?", "label": "near_miss"}
+{"id": "near-001", "query_a": "Please tell me: How long is the EU refund window?", "query_b": "Please tell me: How long is the US refund window?", "label": "near_miss"}
+{"id": "near-002", "query_a": "How much does Pro cost monthly?", "query_b": "How much does Team cost monthly?", "label": "near_miss"}
+{"id": "near-003", "query_a": "Please tell me: How much does Pro cost monthly?", "query_b": "Please tell me: How much does Team cost monthly?", "label": "near_miss"}
+{"id": "near-004", "query_a": "How many seats does Pro include?", "query_b": "How many seats does Team include?", "label": "near_miss"}
+{"id": "near-005", "query_a": "Please tell me: How many seats does Pro include?", "query_b": "Please tell me: How many seats does Team include?", "label": "near_miss"}
+{"id": "near-006", "query_a": "How much storage does Pro include?", "query_b": "How much storage does Team include?", "label": "near_miss"}
+{"id": "near-007", "query_a": "Please tell me: How much storage does Pro include?", "query_b": "Please tell me: How much storage does Team include?", "label": "near_miss"}
+{"id": "near-008", "query_a": "What support response time does Pro target?", "query_b": "What support response time does Team target?", "label": "near_miss"}
+{"id": "near-009", "query_a": "Please tell me: What support response time does Pro target?", "query_b": "Please tell me: What support response time does Team target?", "label": "near_miss"}
+{"id": "near-010", "query_a": "How many automation runs does Free include?", "query_b": "How many automation runs does Pro include?", "label": "near_miss"}
+{"id": "near-011", "query_a": "Please tell me: How many automation runs does Free include?", "query_b": "Please tell me: How many automation runs does Pro include?", "label": "near_miss"}
+{"id": "near-012", "query_a": "What API rate limit applies to Free?", "query_b": "What API rate limit applies to Team?", "label": "near_miss"}
+{"id": "near-013", "query_a": "Please tell me: What API rate limit applies to Free?", "query_b": "Please tell me: What API rate limit applies to Team?", "label": "near_miss"}
+{"id": "near-014", "query_a": "Does Pro include SAML?", "query_b": "Does Team include SAML?", "label": "near_miss"}
+{"id": "near-015", "query_a": "Please tell me: Does Pro include SAML?", "query_b": "Please tell me: Does Team include SAML?", "label": "near_miss"}
+{"id": "near-016", "query_a": "Does Pro include a contractual SLA?", "query_b": "Does Team include a contractual SLA?", "label": "near_miss"}
+{"id": "near-017", "query_a": "Please tell me: Does Pro include a contractual SLA?", "query_b": "Please tell me: Does Team include a contractual SLA?", "label": "near_miss"}
+{"id": "near-018", "query_a": "What overage storage price applies to Pro?", "query_b": "What overage storage price applies to Team?", "label": "near_miss"}
+{"id": "near-019", "query_a": "Please tell me: What overage storage price applies to Pro?", "query_b": "Please tell me: What overage storage price applies to Team?", "label": "near_miss"}
+{"id": "near-020", "query_a": "How many projects can Pro have?", "query_b": "How many projects can Team have?", "label": "near_miss"}
+{"id": "near-021", "query_a": "Please tell me: How many projects can Pro have?", "query_b": "Please tell me: How many projects can Team have?", "label": "near_miss"}
+{"id": "near-022", "query_a": "How long does an EU refund take to return?", "query_b": "How long does a US refund take to return?", "label": "near_miss"}
+{"id": "near-023", "query_a": "Please tell me: How long does an EU refund take to return?", "query_b": "Please tell me: How long does a US refund take to return?", "label": "near_miss"}
+{"id": "near-024", "query_a": "Does an EU refund require an explanation?", "query_b": "Does a US refund require an explanation?", "label": "near_miss"}
+{"id": "near-025", "query_a": "Please tell me: Does an EU refund require an explanation?", "query_b": "Please tell me: Does a US refund require an explanation?", "label": "near_miss"}
+{"id": "near-026", "query_a": "How do I enable the outbound webhook integration for job failure notifications in my workspace?", "query_b": "How do I disable the outbound webhook integration for job failure notifications in my workspace?", "label": "near_miss"}
+{"id": "near-027", "query_a": "Please tell me: How do I enable the outbound webhook integration for job failure notifications in my workspace?", "query_b": "Please tell me: How do I disable the outbound webhook integration for job failure notifications in my workspace?", "label": "near_miss"}
+{"id": "near-028", "query_a": "How do I create an API key for a read-only client in my workspace?", "query_b": "How do I revoke an API key for a read-only client in my workspace?", "label": "near_miss"}
+{"id": "near-029", "query_a": "Please tell me: How do I create an API key for a read-only client in my workspace?", "query_b": "Please tell me: How do I revoke an API key for a read-only client in my workspace?", "label": "near_miss"}
+{"id": "near-030", "query_a": "How do I export workspace documents while my subscription is cancelled and the workspace is read-only?", "query_b": "How do I delete workspace documents while my subscription is cancelled and the workspace is read-only?", "label": "near_miss"}
+{"id": "near-031", "query_a": "Please tell me: How do I export workspace documents while my subscription is cancelled and the workspace is read-only?", "query_b": "Please tell me: How do I delete workspace documents while my subscription is cancelled and the workspace is read-only?", "label": "near_miss"}
+{"id": "near-032", "query_a": "How do I upgrade the current paid subscription plan before the next monthly billing renewal date?", "query_b": "How do I downgrade the current paid subscription plan before the next monthly billing renewal date?", "label": "near_miss"}
+{"id": "near-033", "query_a": "Please tell me: How do I upgrade the current paid subscription plan before the next monthly billing renewal date?", "query_b": "Please tell me: How do I downgrade the current paid subscription plan before the next monthly billing renewal date?", "label": "near_miss"}
+{"id": "near-034", "query_a": "Can I upload a document larger than 10 MB?", "query_b": "Can I upload a document larger than 100 MB?", "label": "near_miss"}
+{"id": "near-035", "query_a": "Please tell me: Can I upload a document larger than 10 MB?", "query_b": "Please tell me: Can I upload a document larger than 100 MB?", "label": "near_miss"}
+{"id": "near-036", "query_a": "Can I add 5 members to Pro?", "query_b": "Can I add 25 members to Pro?", "label": "near_miss"}
+{"id": "near-037", "query_a": "Please tell me: Can I add 5 members to Pro?", "query_b": "Please tell me: Can I add 25 members to Pro?", "label": "near_miss"}
+{"id": "near-038", "query_a": "What credit applies below 99.9 percent uptime?", "query_b": "What credit applies below 99.0 percent uptime?", "label": "near_miss"}
+{"id": "near-039", "query_a": "Please tell me: What credit applies below 99.9 percent uptime?", "query_b": "Please tell me: What credit applies below 99.0 percent uptime?", "label": "near_miss"}
+{"id": "near-040", "query_a": "Can I download the export after 24 hours?", "query_b": "Can I download the export after 72 hours?", "label": "near_miss"}
+{"id": "near-041", "query_a": "Please tell me: Can I download the export after 24 hours?", "query_b": "Please tell me: Can I download the export after 72 hours?", "label": "near_miss"}
+{"id": "near-042", "query_a": "Can I recover a document deleted 30 days ago?", "query_b": "Can I recover a document deleted 90 days ago?", "label": "near_miss"}
+{"id": "near-043", "query_a": "Please tell me: Can I recover a document deleted 30 days ago?", "query_b": "Please tell me: Can I recover a document deleted 90 days ago?", "label": "near_miss"}
+{"id": "near-044", "query_a": "Can a workspace be hosted in Frankfurt?", "query_b": "Can a workspace be hosted in Singapore?", "label": "near_miss"}
+{"id": "near-045", "query_a": "Please tell me: Can a workspace be hosted in Frankfurt?", "query_b": "Please tell me: Can a workspace be hosted in Singapore?", "label": "near_miss"}
+{"id": "near-046", "query_a": "Are API keys sent in the Authorization header?", "query_b": "Are API keys sent in the Retry-After header?", "label": "near_miss"}
+{"id": "near-047", "query_a": "Please tell me: Are API keys sent in the Authorization header?", "query_b": "Please tell me: Are API keys sent in the Retry-After header?", "label": "near_miss"}
+{"id": "near-048", "query_a": "Does permanent deletion revoke API keys immediately?", "query_b": "Does subscription cancellation revoke API keys immediately?", "label": "near_miss"}
+{"id": "near-049", "query_a": "Please tell me: Does permanent deletion revoke API keys immediately?", "query_b": "Please tell me: Does subscription cancellation revoke API keys immediately?", "label": "near_miss"}

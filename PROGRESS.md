@@ -3,7 +3,7 @@
 - [x] M0: Scaffold (mock acceptance passed; real-provider validation pending)
 - [x] M1: Baseline RAG and evaluation (mock acceptance passed)
 - [x] M2: Permission-aware multi-tenant RAG (mock acceptance passed)
-- [ ] M3: Semantic cache and routing
+- [x] M3: Semantic cache and routing (mock acceptance passed)
 - [ ] M4: GraphRAG
 - [ ] M5: Integration and polish
 
@@ -63,3 +63,29 @@ installation remains pending from M0; existing Starlette/httpx deprecation is no
 README, AGENTS and DECISIONS document PowerShell login/admin commands, demo-only auth,
 single-worker/local epoch scope and audit protection limits. M3 is the first unfinished
 milestone; work stopped here as requested.
+
+M3: Added request instrumentation with separately computed reference cost for each
+completed model call, a tenant/role/user-scoped semantic cache with version/epoch/TTL
+checks and optional entity/number guard, rule and small-model routers, escalation, and
+the /ask orchestration service. Cache hits revalidate ACL-filtered evidence and commit
+cache-hit audit records; generation-time ACL/corpus changes prevent stale cache insertion.
+Committed 50 curated paraphrase pairs, 50 near-miss pairs and 100 hand-labeled router
+intents. Added threshold sweeps, both-router accuracy and quality/cost trade-off runs,
+and identical seeded baseline/optimized replay with configurable repeats, plus a local
+Streamlit measurement dashboard. Inspected installed Streamlit 1.65.0 test/chart APIs,
+pinned all successfully installed dependencies and verified published reference tiers;
+local-model cost remains estimated at reference prices. On Windows/Python 3.11, lint
+and all 1353 tests passed, including the existing leakage suite, 600 additional cached
+service combinations, TTL/version/epoch invalidation, explicit-user isolation, escalation
+accounting, poisoned-evidence rejection and headless dashboard empty/data/filter checks.
+`python tasks.py bench-cache` completed the full sweep and 100-label router experiments,
+then the default 40%-repeat comparison (75 requests per system), writing MOCK-labeled
+CSV files and `eval/results/summary_project1.json`. Comparison CSVs are
+`project1_baseline_20261012T050018521260Z.csv` and
+`project1_optimized_20261012T050018528161Z.csv`; no mock performance/quality/cost numbers
+were copied into README results. Dependency consistency and Compose configuration checks
+passed. Live Qdrant/PostgreSQL, real generation/classifier quality, browser interaction,
+model/GPU setup and hosted CI remain unverified; real provider dependency setup remains
+pending from M0. The existing Starlette/httpx warning is non-failing. README/AGENTS include
+PowerShell experiment/dashboard commands and DECISIONS records scope and limitations.
+M4 is the first unfinished milestone; work stopped here as requested.

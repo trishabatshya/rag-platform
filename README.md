@@ -14,10 +14,11 @@ flowchart LR
 
 A RAG platform for studying permission enforcement, semantic caching and multi-hop
 retrieval with reproducible evaluations. Development follows M0–M5 in TASK.md.
-**Current status: M2 permission-aware multi-tenant RAG**. The API now verifies JWTs,
-filters retrieval by tenant and role/user grants, rechecks evidence and audits retrieval.
+**Current status: M3 semantic caching and cost-aware routing**. The API verifies JWTs,
+isolates cached answers by permission scope, filters/rechecks retrieval, selects a model
+and escalates weak answers. Retrieval and cache hits are audited and requests measured.
 The public Northwind baseline remains available through the offline evaluation harness.
-Caching/routing and graph retrieval in the diagram are planned for M3-M5.
+Graph retrieval and final reporting remain planned for M4-M5.
 The mock installation and checks pass on Windows with Python 3.11.9. Docker Compose
 configuration validates; container startup and the real model adapters are unverified.
 Ollama was unavailable in the development environment.
@@ -121,9 +122,14 @@ so its correctness scores do not measure answer quality. Real judging requests
 `CORRECT` or `INCORRECT` from the configured judge model at temperature zero.
 
 Costs are **estimated at reference prices** from `app/config.py:PRICES`, in USD per
-million input/output tokens. The initial small/large tier values are illustrative
-assumptions, not verified provider list prices or actual local-model charges. Configure
-and document appropriate prices before interpreting a real cost comparison.
+million input/output tokens. M3 verified the reference tiers against the published
+[GPT-4o Mini](https://developers.openai.com/api/docs/models/gpt-4o-mini) and
+[GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o) text-token prices on
+2026-10-12. Those tiers are comparison proxies for the configured small/large models,
+not charges for local Ollama calls. `REFERENCE_SMALL_INPUT`, `REFERENCE_SMALL_OUTPUT`,
+`REFERENCE_LARGE_INPUT` and `REFERENCE_LARGE_OUTPUT` can override rates for another
+comparison. A small call followed by a large escalation is charged at each call's own
+reference tier; optional router-classifier tokens are included too.
 
 ## Permission-aware RAG (Project 2)
 
@@ -196,7 +202,7 @@ Invoke-RestMethod -Uri "http://localhost:8000/admin/doc-access/acme:engineering-
 ```
 
 Updates wait for Qdrant completion and advance the persisted `cache_epoch` before
-mutation, preparing invalidation for M3. A process-local lock serializes retrieval
+mutation, invalidating cached answers. A process-local lock serializes retrieval
 snapshots and admin updates in the single-worker API. Already-running generation can
 finish using its earlier snapshot. Mock ACL edits reset to committed fixtures on process
 restart; SQLite audit history and the epoch persist.
@@ -231,6 +237,99 @@ For Docker or multiple workers, put the same random key in the ignored `.env`. D
 token lifetime is one hour (`JWT_TTL_SECONDS`). Demo authentication has no account
 provisioning, refresh/revocation service or login rate limiting; role changes require
 a new token, while document ACL revocation affects the next query immediately.
+
+## Semantic cache and model routing (Project 1)
+
+The `/ask` service embeds a normalized question, checks a separate vector cache, then
+on a miss retrieves permitted evidence, routes to the small or large model, and escalates
+a small-model answer when evidence is weak, no valid citation exists, or it says
+`I don't know`. Each returned response retains the original RAG interface. Detailed
+route, cache, escalation, usage and reference-cost measurements go into `requests`.
+
+A cache hit requires all of the following:
+
+- Similarity at least `CACHE_THRESHOLD` (initially 0.90).
+- Matching corpus version and current ACL epoch.
+- Nonnegative age below `CACHE_TTL_SECONDS` (initially 600 seconds).
+- Same verified tenant, sorted-role fingerprint **and user ID**.
+- Matching number/entity sets when `CACHE_GUARD=true`.
+
+The user-ID key is necessary because two users with the same roles can have different
+explicit-user grants. Cache queries apply scope/version/epoch/age predicates inside
+Qdrant, followed by application checks. Up to ten matching neighbors are considered
+so a guard rejection does not force a miss when another eligible entry exists.
+Before serving a hit, the service queries the stored evidence IDs with the current ACL
+pre-filter, rechecks metadata and verifies unchanged text/provenance. It then writes an
+audit entry with `cache_hit=true` and the evidence document IDs. Cache hits incur zero
+new LLM tokens; lookup, evidence checking and audit work still take time.
+
+Empty, uncited, abstaining or failed responses are not cached. A corpus/ACL change during
+generation prevents storing that older snapshot. `SemanticCache.clear()` clears its own
+collection. The number/entity guard is conservative: it can reject valid aliases or
+capitalization variants and does not identify all operation-direction or negation flips.
+Semantic similarity is not proof of equivalent questions.
+
+The rule router uses question length, complexity words, rough entity count, retrieval
+top score and score spread. `ROUTER_MODE=llm` enables a small-model one-word classifier;
+invalid labels fall back to the large-model route. That classifier sees only the verified
+caller's question and runs before retrieval. For rule routing, a pure callback selects
+the model after the ACL post-check and before the retrieval audit commits, so the audit
+records the actual model choice. Both paths audit evidence before answer generation.
+
+Run the complete Project 1 experiments:
+
+```powershell
+$env:RAG_MODE="mock"
+python tasks.py bench-cache
+python tasks.py dashboard
+```
+
+Or run an individual experiment:
+
+```powershell
+python -m eval.bench_cache_router --sweep
+python -m eval.bench_cache_router --router
+python -m eval.bench_cache_router --compare --repeat-ratio 0.40
+```
+
+The sweep evaluates thresholds 0.85 through 0.97 against 50 curated paraphrase pairs
+and 50 near-miss pairs, with and without the guard. It reports the lowest threshold with
+zero false hits on this tuning set, or reports none. These are pairwise comparisons,
+not a held-out evaluation of every competing cache entry. Do not select a real deployment
+threshold from mock embedding scores. Regenerate the fixtures with
+`python -m scripts.make_paraphrases`.
+
+The router experiment evaluates both classifiers on 100 hand-labeled intent questions,
+including simple questions containing complexity words and multi-step questions without
+them. It separately measures answer quality/reference cost for always-large, rule and
+LLM routing on the reviewed baseline evaluation. Classifier accuracy and answer quality
+are separate measurements; labeling a question correctly does not guarantee a correct
+answer.
+
+The comparison copies the public sample corpus into a disposable ACL-protected benchmark
+collection. It replays the same seeded mixed workload through always-large/no-cache and
+the new service after clearing its cache. The default workload is 40% repeats; half of
+repeat events use a template paraphrase. Repeats follow an earlier occurrence of their
+source question. Both requested and actual repeat ratios are written to outputs because
+small `--limit` runs require rounding. Indexing happens before the measured replay.
+The benchmark writes baseline/optimized request CSVs and `summary_project1.json` with
+cost reduction, p50/p95 changes, judged quality delta, cache hit and escalation rates.
+Rows account for both escalation calls and optional classifier usage; judge cost is
+separate. Benchmark latency wraps the whole service, including request logging, and
+excludes the subsequent reference judge.
+
+The dashboard at http://localhost:8501 shows reference cost/request, cache hit rate,
+route split, escalation rate, latency percentiles and judged quality by route over time.
+Filter by runtime mode and `run_tag`; API calls use `RUN_TAG` and benchmarks create
+distinct tags. `RAG_REQUESTS_DB` selects the SQLite log in mock mode; real mode uses
+PostgreSQL. Ordinary API quality is unknown (`NULL`) until a reference judge runs;
+the dashboard displays that absence rather than assigning a quality score. Its logged
+latency ends just before the final request-log commit; benchmark CSVs also capture that
+commit's wall time. The dashboard is a local operator tool without tenant login.
+
+All mock CSV/JSON outputs and the dashboard prominently say `MOCK (not a result)`.
+Mock answers still quote context, so their F1 correctness is not model quality. No mock
+savings, latency or accuracy measurements populate the real-results table below.
 
 ## Corpus helpers and human review
 
@@ -277,8 +376,8 @@ before deploying. Container Ollama calls use `host.docker.internal:11434`.
 
 ## Producing real results
 
-No real benchmark has run yet. Baseline ingestion/evaluation and the ACL benchmark are
-implemented; cache, graph, dashboard and report commands require later milestones.
+No real benchmark has run yet. Baseline, ACL and cache/router experiments and the
+dashboard are implemented; graph and final report commands require later milestones.
 Real model adapters require sentence-transformers and LiteLLM (optional dependency
 setup and installed-API verification remain pending, as recorded in PROGRESS.md).
 
@@ -313,7 +412,7 @@ reference prices, since local models do not incur paid API charges.
 | GraphRAG | NOT YET RUN |
 <!-- RESULTS:END -->
 
-Dashboard screenshot: pending implementation and a real run.
+Dashboard screenshot: pending a real run; the dashboard is implemented and headless-tested.
 
 ## Limitations
 
@@ -326,6 +425,13 @@ The current epoch store and security counters are local, and the demo service is
 for one worker. Production horizontal scaling requires shared invalidation state and
 centralized metrics. Real Qdrant filtering/indexes and PostgreSQL triggers remain untested
 with live services; the implemented security regression checks ran in mock mode.
+Cache hits deliberately revalidate evidence, which costs extra vector/audit work. Small
+hand-curated tuning and router sets do not establish production hit rates or quality;
+capitalized-token guards miss some action/negation differences. Generation that started
+before an ACL update can finish its earlier snapshot, but that snapshot is not inserted
+into the new epoch. Request errors record usage from completed calls; unreturned provider
+usage is unknown. Dashboard browser interaction, live model routing and live database/
+vector behavior have not been exercised here; Streamlit was tested headlessly.
 The finished evaluation must account for a small corpus, LLM judge bias, estimated
 reference costs, semantic cache false hits, extraction and resolution errors,
 GraphRAG indexing cost, and demo-grade authentication. See DECISIONS.md for trade-offs.

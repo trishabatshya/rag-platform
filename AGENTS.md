@@ -42,7 +42,7 @@ milestone order; consult PROGRESS.md before invoking later targets.
 ## Layout
 
 - app/: config, embeddings, completions, vector store, baseline RAG, auth, ACL,
-  secure_rag, append-only audit; cache/service arrive in later milestones.
+  secure_rag, append-only audit, semantic cache, router, service and request logging.
 - graphrag/: dataset, schema, extraction, resolution, storage and retrieval.
 - data/: docs_sample, seed, eval.jsonl, cache_pairs, router_labels.jsonl, graph_fixture.
 - scripts/: corpus/data helpers and report generator.
@@ -103,10 +103,47 @@ not grant cross-tenant access; admin is not a universal bypass. Validate metadat
 any ACL write; bare documents must never enter the ACL collection. Audit before generation,
 including empty/failed retrievals, and fail closed if audit cannot commit. Admin access
 queries and mutations must remain tenant-scoped. ACL changes bump the persisted epoch
-before mutation. Cache-hit audit/invalidation integration will be implemented in M3/M5.
+before mutation. M3 implements cache-hit audit and invalidation to retain these guarantees.
 
 The leakage oracle must read seed grants directly rather than production ACL functions.
 Test raw query results, response chunks and answer markers, plus positive access and
 negative controls. Benchmark unfiltered calls belong only in a disposable collection
 and measure raw operations, not authenticated end-to-end latency. Mock metrics must never
 be promoted into README real-result tables.
+
+## M3 commands and cache/routing rules
+
+```powershell
+$env:RAG_MODE="mock"
+python tasks.py test tests/test_cache.py tests/test_router.py tests/test_service.py tests/test_cache_leakage.py
+python tasks.py bench-cache
+python -m eval.bench_cache_router --sweep
+python -m eval.bench_cache_router --router
+python -m eval.bench_cache_router --compare --repeat-ratio 0.40
+python tasks.py dashboard
+```
+
+The runner's bench-cache target executes all three experiments. RAG_REQUESTS_DB points
+to the mock SQLite measurement log; real mode requires PostgreSQL. Configure
+CACHE_THRESHOLD, CACHE_TTL_SECONDS, CACHE_GUARD, ROUTER_MODE=rule|llm,
+RETRIEVAL_THRESHOLD and RUN_TAG using PowerShell `$env:NAME="value"` syntax.
+
+Cache scope requires tenant, sorted-role fingerprint and verified user ID: roles alone
+cannot isolate explicit-user grants. All cache hits must match version, epoch and TTL,
+revalidate current evidence with the ACL pre-filter/post-check, and commit an audit entry.
+Do not cache empty/abstaining/uncited answers or exceptions, or an older snapshot after
+corpus/ACL changes during generation. Keep the cache snapshot checks under the same
+single-worker state lock as admin ACL updates. Cache hits have zero new LLM tokens.
+
+Log and sum every completed generation call and optional classifier usage at its own
+reference tier, including escalation. Unknown API quality stays NULL; only attach
+measured judge results. Defaults use published reference tiers cited in README, with
+REFERENCE_SMALL_INPUT/OUTPUT and REFERENCE_LARGE_INPUT/OUTPUT overrides; local models
+still have no paid API charge. Rule selection runs after post-check via a pure callback
+before audit; the optional LLM classifier sees only the question before retrieval.
+
+Pair/router fixtures are tuning data, not production evidence. Benchmarks use disposable
+collections and the same seeded workload across systems. Every output records runtime
+mode and repeat ratio, and mock summary numbers never enter README's real-results table.
+The dashboard is a local operator tool; keep unknown quality visibly unknown and mock
+data separate from real data. Streamlit tests use its installed headless AppTest API.

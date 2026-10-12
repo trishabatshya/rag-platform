@@ -3,6 +3,7 @@
 import json
 import logging
 from collections import Counter
+from collections.abc import Callable
 from functools import lru_cache
 from time import perf_counter
 from uuid import uuid4
@@ -23,19 +24,34 @@ from app.vectorstore import create_client, ensure_acl_indexes, ensure_collection
 class SecureRAGEngine:
     """Single-worker tenant engine with serialized ACL updates and retrieval snapshots."""
 
-    def __init__(self, client: QdrantClient, state: CorpusState, audit: AuditStore) -> None:
+    def __init__(
+        self,
+        client: QdrantClient,
+        state: CorpusState,
+        audit: AuditStore,
+        collection: str = "chunks",
+    ) -> None:
         self.client, self.state, self.audit = client, state, audit
         self._violations: Counter[str] = Counter()
+        self.collection = collection
 
-    def retrieve(self, question: str, user: CurrentUser, model: str) -> list[Chunk]:
+    def retrieve(
+        self,
+        question: str,
+        user: CurrentUser,
+        model: str | Callable[[list[Chunk]], str],
+        *,
+        vector: list[float] | None = None,
+        request_id: str | None = None,
+    ) -> list[Chunk]:
         """Filter inside query_points, drop violations, and audit even empty/failed retrievals."""
-        request_id = str(uuid4())
+        request_id = request_id or str(uuid4())
         with self.state.access_lock:
             violations = 0
             try:
                 points = self.client.query_points(
-                    "chunks",
-                    query=embed([question])[0].tolist(),
+                    self.collection,
+                    query=vector if vector is not None else embed([question])[0].tolist(),
                     query_filter=acl.build_filter(user),
                     limit=5,
                     with_payload=True,
@@ -61,8 +77,17 @@ class SecureRAGEngine:
                             doc_id=payload["doc_id"],
                         )
                     )
+                selected_model = model(chunks) if callable(model) else model
             except Exception:
-                self.audit.append(request_id, user, question, [], [], model, outcome="error")
+                self.audit.append(
+                    request_id,
+                    user,
+                    question,
+                    [],
+                    [],
+                    model if isinstance(model, str) else "routing_pending",
+                    outcome="error",
+                )
                 raise
             self._violations[user.tenant_id] += violations
             self.audit.append(
@@ -71,11 +96,73 @@ class SecureRAGEngine:
                 question,
                 [chunk["id"] for chunk in chunks],
                 [chunk["doc_id"] for chunk in chunks],
-                model,
+                selected_model,
                 outcome="postcheck_drop" if violations else "ok",
                 violation_count=violations,
             )
             return chunks
+
+    def validate_cached_evidence(
+        self,
+        question: str,
+        user: CurrentUser,
+        response: RAGResult,
+        vector: list[float],
+        request_id: str,
+    ) -> bool:
+        """Pre-filter exact evidence IDs, recheck metadata/text, and audit cached delivery."""
+        from qdrant_client import models
+
+        with self.state.access_lock:
+            original = response["chunks"]
+            try:
+                points = self.client.query_points(
+                    self.collection,
+                    query=vector,
+                    limit=max(1, len(original)),
+                    with_payload=True,
+                    query_filter=models.Filter(
+                        must=[
+                            acl.build_filter(user),
+                            models.HasIdCondition(has_id=[chunk["id"] for chunk in original]),
+                        ]
+                    ),
+                ).points
+            except Exception:
+                self.audit.append(
+                    request_id, user, question, [], [], response["model"], outcome="error"
+                )
+                raise
+            by_id = {str(point.id): point.payload or {} for point in points}
+            violations = sum(not acl.can_access(payload, user) for payload in by_id.values())
+            if violations:
+                logging.critical(
+                    "ACL cache post-check violation request=%s user=%s", request_id, user.user_id
+                )
+                self._violations[user.tenant_id] += violations
+            valid = (
+                bool(original)
+                and not violations
+                and len(by_id) == len(original)
+                and all(
+                    by_id.get(chunk["id"], {}).get("text") == chunk["text"]
+                    and by_id.get(chunk["id"], {}).get("doc_id") == chunk["doc_id"]
+                    and by_id.get(chunk["id"], {}).get("source") == chunk["source"]
+                    for chunk in original
+                )
+            )
+            self.audit.append(
+                request_id,
+                user,
+                question,
+                [chunk["id"] for chunk in original] if valid else [],
+                [chunk["doc_id"] for chunk in original] if valid else [],
+                response["model"],
+                cache_hit=valid,
+                outcome="ok" if valid else "cache_rejected",
+                violation_count=violations,
+            )
+            return valid
 
     def answer(self, question: str, model: str, user: CurrentUser | None = None) -> RAGResult:
         """Generate from a verified caller's evidence, with auditing before any model call."""

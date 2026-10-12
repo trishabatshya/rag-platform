@@ -120,3 +120,65 @@
   APIs; installed and pinned psycopg 3.3.6 and PyYAML 6.0.3. Windows mock tests exercise
   JWTs, SQLite triggers and in-memory filters. Live Qdrant payload indexes/filters,
   PostgreSQL trigger execution, real models and hosted GitHub Actions remain unverified.
+
+## M3
+
+- **Instrumentation:** requests stores actual route/cache/escalation, usage, reference
+  cost, measured latency, run tag and runtime mode. API quality remains NULL; benchmarks
+  attach only their actual judge verdicts. Error rows contain usage from completed calls,
+  not invented usage for a failed provider response. Benchmark wall timing includes the
+  final request-log commit; dashboard/service timing ends before that commit.
+- **Reference pricing:** retain the small/large tier values after checking published
+  [GPT-4o Mini](https://developers.openai.com/api/docs/models/gpt-4o-mini) and
+  [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o) input/output prices on
+  2026-10-12. They are reference proxies, not prices charged by Ollama. Env overrides
+  support another comparison. Earlier M0/M1 notes called these values illustrative;
+  M3 supplies their source and verifies them. Escalation sums both calls at their own
+  tier; LLM classification overhead is included and reference-judge cost is separate.
+- **Cache identity:** add user_id to tenant and sorted-role fingerprint. M2 explicitly
+  supports user-only grants, so identical roles do not imply identical permissions.
+  The conservative key forfeits sharing between users who happen to have equal access
+  but prevents cross-user disclosure. Missing identity never performs a cache search.
+- **Cache eligibility:** version, epoch and TTL constraints join identity predicates
+  inside Qdrant. Recheck them in Python, including similarity, then consider up to ten
+  neighbors so a guard rejection does not hide another valid candidate. Never cache
+  empty, uncited, abstaining or failed responses. Changed snapshots during generation
+  cannot be stored; final request-log failure discards that request's new cache entry.
+- **Cached evidence:** cache hits re-query all original chunk IDs with the current ACL
+  filter, post-check metadata and compare text/source/doc_id before delivery. Missing,
+  changed or forbidden evidence rejects the entire hit. It commits cache_hit=true plus
+  evidence IDs to immutable audit before returning. This extra read is intentionally
+  part of M3, because new caching must retain M2's guarantees.
+- **Guard limits:** compare number sets and capitalized entity-like token sets, excluding
+  common question openers. It can reject synonyms/capitalization changes and cannot
+  detect every enable/disable or negation flip. The tuning sweep reports real observed
+  false hits rather than assuming the guard solves equivalence. Mock threshold tuning
+  never changes the default real deployment threshold automatically.
+- **Router/audit ordering:** a pure rule callback sees approved retrieval scores and
+  selects the model before audit commits, keeping audit.model accurate. Optional LLM
+  classification uses only the verified caller's question before retrieval, so the
+  subsequent audit can record its chosen model before evidence reaches generation.
+  Invalid classifier output selects complex. Small-model weak evidence, invalid/absent
+  citations or abstention triggers large-model escalation using the same approved chunks.
+- **Benchmark data:** 50 paraphrase/50 near-miss pairs are curated domain templates;
+  100 router intents are hand-written and include keyword counterexamples. These are
+  small tuning/regression sets, not held-out production evidence. Router intent accuracy
+  and actual QA quality/cost are measured separately, without assigning reference answers
+  to arbitrary router-label questions.
+- **Fair replay:** use an isolated ACL copy of the public sample corpus and a verified
+  benchmark operator. Baseline and optimized systems replay identical seeded requests;
+  optimized starts with a cleared cache. Repeats follow original queries, half use a
+  template paraphrase, and both requested/rounded actual ratios are recorded. Indexing
+  and judging are outside service wall time. Real warm-model/order effects still need
+  review before interpreting deployment performance.
+- **Dashboard/dependencies:** Streamlit 1.65.0 installed after an initial download hash
+  mismatch/DNS failure; the successful retry retained pip's integrity checks. Inspected
+  installed AppTest/from_file/run and chart signatures, tested empty/filled views and
+  run-tag filtering headlessly, and pinned installed transitive dependencies. No browser
+  screenshot or live real-mode dashboard run occurred. It is an operator tool with no
+  multi-tenant authentication, not a customer-facing data portal.
+- **Validation scope:** cache invalidation, user/tenant/role isolation, escalation token/
+  cost sums, anonymous lookup prevention, request errors and poisoned evidence all ran
+  offline. The seed-derived oracle also covers 600 cached-service combinations in addition
+  to M2's 600 retrieval cases. Live Qdrant/PostgreSQL, real LLM/router quality, GPU/model
+  setup and hosted GitHub Actions remain unverified; no mock metrics are real results.

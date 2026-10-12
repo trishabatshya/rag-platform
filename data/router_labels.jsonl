@@ -1,0 +1,100 @@
+{"id":"route-001","question":"How long is the EU refund window?","label":"simple"}
+{"id":"route-002","question":"How long is the US refund window?","label":"simple"}
+{"id":"route-003","question":"How much does Pro cost?","label":"simple"}
+{"id":"route-004","question":"How much does Team cost?","label":"simple"}
+{"id":"route-005","question":"Explain Pro's included seat count.","label":"simple"}
+{"id":"route-006","question":"How many seats does Team include?","label":"simple"}
+{"id":"route-007","question":"How much storage does Pro include?","label":"simple"}
+{"id":"route-008","question":"Explain Team's included storage allowance.","label":"simple"}
+{"id":"route-009","question":"Does Free require a credit card?","label":"simple"}
+{"id":"route-010","question":"When do API keys expire?","label":"simple"}
+{"id":"route-011","question":"What prefix do API keys use?","label":"simple"}
+{"id":"route-012","question":"Explain the encryption algorithm used at rest.","label":"simple"}
+{"id":"route-013","question":"How long are audit logs retained on Team?","label":"simple"}
+{"id":"route-014","question":"When do invitations expire?","label":"simple"}
+{"id":"route-015","question":"Explain the default role assigned to an invited member.","label":"simple"}
+{"id":"route-016","question":"What uptime does Team guarantee?","label":"simple"}
+{"id":"route-017","question":"Explain the single-document upload size limit.","label":"simple"}
+{"id":"route-018","question":"What document formats can I upload?","label":"simple"}
+{"id":"route-019","question":"How often are backups taken?","label":"simple"}
+{"id":"route-020","question":"Explain the backup retention period.","label":"simple"}
+{"id":"route-021","question":"What are the support opening hours?","label":"simple"}
+{"id":"route-022","question":"What algorithm signs webhooks?","label":"simple"}
+{"id":"route-023","question":"How many webhook retries happen?","label":"simple"}
+{"id":"route-024","question":"What API rate limit applies to Pro?","label":"simple"}
+{"id":"route-025","question":"What API rate limit applies to Team?","label":"simple"}
+{"id":"route-026","question":"Which locations offer hosting?","label":"simple"}
+{"id":"route-027","question":"Explain the export link expiration period.","label":"simple"}
+{"id":"route-028","question":"What format does a document export use?","label":"simple"}
+{"id":"route-029","question":"What is the public status page?","label":"simple"}
+{"id":"route-030","question":"When are invoices issued?","label":"simple"}
+{"id":"route-031","question":"Explain the invoice payment deadline.","label":"simple"}
+{"id":"route-032","question":"What is the CLI tool called?","label":"simple"}
+{"id":"route-033","question":"What timezone do scheduled examples use?","label":"simple"}
+{"id":"route-034","question":"Does Free include a contractual SLA?","label":"simple"}
+{"id":"route-035","question":"Does Team include SAML?","label":"simple"}
+{"id":"route-036","question":"Does Pro include SAML?","label":"simple"}
+{"id":"route-037","question":"Explain the active project count allowed on Free.","label":"simple"}
+{"id":"route-038","question":"How many active projects does Pro allow?","label":"simple"}
+{"id":"route-039","question":"How many active projects does Team allow?","label":"simple"}
+{"id":"route-040","question":"Which payment methods are supported?","label":"simple"}
+{"id":"route-041","question":"Who can change the billing contact?","label":"simple"}
+{"id":"route-042","question":"What is the first card retry delay?","label":"simple"}
+{"id":"route-043","question":"What is the second card retry delay?","label":"simple"}
+{"id":"route-044","question":"When does nonpayment make a workspace read-only?","label":"simple"}
+{"id":"route-045","question":"How long can a cancelled workspace export documents?","label":"simple"}
+{"id":"route-046","question":"When are live documents permanently deleted?","label":"simple"}
+{"id":"route-047","question":"When is a post-incident review published?","label":"simple"}
+{"id":"route-048","question":"What header communicates rate-limit wait time?","label":"simple"}
+{"id":"route-049","question":"Explain the number of files allowed in one import.","label":"simple"}
+{"id":"route-050","question":"Where do backups remain?","label":"simple"}
+{"id":"route-051","question":"An owner needs eight seats and SAML. Which plan meets both needs, and what does it cost?","label":"complex"}
+{"id":"route-052","question":"Compare EU and US refund windows and processing times.","label":"complex"}
+{"id":"route-053","question":"Explain how cancellation, refund requests and permanent deletion differ.","label":"complex"}
+{"id":"route-054","question":"A workspace missed payment and became read-only. Can the owner export its documents, and when did the restriction start?","label":"complex"}
+{"id":"route-055","question":"What is the difference between a support response target and resolution time?","label":"complex"}
+{"id":"route-056","question":"Compare API key revocation with rotating a key safely.","label":"complex"}
+{"id":"route-057","question":"Explain the trade-off between Pro and Team for growing member counts.","label":"complex"}
+{"id":"route-058","question":"An EU customer hosts in Virginia and cancelled after ten days. Which refund policy applies, and are they within its window?","label":"complex"}
+{"id":"route-059","question":"Compare upgrade timing versus downgrade timing and proration.","label":"complex"}
+{"id":"route-060","question":"Explain how backups and independent exports complement each other.","label":"complex"}
+{"id":"route-061","question":"Compare Free upload restrictions with paid storage overages.","label":"complex"}
+{"id":"route-062","question":"What actions migrate documents to Frankfurt and update API credentials without losing client access?","label":"complex"}
+{"id":"route-063","question":"Compare monthly automation limits across Free, Pro and Team.","label":"complex"}
+{"id":"route-064","question":"Explain how an outage notification differs from an SLA credit request.","label":"complex"}
+{"id":"route-065","question":"Why should webhook receivers deduplicate stable event IDs?","label":"complex"}
+{"id":"route-066","question":"Team uptime was 98.8 percent last month. What credit applies, and how soon must the owner request it?","label":"complex"}
+{"id":"route-067","question":"Explain how to recover a document and what cannot be restored.","label":"complex"}
+{"id":"route-068","question":"What is the difference between API key scopes and workspace boundaries?","label":"complex"}
+{"id":"route-069","question":"Compare Team support with Free community support.","label":"complex"}
+{"id":"route-070","question":"The owner permanently deleted the workspace yesterday. When do live documents disappear, and when do its backup copies expire?","label":"complex"}
+{"id":"route-071","question":"Why does cancelling a subscription not automatically submit a refund?","label":"complex"}
+{"id":"route-072","question":"Compare Pro and Team API rate limits and shared key buckets.","label":"complex"}
+{"id":"route-073","question":"Explain how rate limiting and revoked credentials produce different status codes.","label":"complex"}
+{"id":"route-074","question":"What is the difference between a document export and an audit log export?","label":"complex"}
+{"id":"route-075","question":"Compare EU refunds with future invoice service credits.","label":"complex"}
+{"id":"route-076","question":"Explain the trade-off between a single bulk import and many individual API uploads.","label":"complex"}
+{"id":"route-077","question":"Why should API keys never be placed in a browser bundle?","label":"complex"}
+{"id":"route-078","question":"A Pro owner needs SAML and authentication enforcement for all members. What changes are needed?","label":"complex"}
+{"id":"route-079","question":"Explain onboarding steps and invitation role changes after acceptance.","label":"complex"}
+{"id":"route-080","question":"Compare archiving a project versus deleting a workspace.","label":"complex"}
+{"id":"route-081","question":"Can I cancel a paid workspace today, export next week, and permanently delete its data afterward? Give the applicable deadlines.","label":"complex"}
+{"id":"route-082","question":"What is the difference between monthly included storage and billable revision history?","label":"complex"}
+{"id":"route-083","question":"Compare first purchase refund eligibility with renewal invoice eligibility.","label":"complex"}
+{"id":"route-084","question":"Explain how scheduled maintenance affects monthly SLA availability calculations.","label":"complex"}
+{"id":"route-085","question":"Why does an export omit API secrets and payment details?","label":"complex"}
+{"id":"route-086","question":"Compare incident update frequency with post-incident review timing.","label":"complex"}
+{"id":"route-087","question":"Three Pro API keys each sent 25 requests in one minute. Is the workspace over its limit, and how should clients retry?","label":"complex"}
+{"id":"route-088","question":"Explain the trade-off between deleting revisions and paying storage overages.","label":"complex"}
+{"id":"route-089","question":"What is the difference between a workspace owner and a default invited viewer?","label":"complex"}
+{"id":"route-090","question":"Compare backup data residency with global account metadata storage.","label":"complex"}
+{"id":"route-091","question":"Explain how nonpayment affects uploads, readability and exports.","label":"complex"}
+{"id":"route-092","question":"Why must an API key be recreated after migrating to a new workspace?","label":"complex"}
+{"id":"route-093","question":"A US customer requested a refund and document recovery. What processing and recovery targets apply to those two requests?","label":"complex"}
+{"id":"route-094","question":"Explain how to verify webhook signatures before retry deduplication.","label":"complex"}
+{"id":"route-095","question":"What is the difference between an archived project's data and its scheduled jobs?","label":"complex"}
+{"id":"route-096","question":"Compare included member seats and extra-seat purchasing options on both paid plans.","label":"complex"}
+{"id":"route-097","question":"Explain cancellation versus deleting only the owner's user account.","label":"complex"}
+{"id":"route-098","question":"Compare refund eligibility for subscriptions versus storage overages.","label":"complex"}
+{"id":"route-099","question":"Explain how HTTP 429 retries should use the server's wait header and jitter.","label":"complex"}
+{"id":"route-100","question":"Why should customers keep independent exports despite daily backups?","label":"complex"}

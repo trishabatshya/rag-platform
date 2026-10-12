@@ -28,6 +28,11 @@ def complete(
     if settings.mode == "mock":
         context = re.search(r"\[1\]\s*(.+?)(?=\n\[\d+\]|\nQuestion:|\Z)", prompt, re.S)
         text = (context.group(1).strip() + " [1]") if context else "I don't know"
+        if system and system.startswith("ROUTE_CLASSIFIER:"):
+            complex_question = re.search(
+                r"\b(compare|why|explain|difference|versus|trade[- ]?off)\b", prompt, re.I
+            )
+            text = "complex" if complex_question or len(prompt.split()) > 24 else "simple"
         if json_mode:
             text = '{"answer": "I don\'t know"}'
             if "Generate evaluation candidates.\nDOCUMENT:\n" in prompt:

@@ -9,8 +9,19 @@ from dotenv import load_dotenv
 ROOT = Path(__file__).resolve().parents[1]
 load_dotenv(ROOT / ".env")
 
-# USD per million tokens: illustrative reference prices, not local-model charges.
-PRICES: dict[str, tuple[float, float]] = {"small": (0.15, 0.60), "large": (2.50, 10.00)}
+# USD per million tokens, standard GPT-4o-mini/GPT-4o reference tiers; no local charges.
+# Sources: https://developers.openai.com/api/docs/models/gpt-4o-mini and /gpt-4o.
+# Verified 2026-10-12. Rates can be overridden for a different reference comparison.
+PRICES: dict[str, tuple[float, float]] = {
+    "small": (
+        float(os.getenv("REFERENCE_SMALL_INPUT", "0.15")),
+        float(os.getenv("REFERENCE_SMALL_OUTPUT", "0.60")),
+    ),
+    "large": (
+        float(os.getenv("REFERENCE_LARGE_INPUT", "2.50")),
+        float(os.getenv("REFERENCE_LARGE_OUTPUT", "10.00")),
+    ),
+}
 
 
 @dataclass(frozen=True)
@@ -58,12 +69,33 @@ class Settings:
     )
     jwt_secret: str = field(default_factory=lambda: os.getenv("JWT_SECRET", ""))
     jwt_ttl_seconds: int = field(default_factory=lambda: int(os.getenv("JWT_TTL_SECONDS", "3600")))
+    requests_db: Path = field(
+        default_factory=lambda: Path(
+            os.getenv("RAG_REQUESTS_DB", str(ROOT / "data" / "runtime" / "requests.db"))
+        )
+    )
+    cache_threshold: float = field(
+        default_factory=lambda: float(os.getenv("CACHE_THRESHOLD", "0.90"))
+    )
+    cache_ttl: float = field(default_factory=lambda: float(os.getenv("CACHE_TTL_SECONDS", "600")))
+    cache_guard: bool = field(
+        default_factory=lambda: os.getenv("CACHE_GUARD", "true").lower() == "true"
+    )
+    router_mode: str = field(default_factory=lambda: os.getenv("ROUTER_MODE", "rule"))
+    retrieval_threshold: float = field(
+        default_factory=lambda: float(os.getenv("RETRIEVAL_THRESHOLD", "0.20"))
+    )
+    run_tag: str = field(default_factory=lambda: os.getenv("RUN_TAG", "api"))
 
     def __post_init__(self) -> None:
         if self.mode not in {"mock", "real"}:
             raise ValueError("RAG_MODE must be mock or real")
         if self.jwt_ttl_seconds <= 0:
             raise ValueError("JWT_TTL_SECONDS must be positive")
+        if not 0 <= self.cache_threshold <= 1 or self.cache_ttl <= 0:
+            raise ValueError("Require CACHE_THRESHOLD in [0,1] and positive CACHE_TTL_SECONDS")
+        if self.router_mode not in {"rule", "llm"}:
+            raise ValueError("ROUTER_MODE must be rule or llm")
 
 
 def compute_cost(model: str, in_tokens: int, out_tokens: int) -> float:

@@ -1,0 +1,50 @@
+{"id": "para-000", "query_a": "How long is the EU refund window?", "query_b": "What is the EU refund window?", "label": "paraphrase"}
+{"id": "para-001", "query_a": "How long is the EU refund window?", "query_b": "How many days is the EU refund window?", "label": "paraphrase"}
+{"id": "para-002", "query_a": "How long is the US refund window?", "query_b": "What is the US refund window?", "label": "paraphrase"}
+{"id": "para-003", "query_a": "How long is the US refund window?", "query_b": "How many days is the US refund window?", "label": "paraphrase"}
+{"id": "para-004", "query_a": "How much does Pro cost monthly?", "query_b": "What is the monthly cost of Pro?", "label": "paraphrase"}
+{"id": "para-005", "query_a": "How much does Pro cost monthly?", "query_b": "What monthly price does Pro have?", "label": "paraphrase"}
+{"id": "para-006", "query_a": "How much does Team cost monthly?", "query_b": "What is the monthly cost of Team?", "label": "paraphrase"}
+{"id": "para-007", "query_a": "How much does Team cost monthly?", "query_b": "What monthly price does Team have?", "label": "paraphrase"}
+{"id": "para-008", "query_a": "How many seats does Pro include?", "query_b": "What is the seat allowance on Pro?", "label": "paraphrase"}
+{"id": "para-009", "query_a": "How many seats does Pro include?", "query_b": "How many member seats come with Pro?", "label": "paraphrase"}
+{"id": "para-010", "query_a": "How many seats does Team include?", "query_b": "What is the seat allowance on Team?", "label": "paraphrase"}
+{"id": "para-011", "query_a": "How many seats does Team include?", "query_b": "How many member seats come with Team?", "label": "paraphrase"}
+{"id": "para-012", "query_a": "How much storage does Pro include?", "query_b": "What storage allowance comes with Pro?", "label": "paraphrase"}
+{"id": "para-013", "query_a": "How much storage does Pro include?", "query_b": "What is the included storage on Pro?", "label": "paraphrase"}
+{"id": "para-014", "query_a": "How much storage does Team include?", "query_b": "What storage allowance comes with Team?", "label": "paraphrase"}
+{"id": "para-015", "query_a": "How much storage does Team include?", "query_b": "What is the included storage on Team?", "label": "paraphrase"}
+{"id": "para-016", "query_a": "Does Free require a credit card?", "query_b": "Is a credit card required for Free?", "label": "paraphrase"}
+{"id": "para-017", "query_a": "Does Free require a credit card?", "query_b": "Do I need a credit card for Free?", "label": "paraphrase"}
+{"id": "para-018", "query_a": "When do API keys expire?", "query_b": "What is the expiry period for API keys?", "label": "paraphrase"}
+{"id": "para-019", "query_a": "When do API keys expire?", "query_b": "How long do API keys remain valid?", "label": "paraphrase"}
+{"id": "para-020", "query_a": "How do I revoke an API key?", "query_b": "How can an API key be revoked?", "label": "paraphrase"}
+{"id": "para-021", "query_a": "How do I revoke an API key?", "query_b": "What is the process to revoke an API key?", "label": "paraphrase"}
+{"id": "para-022", "query_a": "What encryption protects stored documents?", "query_b": "How are documents encrypted at rest?", "label": "paraphrase"}
+{"id": "para-023", "query_a": "What encryption protects stored documents?", "query_b": "Which encryption secures documents at rest?", "label": "paraphrase"}
+{"id": "para-024", "query_a": "How long are Team audit logs retained?", "query_b": "What is the audit log retention on Team?", "label": "paraphrase"}
+{"id": "para-025", "query_a": "How long are Team audit logs retained?", "query_b": "How long does Team keep audit logs?", "label": "paraphrase"}
+{"id": "para-026", "query_a": "When do invitations expire?", "query_b": "What is the expiry period for invitations?", "label": "paraphrase"}
+{"id": "para-027", "query_a": "When do invitations expire?", "query_b": "How long do invitations remain valid?", "label": "paraphrase"}
+{"id": "para-028", "query_a": "What is the default invited member role?", "query_b": "Which role do invited members receive by default?", "label": "paraphrase"}
+{"id": "para-029", "query_a": "What is the default invited member role?", "query_b": "What role is assigned to new invited members?", "label": "paraphrase"}
+{"id": "para-030", "query_a": "What uptime does the Team SLA guarantee?", "query_b": "What is the guaranteed uptime in the Team SLA?", "label": "paraphrase"}
+{"id": "para-031", "query_a": "What uptime does the Team SLA guarantee?", "query_b": "Which monthly uptime guarantee comes with the Team SLA?", "label": "paraphrase"}
+{"id": "para-032", "query_a": "What is the maximum upload size?", "query_b": "How large can one uploaded document be?", "label": "paraphrase"}
+{"id": "para-033", "query_a": "What is the maximum upload size?", "query_b": "What size limit applies to a document upload?", "label": "paraphrase"}
+{"id": "para-034", "query_a": "What document formats are supported?", "query_b": "Which document formats can be uploaded?", "label": "paraphrase"}
+{"id": "para-035", "query_a": "What document formats are supported?", "query_b": "What file types are supported for documents?", "label": "paraphrase"}
+{"id": "para-036", "query_a": "How often are backups taken?", "query_b": "What is the document backup frequency?", "label": "paraphrase"}
+{"id": "para-037", "query_a": "How often are backups taken?", "query_b": "How frequently does a document backup happen?", "label": "paraphrase"}
+{"id": "para-038", "query_a": "What are the support opening hours?", "query_b": "When is email support open?", "label": "paraphrase"}
+{"id": "para-039", "query_a": "What are the support opening hours?", "query_b": "What hours does email support operate?", "label": "paraphrase"}
+{"id": "para-040", "query_a": "What algorithm signs webhooks?", "query_b": "Which signing algorithm do webhooks use?", "label": "paraphrase"}
+{"id": "para-041", "query_a": "What algorithm signs webhooks?", "query_b": "How are webhook signatures computed?", "label": "paraphrase"}
+{"id": "para-042", "query_a": "What rate limit applies to Pro?", "query_b": "What is the API request limit for Pro?", "label": "paraphrase"}
+{"id": "para-043", "query_a": "What rate limit applies to Pro?", "query_b": "How many API requests does Pro permit?", "label": "paraphrase"}
+{"id": "para-044", "query_a": "Can I change a workspace hosting region?", "query_b": "Is a workspace hosting region change supported?", "label": "paraphrase"}
+{"id": "para-045", "query_a": "Can I change a workspace hosting region?", "query_b": "Can the hosting region of a workspace be changed?", "label": "paraphrase"}
+{"id": "para-046", "query_a": "When do export links expire?", "query_b": "What is the expiry period for export download links?", "label": "paraphrase"}
+{"id": "para-047", "query_a": "When do export links expire?", "query_b": "How long do export download links remain valid?", "label": "paraphrase"}
+{"id": "para-048", "query_a": "When are invoices issued?", "query_b": "What day are monthly invoices issued?", "label": "paraphrase"}
+{"id": "para-049", "query_a": "When are invoices issued?", "query_b": "On which day does invoice issuance happen?", "label": "paraphrase"}
