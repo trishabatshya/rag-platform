@@ -272,6 +272,9 @@ def compare(output_dir: Path, repeat_ratio: float = 0.4, limit: int | None = Non
     }
     path = output_dir / "summary_project1.json"
     path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+    (output_dir / f"project1_{run_id}.json").write_text(
+        json.dumps(summary, indent=2) + "\n", encoding="utf-8"
+    )
     print(json.dumps(summary, indent=2))
     return path
 

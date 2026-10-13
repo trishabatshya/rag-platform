@@ -66,4 +66,4 @@ def build_index(
         "cost_scope": "new extraction LLM tokens at reference prices; "
         "excludes embeddings, reranker, storage and local compute charges",
     }
-    return GraphPipeline(store, resolution), usage
+    return GraphPipeline(store, resolution, origin=corpus.origin), usage

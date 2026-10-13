@@ -248,3 +248,39 @@
   silently fall back. Real extraction/generation/embedding/reranking, full HotpotQA load,
   live Neo4j and hosted CI remain unverified; optional real model dependencies from M0
   are still pending because this environment lacks Ollama/model setup.
+
+## M5 integration and polish
+
+- **Mode boundary:** the task asks for RETRIEVAL_MODE on the multi-hop dataset and calls
+  that corpus standalone/public. Implement selection in graphrag.pipeline, preserving
+  the shared question/model/user interface and rejecting any supplied tenant identity
+  before indexing. The CLI accepts fixture/HotpotQA with explicit fallback policy.
+  `/ask` continues to use the secure vector/cache/audit service in either setting;
+  routing tenant documents through the unprotected graph would contradict the security
+  contract. New HTTP regressions exercise cache-hit audit/doc IDs and revocation under
+  both settings, and prove no request reaches public indexing. A later ACL graph needs
+  chunk and edge-evidence grants, pre-expansion filtering and post-checks of every path.
+- **Resource ownership:** the standalone public entry point owns one graph configuration,
+  closes it before rebuilding for a changed configuration, and closes on CLI exit.
+  It is a local single-process entry point, not an authenticated graph service or a
+  distributed persistent graph deployment. Its output records actual dataset origin.
+- **Report integrity:** latest completed artifacts are selected by mtime/name separately
+  per runtime mode. Mock runs display status/provenance only, with no numeric performance
+  claims. Baseline and ACL metrics are recomputed from CSV; Project 1 requires a matching
+  baseline/optimized run tag and identical workload before comparison. Unpaired files
+  cannot establish a cost reduction. Missing real runs stay NOT YET RUN; graph empty
+  subsets are not applicable. Mixed/missing modes and invalid selected measurements fail
+  before writing README. Report updates only the validated marker region and are idempotent.
+- **Indexing provenance:** fixed latest summaries are convenient but overwrite earlier
+  modes. Archive Project 1 and GraphRAG summaries with timestamped names as well. A graph
+  indexing summary is accepted only when CSV filename, mode and corpus match; an absent
+  matching summary is unknown, not zero indexing cost. Old mock metrics are never relabeled
+  real, and a newer mock run cannot displace a retained real CSV in the report.
+- **Documentation scope:** README now leads with architecture, pitch, container and host
+  quickstarts, reproduction commands and measured/mock status. Host quickstart starts
+  database services only before running the host API, avoiding a competing port 8000
+  container. Study notes distinguish tested software properties from unmeasured quality,
+  costs and deployment behavior. A dashboard screenshot is an honest placeholder, not a
+  fabricated real-mode UI capture. Real provider dependency installation/API validation,
+  live services, full HotpotQA download, GPU setup, browser use and hosted CI remain
+  pending; completing offline M5 acceptance does not turn these into verified results.

@@ -86,6 +86,7 @@ class Settings:
         default_factory=lambda: float(os.getenv("RETRIEVAL_THRESHOLD", "0.20"))
     )
     run_tag: str = field(default_factory=lambda: os.getenv("RUN_TAG", "api"))
+    retrieval_mode: str = field(default_factory=lambda: os.getenv("RETRIEVAL_MODE", "vector"))
 
     def __post_init__(self) -> None:
         if self.mode not in {"mock", "real"}:
@@ -96,6 +97,8 @@ class Settings:
             raise ValueError("Require CACHE_THRESHOLD in [0,1] and positive CACHE_TTL_SECONDS")
         if self.router_mode not in {"rule", "llm"}:
             raise ValueError("ROUTER_MODE must be rule or llm")
+        if self.retrieval_mode not in {"vector", "graph_hybrid"}:
+            raise ValueError("RETRIEVAL_MODE must be vector or graph_hybrid")
 
 
 def compute_cost(model: str, in_tokens: int, out_tokens: int) -> float:

@@ -69,8 +69,9 @@ def relevant_triples(store: GraphStore, hits: list[Hit], linked: list[Entity]) -
 class GraphPipeline:
     """Standalone public-corpus short answers, using the existing RAG response shape."""
 
-    def __init__(self, store: GraphStore, resolution: Resolution) -> None:
+    def __init__(self, store: GraphStore, resolution: Resolution, origin: str = "") -> None:
         self.store, self.resolution = store, resolution
+        self.origin = origin
         self.settings = Settings()
 
     def retrieve(self, question: str, system: str) -> tuple[list[Hit], list[Triple]]:

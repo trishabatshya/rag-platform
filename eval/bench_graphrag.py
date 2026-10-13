@@ -148,6 +148,9 @@ def run_benchmark(
         json.dumps(summary, indent=2) + "\n",
         encoding="utf-8",
     )
+    (output_dir / f"project3_{timestamp}.json").write_text(
+        json.dumps(summary, indent=2) + "\n", encoding="utf-8"
+    )
     write_failures(csv_path, output_dir / "failure_analysis_project3.md")
     return csv_path, summary
 

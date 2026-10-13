@@ -5,6 +5,7 @@ import pytest
 from app.rag import close_engine
 from app.secure_rag import close_secure_engine
 from app.service import close_service
+from graphrag.pipeline import close_pipeline
 
 
 @pytest.fixture(autouse=True)
@@ -13,14 +14,17 @@ def offline_settings(monkeypatch, tmp_path):
     close_service()
     close_engine()
     close_secure_engine()
+    close_pipeline()
     monkeypatch.setenv("RAG_MODE", "mock")
     monkeypatch.setenv("RAG_STATE_DB", str(tmp_path / "state with spaces.db"))
     monkeypatch.setenv("RAG_AUDIT_DB", str(tmp_path / "audit with spaces.db"))
     monkeypatch.setenv("RAG_REQUESTS_DB", str(tmp_path / "requests with spaces.db"))
     monkeypatch.setenv("GRAPH_EXTRACT_CACHE", str(tmp_path / "graph cache with spaces"))
     monkeypatch.setenv("ROUTER_MODE", "rule")
+    monkeypatch.setenv("RETRIEVAL_MODE", "vector")
     monkeypatch.setenv("HF_HUB_OFFLINE", "1")
     yield
     close_service()
     close_engine()
     close_secure_engine()
+    close_pipeline()

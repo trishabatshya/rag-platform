@@ -158,7 +158,7 @@ python -m scripts.failure_analysis eval/results/project3_TIMESTAMP.csv
 ```
 
 Use an actual generated CSV filename. GraphRAG is standalone and public-only; no tenant
-ACLs apply, and `/ask` integration waits for M5. Never ingest protected tenant documents
+ACLs apply. Never ingest protected tenant documents
 into this graph. Gold answers/supporting titles are evaluation-only; mock extraction may
 use paragraph annotations, but retrieval/generation must never consult question labels.
 Mock completions operate on supplied evidence, not fixture answers. All outputs must
@@ -182,3 +182,37 @@ namespace fallback is not ACL enforcement. Mock uses NetworkX, not a fake live r
 External tests are `integration` and skip unless NEO4J_URI is explicitly set, e.g.
 PowerShell `$env:NEO4J_URI="bolt://localhost:7687"`. An opted-in missing service must fail.
 The test embeddings are deterministic; live integration tests need only Neo4j, not models.
+
+## M5 integration and reporting
+
+```powershell
+$env:RAG_MODE="mock"
+$env:RETRIEVAL_MODE="graph_hybrid"
+python -m graphrag.pipeline "Where was the director of Amber Signal born?"
+$env:RETRIEVAL_MODE="vector"
+python tasks.py report
+python tasks.py lint
+python tasks.py test -q
+docker compose config --quiet
+```
+
+RETRIEVAL_MODE applies only to the standalone public multi-hop entry point. `/ask` always
+uses JWT identity, the protected vector collection, ACL-scoped cache and immutable audit.
+Do not use a mode switch to bypass those controls. The public graph callable rejects a
+tenant identity before indexing. Close its owned store before changing source/config and
+on every CLI exit. GraphRAG output has the shared response fields but a short answer;
+tenant answers retain citations. No public graph response enters the tenant cache.
+
+Report selection is separate for REAL and MOCK, ordered by file modification time then
+name. Publish real numeric metrics only from explicitly labeled completed CSVs. Pair
+Project 1 by matching run tags/workloads; skip unpaired comparisons. Require matching
+CSV/mode/corpus for graph indexing JSON. Keep archived summaries so a newer mock run
+cannot erase real indexing provenance. Unknown/mixed modes or malformed selected data
+must fail before rewriting README. Preserve all text outside the one RESULTS marker pair.
+Mock status is always `MOCK (not a result)`; absent real measurements are `NOT YET RUN`.
+Synthetic REAL artifacts used in tests belong only in temporary directories and must
+never enter the repository's report/results. Preserve human reviews before rerunning.
+
+Real model install/download and service startup remain human-run until tools/models are
+available. Inspect and pin compatible installed APIs before publishing real numbers; do
+not present configured adapters or Compose validation as live provider/database evidence.

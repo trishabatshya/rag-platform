@@ -5,7 +5,7 @@
 - [x] M2: Permission-aware multi-tenant RAG (mock acceptance passed)
 - [x] M3: Semantic cache and routing (mock acceptance passed)
 - [x] M4: GraphRAG (mock acceptance passed; live Neo4j/models pending)
-- [ ] M5: Integration and polish
+- [x] M5: Integration and polish (offline acceptance passed; real runs pending)
 
 M0: Installed and pinned mock dependencies under Python 3.11.9 on Windows.
 `python tasks.py install`, `python tasks.py lint`, and `python tasks.py test`
@@ -141,3 +141,65 @@ behavior, full HotpotQA loading, real extraction/generation/embeddings/cross-enc
 quality, model/GPU setup and hosted Windows/Linux CI remain unverified; optional real
 model dependencies from M0 remain pending and Ollama is unavailable. M5 is the first
 unfinished milestone; work stopped here as requested.
+
+M5: Completed integration, reporting and documentation. Added validated
+RETRIEVAL_MODE=vector|graph_hybrid selection through the standalone public multi-hop
+callable/CLI, preserving the shared response fields and rejecting supplied tenant
+identity before indexing. The owned graph is reused for a matching configuration and
+closed before replacement or CLI exit; responses record actual dataset origin.
+Authenticated `/ask` remains on the ACL-protected vector/cache/audit service in both
+settings. New HTTP integration regressions verify login, a repeated question's zero-token
+cache hit, immutable cache_hit/source-doc audit, administrator revocation and the next
+answer's exclusion of revoked evidence, with no public graph invocation. Existing
+tenant/role/user cache scope and the independent 600 retrieval + 600 cached-service
+leakage combinations/negative controls remain in the final suite.
+
+Implemented `scripts/make_report.py` and the existing tasks.py/Makefile report target.
+It selects latest completed REAL and MOCK CSVs independently, validates explicit modes,
+pairs Project 1 run tags/workloads, computes measured CSV metrics and reads only matching
+GraphRAG indexing JSON provenance. Mixed/missing modes, invalid selected measurements,
+mispaired workloads and summary mismatches fail before README is rewritten. Mock checks
+show only MOCK (not a result) status/source artifacts; absent real runs remain NOT YET RUN.
+Updates preserve text outside the RESULTS markers and are idempotent. Benchmarks now
+archive timestamped Project 1/3 JSON summaries alongside fixed latest summaries, retaining
+indexing provenance when later runs change mode. Synthetic REAL reporting test fixtures
+exist only under pytest temporary paths and were never published as actual measurements.
+
+README now leads with an accurate architecture, pitch and auto-generated results tables,
+documents a one-command mock container demo and an alternate host process quickstart,
+exact reproduction commands, optional model setup, PowerShell environment syntax, design
+decisions, limitations and an honest dashboard screenshot placeholder. Host quickstart
+starts database containers only before a host API, avoiding port 8000 conflicts. Added
+approximately two-page-per-project interview notes in docs/STUDY_NOTES.md (3078 words)
+covering problem, implementation, evidence, trade-offs and improvements. AGENTS and
+DECISIONS document the mode boundary, reporting rules and remaining validation limits;
+.env.example includes the new standalone retrieval setting and all implemented settings.
+
+On Windows/Python 3.11, final `python tasks.py lint` passed and
+`python tasks.py test -q` passed **1423 tests, 1 skipped** in 51.12s. The skip is the
+opt-in live Neo4j integration because NEO4J_URI is unset. `make` is unavailable, so the
+same targets were run through the Python runner to which the Makefile delegates.
+`docker compose config --quiet`, pip check and diff whitespace validation passed.
+The actual README report was regenerated and verified idempotent; the standalone
+graph_hybrid CLI returned Cedar Bay on the bridge fixture with MOCK labeling and closed
+its store. Reviewed configuration/source changes contain no live credentials or keys;
+.env/private-key files are not tracked and the local .env does not exist.
+
+Reran all benchmark targets end to end in mock mode in this milestone: baseline evaluation
+over all 45 reviewed items; the cache threshold sweep, both-router experiments and 40%
+repeat comparison with 75 requests/system; ACL benchmark with 200 paired raw queries and
+revocation verification; GraphRAG with all 15 fixture questions across three systems
+(45 rows). Actual source artifacts recorded in README are
+`baseline_20261013T123347119648Z.csv`,
+`project1_baseline_20261013T123357729802Z.csv`,
+`project1_optimized_20261013T123357732368Z.csv`,
+`acl_20261013T123350396285Z.csv` and `project3_20261013T123348499080Z.csv`.
+All outputs are MOCK-labeled and no mock numeric scores were promoted to real results.
+
+Could not verify live Qdrant/Postgres/Neo4j execution, container startup, full HotpotQA
+loading, real extraction/generation/classification/embeddings/cross-encoder quality,
+GPU/model setup, browser screenshot/use or hosted Windows/Linux CI. Ollama and make are
+absent, no local models are configured, and optional real-provider dependencies/API
+verification remain pending from M0. Human-run setup/reproduction commands are documented;
+no unavailable-tools real runs were attempted. All M0-M5 offline acceptance is complete;
+work stopped at M5 as requested.
