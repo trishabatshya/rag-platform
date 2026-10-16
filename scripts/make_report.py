@@ -79,6 +79,11 @@ def _fmt(value: float | None) -> str:
     return f"{value:.4f}" if value is not None else "not recorded"
 
 
+def _quality(rows: list[dict]) -> float | None:
+    parsed = [_number(row, "correct") for row in rows if row["correct"] != ""]
+    return mean(parsed) if parsed else None
+
+
 def _pair_runs(directory: Path) -> list[tuple[Run, Run]]:
     required = {
         "mode",
@@ -220,7 +225,7 @@ def render_results(directory: Path) -> str:
         hits = [_number(row, "hit") for row in b.rows if row["hit"] != ""]
         latency = [_number(row, "latency_ms") for row in b.rows]
         lines.append(
-            f"| {len(b.rows)} | {_fmt(mean(_number(r, 'correct') for r in b.rows))} | "
+            f"| {len(b.rows)} | {_fmt(_quality(b.rows))} | "
             f"{_fmt(mean(hits) if hits else None)} | {_fmt(float(np.percentile(latency, 50)))}"
             f" / {_fmt(float(np.percentile(latency, 95)))} | "
             f"{_fmt(mean(_number(r, 'cost') for r in b.rows))} |"
@@ -239,9 +244,8 @@ def render_results(directory: Path) -> str:
     if real_pair:
         b, o = real_pair
         original, optimized = (sum(_number(r, "cost") for r in run.rows) for run in (b, o))
-        quality = mean(_number(r, "correct") for r in o.rows) - mean(
-            _number(r, "correct") for r in b.rows
-        )
+        oq, bq = _quality(o.rows), _quality(b.rows)
+        quality = oq - bq if oq is not None and bq is not None else None
         change = [
             float(np.percentile([_number(r, "latency_ms") for r in o.rows], q))
             - float(np.percentile([_number(r, "latency_ms") for r in b.rows], q))

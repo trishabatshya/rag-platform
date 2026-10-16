@@ -203,3 +203,79 @@ absent, no local models are configured, and optional real-provider dependencies/
 verification remain pending from M0. Human-run setup/reproduction commands are documented;
 no unavailable-tools real runs were attempted. All M0-M5 offline acceptance is complete;
 work stopped at M5 as requested.
+
+Post-M5 dependency follow-up (2026-10-16): Added requirements-real.txt including the
+base requirements and exact versions of the installed additional model stack:
+sentence-transformers 6.1.0, LiteLLM 1.105.1, torch 2.14.1, transformers 5.20.0 and
+their additional installed dependencies. Changed shared base pins to filelock 3.32.7
+and huggingface-hub 1.33.0 because the earlier 4.x/2.x pins conflict with model-library
+bounds. The optional profile installed successfully on Windows/Python 3.11, installing
+it again with --no-index succeeded, and pip check found no broken dependencies.
+Inspected installed encode/predict/completion APIs, ran LiteLLM's offline mock_response
+path, and checked app/embed with a locally constructed SentenceTransformer BoW encoder:
+float32, normalized (2,384) vectors without pretrained weights. This resolves library
+installation/API inspection pending from M0, not live model inference or quality.
+
+app/embed.py now raises an actionable RuntimeError when sentence_transformers is absent,
+including `python -m pip install -r requirements-real.txt`. Transitive missing modules
+retain their original diagnostics and mock embeddings do not import optional models.
+Three new offline regression cases passed. README quickstart/real setup and AGENTS now
+document the profile, PowerShell/POSIX syntax, the default Docker mock-only image and
+offline-only testing when NEO4J_URI is configured. DECISIONS records shared-pin rationale.
+Lint and diff whitespace checks passed. The full suite reported 1426 passed and one
+failed external integration: the configured Neo4j at localhost:7687 refused connections.
+No application/unit test failed; no live Neo4j success is claimed. Pretrained model
+downloads/inference, live provider calls and cross-platform/GPU checks remain unverified.
+The explicit offline command `python tasks.py test -m "not integration" -q` subsequently
+passed all 1426 tests, with one external test deselected, in 128.01s.
+
+Judge-reply follow-up (2026-10-16): Added Verdict.raw and the baseline evaluator's
+judge_raw CSV column, preserving completion text before strip/uppercase parsing.
+Mock token-F1 verdicts have no model reply and write an empty cell. Parsing remains
+strict: normalize whitespace/case, accept exactly CORRECT or INCORRECT, reject all
+other labels, and serialize the resulting boolean as 1/0. Parser cases for both labels
+and surrounding whitespace/case plus verbatim CSV round-trip checks passed; the targeted
+evaluation suite passed 22 tests and lint passed.
+
+Reran the configured REAL five-question baseline smoke with answer and judge model
+ollama/llama3.2:3b. The first attempt was stopped after sandbox-denied Hugging Face
+metadata requests; the network-authorized retry completed. Output:
+eval/results/baseline_20261016T110033536916Z.csv. For nw-001 through nw-005, judge_raw
+was respectively INCORRECT, CORRECT, INCORRECT, CORRECT, INCORRECT, with correct values
+0,1,0,1,0 (2/5). Read the CSV back and verified each serialized label/verdict mapping.
+These are actual local-model smoke outputs, not full-benchmark/general quality claims.
+Qdrant emitted its existing client 1.19.1/server 1.17.0 compatibility warning; the run
+completed successfully. No benchmark report was regenerated from this small smoke run.
+
+Judge robustness follow-up (2026-10-16): Added a case-insensitive verdict-word parser
+that searches INCORRECT before CORRECT and records other replies as unparseable, with
+an empty correct CSV cell and preserved raw reply. Replaced the strict prompt with
+key-fact matching guidance allowing harmless extra words/citations and two short few-shot
+examples. Added normalized, nonempty token-boundary reference_in_answer phrase matching
+as an independent CSV metric; documented its negation/paraphrase limitations. No evaluation
+questions or reference answers were changed. Summaries now include judge accuracy among
+parseable verdicts, deterministic reference accuracy, disagreement count/rate and explicit
+parsed/unparseable/comparison counts. All-unparseable rates are null rather than zero.
+The legacy correctness field aliases judge accuracy; this is answer quality as rated by
+the judge, not independently measured judge accuracy against human labels.
+
+Added untimed baseline answer and judge warm-up calls before measured questions, excluding
+their replies/latency/tokens/cost from question rows while reporting warm-up usage/cost
+separately. Warm-up reduces first-use loading; server eviction/concurrency can still
+reload models. Kept shared cache/router benchmark and report consumers compatible with
+unknown verdicts: leave request quality NULL, record raw/status, and omit unknown quality
+from averages instead of crashing or treating it as incorrect.
+
+Parser, phrase matching, prompt, CSV unknown/verbatim preservation, summary denominators
+and warm-up exclusion tests passed. Targeted evaluation/cache-benchmark/report checks
+passed 66 tests; the final offline suite passed 1454 tests with one live integration
+test deselected in 102.73s. Lint and whitespace validation passed. The unchanged five
+REAL questions were rerun with cached embeddings and the configured local models,
+writing eval/results/baseline_warm_smoke_20261016T110757201989Z.csv. All five judge
+replies parsed as CORRECT (nw-001 and nw-003 included a `### Verdict:\n` prefix),
+reference_in_answer was 1 for each, judge/reference accuracies
+were both 1.0, disagreement was 0/5, and no verdict was unparseable. Two warm-up calls
+were recorded separately. This is an observed five-question smoke run, not general
+quality validation or an estimate of the judge's human-label accuracy. Existing Qdrant
+version warning and an optional LiteLLM remote-cost-map fetch denial occurred; LiteLLM
+used its bundled backup and the run completed. Project reference costs use local PRICES.

@@ -11,7 +11,16 @@ from app.config import Settings
 
 @lru_cache(maxsize=1)
 def _model(name: str):
-    from sentence_transformers import SentenceTransformer
+    try:
+        from sentence_transformers import SentenceTransformer
+    except ModuleNotFoundError as error:
+        if error.name != "sentence_transformers":
+            raise
+        raise RuntimeError(
+            "Real-mode embeddings require sentence-transformers. Install the real-mode "
+            "dependencies in this Python environment: "
+            "python -m pip install -r requirements-real.txt"
+        ) from error
 
     return SentenceTransformer(name)
 

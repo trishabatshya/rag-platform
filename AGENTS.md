@@ -39,6 +39,29 @@ The Makefile delegates the same targets to tasks.py. On POSIX, use
 `RAG_MODE=mock python tasks.py test`. Test/eval/bench features are delivered in
 milestone order; consult PROGRESS.md before invoking later targets.
 
+## Optional real-mode dependencies
+
+The default `python tasks.py install` installs the offline stack from requirements.txt.
+For real embeddings, reranking and LiteLLM completions, use the same Python environment:
+
+```powershell
+python -m pip install -r requirements-real.txt
+python -m pip check
+$env:RAG_MODE="real"
+```
+
+The real requirements include the base file; do not install unpinned model libraries
+over it. Keep shared huggingface-hub/filelock pins compatible with both stacks. Without
+activation, use `.\.venv311\Scripts\python.exe -m pip install -r requirements-real.txt`.
+POSIX uses the same pip command and `export RAG_MODE=real`. Installing libraries does not
+download model weights or start Ollama/database services. Mock tests must remain offline
+and import optional model libraries lazily. Missing sentence-transformers must produce
+an actionable installation message; errors in its transitive dependencies must retain
+their original diagnostic rather than be mislabeled as the package being absent.
+NEO4J_URI in .env also opts into the live integration test. To validate just the offline
+suite without running Neo4j, use `python tasks.py test -m "not integration" -q`; report
+external connection failures separately rather than claiming the live test passed.
+
 ## Layout
 
 - app/: config, embeddings, completions, vector store, baseline RAG, auth, ACL,

@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field, model_validator
 from app.config import ROOT, Settings, compute_cost
 from app.corpus_state import CorpusState
 from app.rag import RAGEngine, close_engine, get_engine
-from eval.judge import judge
+from eval.judge import judge, reference_in_answer
 
 
 class EvalItem(BaseModel):
@@ -59,9 +59,25 @@ def summarize(rows: list[dict]) -> dict[str, float | int | None]:
     """Summarize measured rows; hit rate excludes questions without an expected source."""
     hits = [float(row["hit"]) for row in rows if row["hit"] != ""]
     latencies = [row["latency_ms"] for row in rows]
+    parsed = [row for row in rows if row["correct"] is not None]
+    references = [r for r in rows if r.get("reference_in_answer") is not None]
+    paired = [r for r in parsed if r.get("reference_in_answer") is not None]
+    disagreements = sum(r["correct"] != r["reference_in_answer"] for r in paired)
+    accuracy = float(np.mean([r["correct"] for r in parsed])) if parsed else None
     return {
         "count": len(rows),
-        "correctness": float(np.mean([row["correct"] for row in rows])),
+        "correctness": accuracy,
+        "judge_accuracy": accuracy,
+        "judge_parsed_count": len(parsed),
+        "judge_unparseable_count": len(rows) - len(parsed),
+        "reference_in_answer_accuracy": float(
+            np.mean([r["reference_in_answer"] for r in references])
+        )
+        if references
+        else None,
+        "disagreement_count": disagreements,
+        "disagreement_rate": disagreements / len(paired) if paired else None,
+        "disagreement_compared_count": len(paired),
         "hit_rate": float(np.mean(hits)) if hits else None,
         "p50_latency_ms": float(np.percentile(latencies, 50)),
         "p95_latency_ms": float(np.percentile(latencies, 95)),
@@ -83,6 +99,10 @@ def run_evaluation(
     settings = Settings()
     engine = engine or get_engine()
     version = CorpusState(settings.state_db).version
+    # Discard the first retrieval/generation so embedding/model initialization is untimed.
+    # Warm the judge separately too; its model may differ from the answering model.
+    warmup = engine.answer("Warm-up: reply briefly with READY.", settings.large_model)
+    warmup_judge = judge("What is the ready signal?", "READY", "READY")
     rows = []
     for item in items:
         response = engine.answer(item.question, settings.large_model)
@@ -100,9 +120,13 @@ def run_evaluation(
                 "cited_sources": json.dumps(response["sources"]),
                 "chunk_ids": json.dumps([chunk["id"] for chunk in response["chunks"]]),
                 "hit": int(item.source in retrieved) if item.answerable else "",
-                "correct": int(verdict.correct),
+                "correct": int(verdict.correct) if verdict.correct is not None else None,
+                "reference_in_answer": int(reference_in_answer(response["answer"], item.reference)),
                 "f1": verdict.f1,
                 "judge_method": verdict.method,
+                "judge_raw": verdict.raw,
+                "judge_label": verdict.label,
+                "latency_scope": "warmed answer pipeline; excludes warm-up and judging",
                 "latency_ms": response["latency_ms"],
                 "in_tokens": response["in_tokens"],
                 "out_tokens": response["out_tokens"],
@@ -131,7 +155,19 @@ def run_evaluation(
         temporary.replace(path)
     finally:
         temporary.unlink(missing_ok=True)
-    return path, summarize(rows)
+    summary = summarize(rows)
+    summary.update(
+        {
+            "warmup_calls": 1 + int(warmup_judge.method == "llm"),
+            "warmup_in_tokens": warmup["in_tokens"] + warmup_judge.in_tokens,
+            "warmup_out_tokens": warmup["out_tokens"] + warmup_judge.out_tokens,
+            "warmup_reference_cost_usd": compute_cost(
+                warmup["model"], warmup["in_tokens"], warmup["out_tokens"]
+            )
+            + warmup_judge.cost,
+        }
+    )
+    return path, summary
 
 
 def main() -> None:

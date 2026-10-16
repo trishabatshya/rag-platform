@@ -183,7 +183,8 @@ def replay(
         result = service.ask(item["question"], user, run_tag=run_tag)
         elapsed = (perf_counter() - start) * 1000
         verdict = judge(item["question"], result.response["answer"], item["reference"])
-        service.requests.set_quality(result.request_id, float(verdict.correct))
+        if verdict.correct is not None:
+            service.requests.set_quality(result.request_id, float(verdict.correct))
         measured.append(
             {
                 "mode": Settings().mode.upper(),
@@ -204,8 +205,10 @@ def replay(
                 "out_tokens": result.response["out_tokens"],
                 "cost": result.cost,
                 "cost_basis": "estimated at reference prices",
-                "correct": int(verdict.correct),
+                "correct": int(verdict.correct) if verdict.correct is not None else None,
                 "judge_method": verdict.method,
+                "judge_label": verdict.label,
+                "judge_raw": verdict.raw,
                 "judge_cost": verdict.cost,
                 "latency_ms": elapsed,
                 "latency_scope": "service wall time including request logging; excluding judge",
@@ -214,11 +217,14 @@ def replay(
     return measured
 
 
-def summarize(rows: list[dict]) -> dict[str, float]:
+def summarize(rows: list[dict]) -> dict[str, float | int | None]:
     """Summarize only recorded service calls; zero-quality mock data is not a model result."""
     return {
         "cost": sum(row["cost"] for row in rows),
-        "quality": float(np.mean([row["correct"] for row in rows])),
+        "quality": float(np.mean([row["correct"] for row in rows if row["correct"] is not None]))
+        if any(row["correct"] is not None for row in rows)
+        else None,
+        "judge_unparseable_count": sum(row["correct"] is None for row in rows),
         "p50_latency_ms": float(np.percentile([row["latency_ms"] for row in rows], 50)),
         "p95_latency_ms": float(np.percentile([row["latency_ms"] for row in rows], 95)),
         "cache_hit_rate": float(np.mean([row["cache_hit"] for row in rows])),
@@ -265,7 +271,9 @@ def compare(output_dir: Path, repeat_ratio: float = 0.4, limit: int | None = Non
         else None,
         "p50_change_ms": optimized["p50_latency_ms"] - original["p50_latency_ms"],
         "p95_change_ms": optimized["p95_latency_ms"] - original["p95_latency_ms"],
-        "quality_delta": optimized["quality"] - original["quality"],
+        "quality_delta": optimized["quality"] - original["quality"]
+        if optimized["quality"] is not None and original["quality"] is not None
+        else None,
         "cache_hit_rate": optimized["cache_hit_rate"],
         "escalation_rate": optimized["escalation_rate"],
         "csvs": [path.name for path in paths],

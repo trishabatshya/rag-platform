@@ -1,5 +1,43 @@
 # Decisions
 
+## Judge tolerance and independent reference check (2026-10-16)
+
+- Search whole verdict words case-insensitively, INCORRECT first, then CORRECT. Preserve
+  raw completion text; an unknown reply has correct=None and judge_label=unparseable.
+  Exclude unknown verdicts from accuracy/disagreement denominators and report coverage,
+  rather than silently counting them as wrong. Shared benchmark/report consumers retain
+  unknown quality instead of converting None to a boolean or crashing.
+- The judge prompt compares the key fact, permits harmless sentences/citations and gives
+  two short few-shot examples. The independent reference_in_answer metric matches a
+  normalized contiguous phrase at token boundaries, avoiding number-substring matches.
+  It can still accept negation/contradiction or miss synonyms; it is not a ground-truth
+  judge. Judge accuracy here means the fraction of answers it rates correct, not a
+  validated classifier accuracy against human labels. No evaluation questions changed.
+- Baseline warm-up calls load the answer and judge paths before measured questions;
+  their usage/cost is separate. This reduces startup effects but cannot prevent model
+  eviction/reloads under different-model or concurrent serving. Do not compare these
+  warmed latency samples directly with earlier cold-start CSVs.
+
+## Real-mode dependency profile (2026-10-16)
+
+- `requirements-real.txt` includes the base requirements and pins the additional installed
+  model stack, including sentence-transformers 6.1.0 and LiteLLM 1.105.1. Default install
+  and CI remain on the offline stack. Shared filelock and huggingface-hub pins were changed
+  to 3.32.7 and 1.33.0: the earlier 4.x/2.x pins conflict with LiteLLM's declared bounds
+  (and the model stack's hub bound). Both profiles must resolve together rather than
+  silently overriding conflicting requirements with a second pip command.
+- Installation, pip check, installed encode/predict/completion API inspection, a local
+  384-dimensional normalized SentenceTransformer BoW adapter check and LiteLLM's offline
+  mock-response path succeeded on Windows/Python 3.11. No pretrained weights or live
+  provider were used. Platform-specific dependencies such as Linux CUDA packages remain
+  pip-resolved; GPU builds and other platforms need their own validation.
+- The embedding adapter catches only an absent sentence_transformers module and gives
+  the exact real-profile install command. Missing transitive modules and model-loading
+  errors retain their original diagnostics. Mock embeddings never import optional models.
+- The default Docker image still installs the base profile. README explicitly separates
+  host real-mode installation from a custom real-mode image; installing Python libraries
+  does not provide model weights, Ollama or database services.
+
 ## M0
 
 - **Portable commands:** tasks.py uses sys.executable, pathlib and subprocess argument

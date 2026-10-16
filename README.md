@@ -125,6 +125,27 @@ Use `Copy-Item .env.example .env` for configuration. Do not commit .env.
 Mock mode runs without Docker, a model download, an API key or network access
 after dependencies have been installed. Dependency installation needs package access.
 
+For real mode, install the separate pinned dependency set in the same Python 3.11
+environment before selecting the mode:
+
+```powershell
+python -m pip install -r requirements-real.txt
+python -m pip check
+$env:RAG_MODE="real"
+```
+
+`requirements-real.txt` includes `requirements.txt` plus sentence-transformers and
+LiteLLM. `python tasks.py install` installs the offline/mock stack only. Real-mode
+installation also downloads PyTorch and other model libraries; model weights, Ollama
+and database services still need the setup under Producing real results. On POSIX, use
+the same pip command and `export RAG_MODE=real`. Without activation on Windows, replace
+`python` with `.\.venv311\Scripts\python.exe` in these commands.
+The default Docker image installs only the mock stack; use this host setup for real
+mode, or install requirements-real.txt in a custom real-mode image.
+If NEO4J_URI is configured (including through .env), the full test command opts into
+live Neo4j integration. Without a running service, use
+`python tasks.py test -m "not integration" -q` for the offline suite.
+
 On POSIX: `python3.11 -m venv .venv`, activate `.venv/bin/activate`, then run
 `RAG_MODE=mock python tasks.py test`. A Makefile is available when make is installed.
 
@@ -197,6 +218,29 @@ reference-price cost, corpus version and runtime mode. Correctness includes unan
 questions; hit rate includes only questions with an expected source. p50/p95 and mean
 cost describe the actual run. Judge overhead is recorded separately from answer cost.
 Every mock CSV row is labeled `MOCK`, and console output says `MOCK (not a result)`.
+The `judge_raw` column preserves the judge completion's exact text. The parser searches
+case-insensitively for the verdict word `INCORRECT` first, then `CORRECT`; otherwise it
+records `judge_label=unparseable` and an empty `correct` cell. It never silently counts
+an unparseable reply as incorrect. The judge prompt allows extra words/citations when
+the key fact matches, with one correct and one incorrect few-shot example. Mock token-F1
+judging makes no model call, so its `judge_raw` cell is empty.
+
+The adjacent `reference_in_answer` column is a separate deterministic check: lowercase,
+remove numbered citations/punctuation, collapse whitespace, and look for the nonempty
+reference as a contiguous phrase at token boundaries. This avoids matching 4 days inside
+14 days, but it can accept negated answers containing the reference and miss paraphrases.
+It does not replace semantic judging.
+
+The baseline summary reports `judge_accuracy` (fraction rated correct among parseable
+verdicts, not the judge's agreement with human labels), `reference_in_answer_accuracy`
+over all questions, and `disagreement_count`/`disagreement_rate` over parseable pairs.
+`judge_parsed_count`, `judge_unparseable_count` and `disagreement_compared_count` make
+the denominators explicit. An all-unparseable run has null judge accuracy/disagreement
+rate; legacy `correctness` aliases judge accuracy. The baseline warms retrieval/generation
+and the judge before measured questions; warm-up responses are excluded from rows,
+latency and per-question token/cost metrics, with warm-up usage/cost reported separately.
+This reduces first-use loading effects; server eviction or concurrent traffic can still
+cause later model reloads. Older CSVs with cold first requests are not directly comparable.
 
 Mock judging uses case/punctuation-normalized multiset token F1, excluding citations,
 and labels F1 >= 0.5 correct. It can incorrectly accept answers with a wrong number or
@@ -560,18 +604,23 @@ before deploying. Container Ollama calls use `host.docker.internal:11434`.
 ## Producing real results
 
 No real benchmark has run yet. All experiments, the dashboard and report generator are
-implemented. `requirements.txt` pins the validated offline stack; real model adapters
-also require sentence-transformers and LiteLLM. Their installation/API verification
-remains pending from M0, as recorded in PROGRESS.md. In your Python 3.11 environment:
+implemented. `requirements.txt` pins the offline stack; `requirements-real.txt` includes
+it and pins the additional real model libraries.
+
+The pinned stack was installed and checked on Windows/Python 3.11, including an offline
+local SentenceTransformer adapter smoke check and LiteLLM's mock-response API. These
+checks do not verify pretrained embeddings, a live model provider or benchmark quality.
+
+In your Python 3.11 environment:
 
 ```powershell
-python -m pip install sentence-transformers litellm
+python -m pip install -r requirements-real.txt
 python -m pip check
 python -c "import inspect; from sentence_transformers import SentenceTransformer, CrossEncoder; from litellm import completion; print(inspect.signature(SentenceTransformer.encode)); print(inspect.signature(CrossEncoder.predict)); print(inspect.signature(completion))"
 ```
 
-Resolve any local dependency/model compatibility issues, verify the adapters, and pin
-the successfully validated versions before publishing a real run. Real embeddings must
+Run the import/API check above in your deployment environment before publishing a real
+run. Dependency installation does not verify live model inference. Real embeddings must
 remain normalized 384-dimensional vectors. Model downloads may be large; choose local
 Ollama names to fit your RAM and keep SMALL/LARGE/JUDGE/EXTRACT settings consistent.
 The commands below are human-run steps; they were not executed without those tools:
