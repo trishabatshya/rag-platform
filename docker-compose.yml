@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: rag
       POSTGRES_PASSWORD: devpassword
       POSTGRES_DB: rag
-    ports: ["5432:5432"]
+    ports: ["5433:5432"]
     volumes: ["postgres_data:/var/lib/postgresql/data"]
   neo4j:
     image: neo4j:5
