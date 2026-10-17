@@ -1,0 +1,86 @@
+mode,run_tag,request_no,id,question,reference,answer,repeat,repeat_ratio,actual_repeat_ratio,route,model,cache_hit,escalated,in_tokens,out_tokens,cost,cost_basis,correct,judge_method,judge_cost,latency_ms,latency_scope
+MOCK,p1_optimized_20261012T044929487593Z,1,nw-001,How long is the EU refund window for a first paid subscription?,14 calendar days,"# United States refund policy
+
+Customers with a US billing address may request a subscription refund within 7 calendar
+days of their first paid subscription purchase. The US refund window is 7 calendar days.
+Renewal invoices and usage-based storage overages are not eligible for this refund.
+
+Submit the invoice ID and workspace ID to billing@northwind.example and describe the
+reason for the request. Approved refunds return to the original payment method within
+10 business days. Cancelling a subscription alone does not submit a refund request.
+
+The workspace remains readable until the end of the paid period unless the owner requests
+immediate closure. The EU policy is documented separately and uses a different window. [1]",0,0.4,0.42857142857142855,simple,ollama/llama3.2:3b,0,0,619,113,0.00016064999999999997,estimated at reference prices,0,token_f1,0.0,11.394799686968327,service wall time including request logging; excluding judge
+MOCK,p1_optimized_20261012T044929487593Z,2,nw-001,Please How long is the EU refund window for a first paid subscription?,14 calendar days,"# United States refund policy
+
+Customers with a US billing address may request a subscription refund within 7 calendar
+days of their first paid subscription purchase. The US refund window is 7 calendar days.
+Renewal invoices and usage-based storage overages are not eligible for this refund.
+
+Submit the invoice ID and workspace ID to billing@northwind.example and describe the
+reason for the request. Approved refunds return to the original payment method within
+10 business days. Cancelling a subscription alone does not submit a refund request.
+
+The workspace remains readable until the end of the paid period unless the owner requests
+immediate closure. The EU policy is documented separately and uses a different window. [1]",1,0.4,0.42857142857142855,cache,ollama/llama3.2:3b,1,0,0,0,0.0,estimated at reference prices,0,token_f1,0.0,10.425600223243237,service wall time including request logging; excluding judge
+MOCK,p1_optimized_20261012T044929487593Z,3,nw-004,Within how many business days do approved US refunds return?,10 business days,"# API keys
+
+Create an API key from Settings > Developer > API Keys. API keys have a nw_live_ prefix
+and are shown only once at creation. Store keys in a secret manager. Never put an API
+key in a public repository, browser bundle or support ticket.
+
+API keys expire after 90 days. Rotate a key by creating a replacement, updating clients,
+and then revoking the old key. Revocation takes effect immediately. Existing keys cannot
+be recovered; create a new key if the secret has been lost.
+
+Each API key is bound to its creating workspace and receives a read or read-write scope.
+Send the key using the Authorization: Bearer header. API keys cannot be transferred
+between workspaces, and deleting a workspace revokes all of its API keys. [1]",0,0.4,0.42857142857142855,simple,ollama/qwen2.5:7b,0,1,1236,258,0.0030050999999999997,estimated at reference prices,0,token_f1,0.0,18.325199838727713,service wall time including request logging; excluding judge
+MOCK,p1_optimized_20261012T044929487593Z,4,nw-002,Within how many business days do approved EU refunds return?,5 business days,"# European Union refund policy
+
+Customers with an EU billing address may request a subscription refund within 14 calendar
+days of their first paid subscription purchase. The EU refund window is 14 calendar days.
+Renewal invoices and usage-based storage overages are not eligible for this refund.
+
+Submit the invoice ID and workspace ID to billing@northwind.example. An EU refund request
+does not require an explanation. Approved refunds return to the original payment method
+within 5 business days. Cancelling a subscription alone does not submit a refund request.
+
+The workspace remains readable until the end of the paid period unless the owner requests
+immediate closure. This fictional policy is a corpus fixture, not consumer legal advice. [1]",0,0.4,0.42857142857142855,simple,ollama/qwen2.5:7b,0,1,1236,230,0.0028566999999999998,estimated at reference prices,0,token_f1,0.0,15.63039980828762,service wall time including request logging; excluding judge
+MOCK,p1_optimized_20261012T044929487593Z,5,nw-003,How long is the US refund window for a first paid subscription?,7 calendar days,"# United States refund policy
+
+Customers with a US billing address may request a subscription refund within 7 calendar
+days of their first paid subscription purchase. The US refund window is 7 calendar days.
+Renewal invoices and usage-based storage overages are not eligible for this refund.
+
+Submit the invoice ID and workspace ID to billing@northwind.example and describe the
+reason for the request. Approved refunds return to the original payment method within
+10 business days. Cancelling a subscription alone does not submit a refund request.
+
+The workspace remains readable until the end of the paid period unless the owner requests
+immediate closure. The EU policy is documented separately and uses a different window. [1]",0,0.4,0.42857142857142855,simple,ollama/llama3.2:3b,0,0,622,113,0.00016109999999999999,estimated at reference prices,0,token_f1,0.0,15.419400297105312,service wall time including request logging; excluding judge
+MOCK,p1_optimized_20261012T044929487593Z,6,nw-001,How long is the EU refund window for a first paid subscription?,14 calendar days,"# United States refund policy
+
+Customers with a US billing address may request a subscription refund within 7 calendar
+days of their first paid subscription purchase. The US refund window is 7 calendar days.
+Renewal invoices and usage-based storage overages are not eligible for this refund.
+
+Submit the invoice ID and workspace ID to billing@northwind.example and describe the
+reason for the request. Approved refunds return to the original payment method within
+10 business days. Cancelling a subscription alone does not submit a refund request.
+
+The workspace remains readable until the end of the paid period unless the owner requests
+immediate closure. The EU policy is documented separately and uses a different window. [1]",1,0.4,0.42857142857142855,cache,ollama/llama3.2:3b,1,0,0,0,0.0,estimated at reference prices,0,token_f1,0.0,11.750400066375732,service wall time including request logging; excluding judge
+MOCK,p1_optimized_20261012T044929487593Z,7,nw-003,Please How long is the US refund window for a first paid subscription?,7 calendar days,"# United States refund policy
+
+Customers with a US billing address may request a subscription refund within 7 calendar
+days of their first paid subscription purchase. The US refund window is 7 calendar days.
+Renewal invoices and usage-based storage overages are not eligible for this refund.
+
+Submit the invoice ID and workspace ID to billing@northwind.example and describe the
+reason for the request. Approved refunds return to the original payment method within
+10 business days. Cancelling a subscription alone does not submit a refund request.
+
+The workspace remains readable until the end of the paid period unless the owner requests
+immediate closure. The EU policy is documented separately and uses a different window. [1]",1,0.4,0.42857142857142855,cache,ollama/llama3.2:3b,1,0,0,0,0.0,estimated at reference prices,0,token_f1,0.0,10.347200091928244,service wall time including request logging; excluding judge

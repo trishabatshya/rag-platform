@@ -1,0 +1,1001 @@
+mode,run_tag,request_no,id,question,reference,answer,repeat,repeat_ratio,actual_repeat_ratio,route,model,cache_hit,escalated,in_tokens,out_tokens,cost,cost_basis,correct,judge_method,judge_cost,latency_ms,latency_scope
+MOCK,p1_baseline_20261013T123355859270Z,1,nw-041,What was Northwind Cloud's revenue in 2025?,I don't know,"# Northwind Cloud product FAQ
+
+Northwind Cloud is a fictional managed workspace for publishing internal documentation
+and running scheduled automation jobs. A workspace contains projects; each project has
+documents, automation jobs and an activity log. Northwind Cloud does not sell virtual
+machines or provide a cryptocurrency exchange.
+
+Workspace names must contain between 3 and 40 characters. Workspace names can use
+letters, digits and hyphens. A project can be archived without deleting its documents.
+Archived projects are read-only and their scheduled automation jobs stop running.
+
+The web console supports the latest two stable releases of Edge, Chrome and Firefox.
+The command-line tool is named nwctl. Northwind Cloud's documentation examples use
+UTC for every scheduled job, regardless of the user's browser timezone. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,616,121,0.00275,estimated at reference prices,0,token_f1,0.0,13.283699750900269,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,2,nw-008,How many member seats are included on Team?,25 member seats,"# Team plan
+
+The Team plan costs 79 USD per workspace per month. Team includes 25 member seats, 100 GB
+of document storage and 1000 scheduled automation runs per month. Team supports multiple
+workspace owners. Unused automation runs do not roll over.
+
+Team includes SAML single sign-on, priority email support and a contractual 99.9 percent
+monthly uptime SLA. The target first support response is 4 business hours. Team allows
+up to 100 active projects and supports a dedicated billing contact.
+
+Extra seats cannot be purchased individually on Team. Workspaces needing more than
+25 members must contact sales for an Enterprise agreement. Storage overages cost
+0.08 USD per GB per month and appear on the following invoice. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,618,117,0.002715,estimated at reference prices,0,token_f1,0.0,8.449200075119734,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,3,nw-002,Within how many business days do approved EU refunds return?,5 business days,"# European Union refund policy
+
+Customers with an EU billing address may request a subscription refund within 14 calendar
+days of their first paid subscription purchase. The EU refund window is 14 calendar days.
+Renewal invoices and usage-based storage overages are not eligible for this refund.
+
+Submit the invoice ID and workspace ID to billing@northwind.example. An EU refund request
+does not require an explanation. Approved refunds return to the original payment method
+within 5 business days. Cancelling a subscription alone does not submit a refund request.
+
+The workspace remains readable until the end of the paid period unless the owner requests
+immediate closure. This fictional policy is a corpus fixture, not consumer legal advice. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,618,115,0.002695,estimated at reference prices,0,token_f1,0.0,8.454000111669302,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,4,nw-018,What service credit applies if monthly eligible uptime is below 99.0 percent?,25 percent of that month's subscription charge,"# Team uptime service level agreement
+
+The Team plan guarantees 99.9 percent monthly uptime for the document API. Scheduled
+maintenance announced at least 48 hours in advance is excluded. The Free and Pro plans
+do not include a contractual SLA. The status page publishes measured availability.
+
+If eligible monthly uptime is below 99.9 percent but at least 99.0 percent, the service
+credit is 10 percent of that month's subscription charge. Below 99.0 percent, the service
+credit is 25 percent. Credits do not apply to usage-based storage charges.
+
+An owner must request a credit within 30 calendar days of the affected month's end.
+Submit the workspace ID and incident dates to support@northwind.example. Service credits
+are applied to a future invoice and are not paid as cash refunds. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,621,127,0.0028225,estimated at reference prices,0,token_f1,0.0,8.279799949377775,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,5,nw-016,What is an invited user's default member role?,viewer,"# Incident communications
+
+The public status page is status.northwind.example. The incident team publishes an
+initial notification within 15 minutes of confirming a production outage. During
+an active priority-one incident, updates are published every 30 minutes.
+
+A post-incident review is published within 5 business days after resolution. Reviews
+include the timeline, impact and prevention actions. Customer names and document
+contents are excluded from public incident reports. Team owners can subscribe to
+incident notifications from Settings > Notifications.
+
+The status page covers the document API, web console and automation scheduler separately.
+An incident notification does not automatically create an SLA credit request. Owners
+must request credits using the process described in the SLA document. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,624,113,0.00269,estimated at reference prices,0,token_f1,0.0,8.590599987655878,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,6,nw-016,What is an invited user's default member role?,viewer,"# Incident communications
+
+The public status page is status.northwind.example. The incident team publishes an
+initial notification within 15 minutes of confirming a production outage. During
+an active priority-one incident, updates are published every 30 minutes.
+
+A post-incident review is published within 5 business days after resolution. Reviews
+include the timeline, impact and prevention actions. Customer names and document
+contents are excluded from public incident reports. Team owners can subscribe to
+incident notifications from Settings > Notifications.
+
+The status page covers the document API, web console and automation scheduler separately.
+An incident notification does not automatically create an SLA credit request. Owners
+must request credits using the process described in the SLA document. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,624,113,0.00269,estimated at reference prices,0,token_f1,0.0,7.865800056606531,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,7,nw-016,Please What is an invited user's default member role?,viewer,"# Incident communications
+
+The public status page is status.northwind.example. The incident team publishes an
+initial notification within 15 minutes of confirming a production outage. During
+an active priority-one incident, updates are published every 30 minutes.
+
+A post-incident review is published within 5 business days after resolution. Reviews
+include the timeline, impact and prevention actions. Customer names and document
+contents are excluded from public incident reports. Team owners can subscribe to
+incident notifications from Settings > Notifications.
+
+The status page covers the document API, web console and automation scheduler separately.
+An incident notification does not automatically create an SLA credit request. Owners
+must request credits using the process described in the SLA document. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,625,113,0.0026925,estimated at reference prices,0,token_f1,0.0,7.733799982815981,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,8,nw-015,After how many hours do onboarding invitations expire?,72 hours,"# Onboarding a workspace
+
+To onboard, verify your email address, choose a workspace name, select a hosting region,
+and invite teammates. The onboarding checklist has four steps. A workspace initially uses
+the Free plan unless its owner explicitly selects a paid plan.
+
+Invitations expire after 72 hours. Only workspace owners can send or revoke invitations.
+An invited user must verify their email address before joining. The default member role
+is viewer; an owner can change it to editor after the invitation is accepted.
+
+Import Markdown or plain-text documents from the Documents > Import screen. A single
+import accepts up to 100 files. The welcome project can be deleted after your own first
+project has been created. The console shows checklist completion to workspace owners. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,617,125,0.0027925,estimated at reference prices,0,token_f1,0.0,7.568200118839741,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,9,nw-008,How many member seats are included on Team?,25 member seats,"# Team plan
+
+The Team plan costs 79 USD per workspace per month. Team includes 25 member seats, 100 GB
+of document storage and 1000 scheduled automation runs per month. Team supports multiple
+workspace owners. Unused automation runs do not roll over.
+
+Team includes SAML single sign-on, priority email support and a contractual 99.9 percent
+monthly uptime SLA. The target first support response is 4 business hours. Team allows
+up to 100 active projects and supports a dedicated billing contact.
+
+Extra seats cannot be purchased individually on Team. Workspaces needing more than
+25 members must contact sales for an Enterprise agreement. Storage overages cost
+0.08 USD per GB per month and appear on the following invoice. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,618,117,0.002715,estimated at reference prices,0,token_f1,0.0,7.023300044238567,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,10,nw-009,Does a Free workspace need a credit card?,A credit card is not required,"# Cancellation and workspace closure
+
+Only a workspace owner can cancel a subscription. Cancellation stops renewal and
+leaves the workspace readable until the current paid period ends. After the paid
+period, a cancelled workspace remains available for export for 30 calendar days.
+
+Permanent workspace deletion requires typing the workspace name and confirming by
+email. Live documents are deleted within 7 calendar days of confirmation. Backup
+copies expire according to the 30-day backup retention schedule. API keys are revoked
+immediately when permanent deletion is confirmed.
+
+An owner should export documents before confirming deletion. Cancelling a subscription
+does not automatically request a refund, transfer ownership or delete the workspace.
+Deleting a user account alone does not cancel subscriptions owned by that user. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,651,121,0.0028375,estimated at reference prices,0,token_f1,0.0,7.439400069415569,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,11,nw-008,Please How many member seats are included on Team?,25 member seats,"# Team plan
+
+The Team plan costs 79 USD per workspace per month. Team includes 25 member seats, 100 GB
+of document storage and 1000 scheduled automation runs per month. Team supports multiple
+workspace owners. Unused automation runs do not roll over.
+
+Team includes SAML single sign-on, priority email support and a contractual 99.9 percent
+monthly uptime SLA. The target first support response is 4 business hours. Team allows
+up to 100 active projects and supports a dedicated billing contact.
+
+Extra seats cannot be purchased individually on Team. Workspaces needing more than
+25 members must contact sales for an Enterprise agreement. Storage overages cost
+0.08 USD per GB per month and appear on the following invoice. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,619,117,0.0027175,estimated at reference prices,0,token_f1,0.0,7.257900200784206,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,12,nw-007,How much does the Team plan cost per workspace per month?,79 USD per workspace per month,"# Team plan
+
+The Team plan costs 79 USD per workspace per month. Team includes 25 member seats, 100 GB
+of document storage and 1000 scheduled automation runs per month. Team supports multiple
+workspace owners. Unused automation runs do not roll over.
+
+Team includes SAML single sign-on, priority email support and a contractual 99.9 percent
+monthly uptime SLA. The target first support response is 4 business hours. Team allows
+up to 100 active projects and supports a dedicated billing contact.
+
+Extra seats cannot be purchased individually on Team. Workspaces needing more than
+25 members must contact sales for an Enterprise agreement. Storage overages cost
+0.08 USD per GB per month and appear on the following invoice. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,642,117,0.002775,estimated at reference prices,0,token_f1,0.0,7.633499801158905,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,13,nw-035,For how long after the paid period can a cancelled workspace export documents?,30 calendar days,"# Cancellation and workspace closure
+
+Only a workspace owner can cancel a subscription. Cancellation stops renewal and
+leaves the workspace readable until the current paid period ends. After the paid
+period, a cancelled workspace remains available for export for 30 calendar days.
+
+Permanent workspace deletion requires typing the workspace name and confirming by
+email. Live documents are deleted within 7 calendar days of confirmation. Backup
+copies expire according to the 30-day backup retention schedule. API keys are revoked
+immediately when permanent deletion is confirmed.
+
+An owner should export documents before confirming deletion. Cancelling a subscription
+does not automatically request a refund, transfer ownership or delete the workspace.
+Deleting a user account alone does not cancel subscriptions owned by that user. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,630,121,0.002785,estimated at reference prices,0,token_f1,0.0,7.9426998272538185,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,14,nw-006,How many member seats are included on Pro?,5 member seats,"# Pro plan
+
+The Pro plan costs 19 USD per workspace per month. Pro includes 5 member seats, 20 GB of
+document storage and 100 scheduled automation runs per month. Pro supports one workspace
+owner and up to four additional members. Unused automation runs do not roll over.
+
+Pro includes email support with a target first response of 2 business days. Pro does not
+include SAML single sign-on, a contractual uptime SLA or priority incident support. API
+access is included, with the limits described in the rate limits document.
+
+Extra seats cannot be purchased individually on Pro. Upgrade to Team when a workspace
+needs more than 5 members. Storage overages cost 0.10 USD per GB per month and appear on
+the following invoice. A Pro workspace can have up to 10 active projects. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,629,134,0.0029125,estimated at reference prices,0,token_f1,0.0,7.949199993163347,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,15,nw-028,Which header tells a rate-limited API client how long to wait?,Retry-After,"# Document API rate limits
+
+The Pro plan permits 60 document API requests per minute per workspace. The Team plan
+permits 300 document API requests per minute per workspace. The Free plan permits
+20 document API requests per minute per workspace. All API keys in a workspace share
+the same rate-limit bucket.
+
+Requests above the limit receive HTTP 429. The Retry-After response header gives the
+number of seconds to wait. Use exponential backoff with jitter when retrying. Rate-limit
+windows reset every minute, and unused capacity does not carry over.
+
+Bulk import requests count as one API request, even when they contain multiple files.
+The rate limit applies to reads and writes together. A revoked API key returns HTTP 401,
+not HTTP 429. Contact sales if a Team workspace needs a higher sustained rate. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,641,134,0.0029425,estimated at reference prices,0,token_f1,0.0,7.760799955576658,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,16,nw-007,How much does the Team plan cost per workspace per month?,79 USD per workspace per month,"# Team plan
+
+The Team plan costs 79 USD per workspace per month. Team includes 25 member seats, 100 GB
+of document storage and 1000 scheduled automation runs per month. Team supports multiple
+workspace owners. Unused automation runs do not roll over.
+
+Team includes SAML single sign-on, priority email support and a contractual 99.9 percent
+monthly uptime SLA. The target first support response is 4 business hours. Team allows
+up to 100 active projects and supports a dedicated billing contact.
+
+Extra seats cannot be purchased individually on Team. Workspaces needing more than
+25 members must contact sales for an Enterprise agreement. Storage overages cost
+0.08 USD per GB per month and appear on the following invoice. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,642,117,0.002775,estimated at reference prices,0,token_f1,0.0,7.94819975271821,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,17,nw-003,How long is the US refund window for a first paid subscription?,7 calendar days,"# United States refund policy
+
+Customers with a US billing address may request a subscription refund within 7 calendar
+days of their first paid subscription purchase. The US refund window is 7 calendar days.
+Renewal invoices and usage-based storage overages are not eligible for this refund.
+
+Submit the invoice ID and workspace ID to billing@northwind.example and describe the
+reason for the request. Approved refunds return to the original payment method within
+10 business days. Cancelling a subscription alone does not submit a refund request.
+
+The workspace remains readable until the end of the paid period unless the owner requests
+immediate closure. The EU policy is documented separately and uses a different window. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,622,113,0.002685,estimated at reference prices,0,token_f1,0.0,7.543399930000305,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,18,nw-015,Please After how many hours do onboarding invitations expire?,72 hours,"# API keys
+
+Create an API key from Settings > Developer > API Keys. API keys have a nw_live_ prefix
+and are shown only once at creation. Store keys in a secret manager. Never put an API
+key in a public repository, browser bundle or support ticket.
+
+API keys expire after 90 days. Rotate a key by creating a replacement, updating clients,
+and then revoking the old key. Revocation takes effect immediately. Existing keys cannot
+be recovered; create a new key if the secret has been lost.
+
+Each API key is bound to its creating workspace and receives a read or read-write scope.
+Send the key using the Authorization: Bearer header. API keys cannot be transferred
+between workspaces, and deleting a workspace revokes all of its API keys. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,618,129,0.002835,estimated at reference prices,0,token_f1,0.0,7.692200131714344,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,19,nw-028,Which header tells a rate-limited API client how long to wait?,Retry-After,"# Document API rate limits
+
+The Pro plan permits 60 document API requests per minute per workspace. The Team plan
+permits 300 document API requests per minute per workspace. The Free plan permits
+20 document API requests per minute per workspace. All API keys in a workspace share
+the same rate-limit bucket.
+
+Requests above the limit receive HTTP 429. The Retry-After response header gives the
+number of seconds to wait. Use exponential backoff with jitter when retrying. Rate-limit
+windows reset every minute, and unused capacity does not carry over.
+
+Bulk import requests count as one API request, even when they contain multiple files.
+The rate limit applies to reads and writes together. A revoked API key returns HTTP 401,
+not HTTP 429. Contact sales if a Team workspace needs a higher sustained rate. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,641,134,0.0029425,estimated at reference prices,0,token_f1,0.0,9.121099952608347,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,20,nw-028,Please Which header tells a rate-limited API client how long to wait?,Retry-After,"# Document API rate limits
+
+The Pro plan permits 60 document API requests per minute per workspace. The Team plan
+permits 300 document API requests per minute per workspace. The Free plan permits
+20 document API requests per minute per workspace. All API keys in a workspace share
+the same rate-limit bucket.
+
+Requests above the limit receive HTTP 429. The Retry-After response header gives the
+number of seconds to wait. Use exponential backoff with jitter when retrying. Rate-limit
+windows reset every minute, and unused capacity does not carry over.
+
+Bulk import requests count as one API request, even when they contain multiple files.
+The rate limit applies to reads and writes together. A revoked API key returns HTTP 401,
+not HTTP 429. Contact sales if a Team workspace needs a higher sustained rate. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,644,134,0.00295,estimated at reference prices,0,token_f1,0.0,7.546000182628632,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,21,nw-043,What is the Enterprise subscription price?,I don't know,"# Free plan
+
+The Free plan costs 0 USD and includes 2 member seats, 1 GB of document storage and
+10 scheduled automation runs per month. A Free workspace can have 2 active projects.
+The Free plan has no contractual uptime SLA and support is provided through the public
+community forum. A credit card is not required to create a Free workspace.
+
+Free workspaces that exceed their storage allowance become unable to upload new
+documents. Existing documents remain readable and exportable. Deleting documents
+or upgrading restores uploads. Automation runs stop when the monthly allowance
+is exhausted and resume on the first day of the next calendar month.
+
+Free workspaces are never automatically upgraded or charged. Only an owner can start
+a paid subscription. The Pro and Team plans are documented separately. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,612,132,0.00285,estimated at reference prices,0,token_f1,0.0,8.000500034540892,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,22,nw-036,How soon are live documents deleted after permanent deletion confirmation?,within 7 calendar days,"# Cancellation and workspace closure
+
+Only a workspace owner can cancel a subscription. Cancellation stops renewal and
+leaves the workspace readable until the current paid period ends. After the paid
+period, a cancelled workspace remains available for export for 30 calendar days.
+
+Permanent workspace deletion requires typing the workspace name and confirming by
+email. Live documents are deleted within 7 calendar days of confirmation. Backup
+copies expire according to the 30-day backup retention schedule. API keys are revoked
+immediately when permanent deletion is confirmed.
+
+An owner should export documents before confirming deletion. Cancelling a subscription
+does not automatically request a refund, transfer ownership or delete the workspace.
+Deleting a user account alone does not cancel subscriptions owned by that user. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,646,121,0.002825,estimated at reference prices,0,token_f1,0.0,7.308200001716614,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,23,nw-003,How long is the US refund window for a first paid subscription?,7 calendar days,"# United States refund policy
+
+Customers with a US billing address may request a subscription refund within 7 calendar
+days of their first paid subscription purchase. The US refund window is 7 calendar days.
+Renewal invoices and usage-based storage overages are not eligible for this refund.
+
+Submit the invoice ID and workspace ID to billing@northwind.example and describe the
+reason for the request. Approved refunds return to the original payment method within
+10 business days. Cancelling a subscription alone does not submit a refund request.
+
+The workspace remains readable until the end of the paid period unless the owner requests
+immediate closure. The EU policy is documented separately and uses a different window. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,622,113,0.002685,estimated at reference prices,0,token_f1,0.0,7.4810003861784935,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,24,nw-007,Please How much does the Team plan cost per workspace per month?,79 USD per workspace per month,"# Team plan
+
+The Team plan costs 79 USD per workspace per month. Team includes 25 member seats, 100 GB
+of document storage and 1000 scheduled automation runs per month. Team supports multiple
+workspace owners. Unused automation runs do not roll over.
+
+Team includes SAML single sign-on, priority email support and a contractual 99.9 percent
+monthly uptime SLA. The target first support response is 4 business hours. Team allows
+up to 100 active projects and supports a dedicated billing contact.
+
+Extra seats cannot be purchased individually on Team. Workspaces needing more than
+25 members must contact sales for an Enterprise agreement. Storage overages cost
+0.08 USD per GB per month and appear on the following invoice. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,643,117,0.0027775,estimated at reference prices,0,token_f1,0.0,8.695200085639954,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,25,nw-028,Which header tells a rate-limited API client how long to wait?,Retry-After,"# Document API rate limits
+
+The Pro plan permits 60 document API requests per minute per workspace. The Team plan
+permits 300 document API requests per minute per workspace. The Free plan permits
+20 document API requests per minute per workspace. All API keys in a workspace share
+the same rate-limit bucket.
+
+Requests above the limit receive HTTP 429. The Retry-After response header gives the
+number of seconds to wait. Use exponential backoff with jitter when retrying. Rate-limit
+windows reset every minute, and unused capacity does not carry over.
+
+Bulk import requests count as one API request, even when they contain multiple files.
+The rate limit applies to reads and writes together. A revoked API key returns HTTP 401,
+not HTTP 429. Contact sales if a Team workspace needs a higher sustained rate. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,641,134,0.0029425,estimated at reference prices,0,token_f1,0.0,7.8210001811385155,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,26,nw-038,Within how many days must an invoice be paid?,15 calendar days,"# European Union refund policy
+
+Customers with an EU billing address may request a subscription refund within 14 calendar
+days of their first paid subscription purchase. The EU refund window is 14 calendar days.
+Renewal invoices and usage-based storage overages are not eligible for this refund.
+
+Submit the invoice ID and workspace ID to billing@northwind.example. An EU refund request
+does not require an explanation. Approved refunds return to the original payment method
+within 5 business days. Cancelling a subscription alone does not submit a refund request.
+
+The workspace remains readable until the end of the paid period unless the owner requests
+immediate closure. This fictional policy is a corpus fixture, not consumer legal advice. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,618,115,0.002695,estimated at reference prices,0,token_f1,0.0,7.826399989426136,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,27,nw-015,Please After how many hours do onboarding invitations expire?,72 hours,"# API keys
+
+Create an API key from Settings > Developer > API Keys. API keys have a nw_live_ prefix
+and are shown only once at creation. Store keys in a secret manager. Never put an API
+key in a public repository, browser bundle or support ticket.
+
+API keys expire after 90 days. Rotate a key by creating a replacement, updating clients,
+and then revoking the old key. Revocation takes effect immediately. Existing keys cannot
+be recovered; create a new key if the secret has been lost.
+
+Each API key is bound to its creating workspace and receives a read or read-write scope.
+Send the key using the Authorization: Bearer header. API keys cannot be transferred
+between workspaces, and deleting a workspace revokes all of its API keys. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,618,129,0.002835,estimated at reference prices,0,token_f1,0.0,7.78859993442893,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,28,nw-044,What is Northwind Cloud's office street address?,I don't know,"# Northwind Cloud product FAQ
+
+Northwind Cloud is a fictional managed workspace for publishing internal documentation
+and running scheduled automation jobs. A workspace contains projects; each project has
+documents, automation jobs and an activity log. Northwind Cloud does not sell virtual
+machines or provide a cryptocurrency exchange.
+
+Workspace names must contain between 3 and 40 characters. Workspace names can use
+letters, digits and hyphens. A project can be archived without deleting its documents.
+Archived projects are read-only and their scheduled automation jobs stop running.
+
+The web console supports the latest two stable releases of Edge, Chrome and Firefox.
+The command-line tool is named nwctl. Northwind Cloud's documentation examples use
+UTC for every scheduled job, regardless of the user's browser timezone. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,613,121,0.0027425,estimated at reference prices,0,token_f1,0.0,8.546400349587202,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,29,nw-017,What monthly document API uptime does the Team SLA guarantee?,99.9 percent,"# Backups and recovery
+
+Northwind Cloud takes encrypted document backups every 24 hours and retains backups
+for 30 days. Backups remain in the workspace's selected hosting region. Backup copies
+are not accessible through the document API and are managed by the operations team.
+
+Workspace owners can request document recovery within 30 days of accidental deletion.
+Send the workspace ID, document ID and deletion time to support@northwind.example.
+The target recovery time is 8 business hours after the request is verified. Recovery
+requests do not restore deleted API keys or cancelled automation runs.
+
+Backups protect against operational failures but do not replace a customer's independent
+export. The export document describes portable ZIP downloads and their retention period. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,619,116,0.0027075,estimated at reference prices,0,token_f1,0.0,7.893700152635574,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,30,nw-008,How many member seats are included on Team?,25 member seats,"# Team plan
+
+The Team plan costs 79 USD per workspace per month. Team includes 25 member seats, 100 GB
+of document storage and 1000 scheduled automation runs per month. Team supports multiple
+workspace owners. Unused automation runs do not roll over.
+
+Team includes SAML single sign-on, priority email support and a contractual 99.9 percent
+monthly uptime SLA. The target first support response is 4 business hours. Team allows
+up to 100 active projects and supports a dedicated billing contact.
+
+Extra seats cannot be purchased individually on Team. Workspaces needing more than
+25 members must contact sales for an Enterprise agreement. Storage overages cost
+0.08 USD per GB per month and appear on the following invoice. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,618,117,0.002715,estimated at reference prices,0,token_f1,0.0,8.058199658989906,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,31,nw-020,Which document formats can be uploaded?,"Markdown (.md) and plain text (.txt), encoded as UTF-8","# Document storage and uploads
+
+The maximum size of a single uploaded document is 10 MB. Supported document formats are
+Markdown (.md) and plain text (.txt), encoded as UTF-8. Images, archives and PDFs cannot
+be uploaded as documents. Each uploaded document receives a stable document ID.
+
+The Pro plan includes 20 GB of storage; Team includes 100 GB. Storage is measured using
+the original UTF-8 file size. Document revision history counts toward storage usage.
+Deleted documents stop counting toward storage after the daily cleanup job.
+
+An upload that would exceed the storage allowance is rejected on Free. Paid plans permit
+overages at their documented rates. Workspace owners can view storage usage from
+Settings > Usage. Bulk imports accept up to 100 documents in a single request. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,621,127,0.0028225,estimated at reference prices,0,token_f1,0.0,7.833799812942743,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,32,nw-001,How long is the EU refund window for a first paid subscription?,14 calendar days,"# United States refund policy
+
+Customers with a US billing address may request a subscription refund within 7 calendar
+days of their first paid subscription purchase. The US refund window is 7 calendar days.
+Renewal invoices and usage-based storage overages are not eligible for this refund.
+
+Submit the invoice ID and workspace ID to billing@northwind.example and describe the
+reason for the request. Approved refunds return to the original payment method within
+10 business days. Cancelling a subscription alone does not submit a refund request.
+
+The workspace remains readable until the end of the paid period unless the owner requests
+immediate closure. The EU policy is documented separately and uses a different window. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,619,113,0.0026775,estimated at reference prices,0,token_f1,0.0,7.617400027811527,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,33,nw-001,Please How long is the EU refund window for a first paid subscription?,14 calendar days,"# United States refund policy
+
+Customers with a US billing address may request a subscription refund within 7 calendar
+days of their first paid subscription purchase. The US refund window is 7 calendar days.
+Renewal invoices and usage-based storage overages are not eligible for this refund.
+
+Submit the invoice ID and workspace ID to billing@northwind.example and describe the
+reason for the request. Approved refunds return to the original payment method within
+10 business days. Cancelling a subscription alone does not submit a refund request.
+
+The workspace remains readable until the end of the paid period unless the owner requests
+immediate closure. The EU policy is documented separately and uses a different window. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,620,113,0.00268,estimated at reference prices,0,token_f1,0.0,8.503200020641088,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,34,nw-042,Who is the chief executive officer of Northwind Cloud?,I don't know,"# Northwind Cloud product FAQ
+
+Northwind Cloud is a fictional managed workspace for publishing internal documentation
+and running scheduled automation jobs. A workspace contains projects; each project has
+documents, automation jobs and an activity log. Northwind Cloud does not sell virtual
+machines or provide a cryptocurrency exchange.
+
+Workspace names must contain between 3 and 40 characters. Workspace names can use
+letters, digits and hyphens. A project can be archived without deleting its documents.
+Archived projects are read-only and their scheduled automation jobs stop running.
+
+The web console supports the latest two stable releases of Edge, Chrome and Firefox.
+The command-line tool is named nwctl. Northwind Cloud's documentation examples use
+UTC for every scheduled job, regardless of the user's browser timezone. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,611,121,0.0027375,estimated at reference prices,0,token_f1,0.0,7.79680022969842,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,35,nw-044,What is Northwind Cloud's office street address?,I don't know,"# Northwind Cloud product FAQ
+
+Northwind Cloud is a fictional managed workspace for publishing internal documentation
+and running scheduled automation jobs. A workspace contains projects; each project has
+documents, automation jobs and an activity log. Northwind Cloud does not sell virtual
+machines or provide a cryptocurrency exchange.
+
+Workspace names must contain between 3 and 40 characters. Workspace names can use
+letters, digits and hyphens. A project can be archived without deleting its documents.
+Archived projects are read-only and their scheduled automation jobs stop running.
+
+The web console supports the latest two stable releases of Edge, Chrome and Firefox.
+The command-line tool is named nwctl. Northwind Cloud's documentation examples use
+UTC for every scheduled job, regardless of the user's browser timezone. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,613,121,0.0027425,estimated at reference prices,0,token_f1,0.0,7.900800090283155,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,36,nw-031,After how many hours does an export download link expire?,24 hours,"# Exporting documents
+
+Workspace owners can request a full document export from Settings > Data > Export.
+The export is a ZIP archive containing UTF-8 Markdown documents and a manifest.json
+file with document IDs and project names. API secrets and billing payment details
+are never included in document exports.
+
+An export download link expires after 24 hours. Exports are encrypted in storage and
+require the requesting owner's authenticated session to download. Export preparation
+usually completes asynchronously, and the owner receives an email when it is ready.
+
+Read-only workspaces can still export documents. An export does not include deleted
+documents or the security audit log; audit logs have a separate Team-only export.
+Exporting documents does not cancel the subscription or delete the workspace. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,616,123,0.00277,estimated at reference prices,0,token_f1,0.0,8.501599542796612,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,37,nw-023,What are the email support opening hours in UTC?,Monday through Friday from 09:00 to 17:00 UTC,"# Regional hosting
+
+Northwind Cloud offers hosting in Frankfurt (eu-central) and Virginia (us-east).
+Workspace owners choose the hosting region during onboarding. Document data and backups
+stay in the selected region. Account email addresses and billing metadata are stored
+in a separate global account system.
+
+A workspace's hosting region cannot be changed after creation. To move regions, create
+a new workspace in the target region, export documents from the old workspace and
+import them into the new one. API keys must be recreated in the new workspace.
+
+The billing address controls the refund policy; the hosting region does not control it.
+For example, an EU customer hosting in Virginia follows the EU refund policy. Hosting
+is not currently available in Singapore, Sydney or Mumbai. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,634,124,0.002825,estimated at reference prices,0,token_f1,0.0,8.02330020815134,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,38,nw-021,How often are encrypted document backups taken?,every 24 hours,"# Backups and recovery
+
+Northwind Cloud takes encrypted document backups every 24 hours and retains backups
+for 30 days. Backups remain in the workspace's selected hosting region. Backup copies
+are not accessible through the document API and are managed by the operations team.
+
+Workspace owners can request document recovery within 30 days of accidental deletion.
+Send the workspace ID, document ID and deletion time to support@northwind.example.
+The target recovery time is 8 business hours after the request is verified. Recovery
+requests do not restore deleted API keys or cancelled automation runs.
+
+Backups protect against operational failures but do not replace a customer's independent
+export. The export document describes portable ZIP downloads and their retention period. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,615,116,0.0026975,estimated at reference prices,0,token_f1,0.0,7.4939001351594925,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,39,nw-007,Please How much does the Team plan cost per workspace per month?,79 USD per workspace per month,"# Team plan
+
+The Team plan costs 79 USD per workspace per month. Team includes 25 member seats, 100 GB
+of document storage and 1000 scheduled automation runs per month. Team supports multiple
+workspace owners. Unused automation runs do not roll over.
+
+Team includes SAML single sign-on, priority email support and a contractual 99.9 percent
+monthly uptime SLA. The target first support response is 4 business hours. Team allows
+up to 100 active projects and supports a dedicated billing contact.
+
+Extra seats cannot be purchased individually on Team. Workspaces needing more than
+25 members must contact sales for an Enterprise agreement. Storage overages cost
+0.08 USD per GB per month and appear on the following invoice. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,643,117,0.0027775,estimated at reference prices,0,token_f1,0.0,7.552600000053644,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,40,nw-026,At what intervals do failed webhooks retry?,"1 minute, 5 minutes and 30 minutes","# Integrations and outbound webhooks
+
+Northwind Cloud supports Slack notifications and outbound HTTPS webhooks. A workspace
+owner configures integrations from Settings > Integrations. The Slack integration sends
+notifications when automation jobs fail; it does not upload document contents to Slack.
+
+Webhook requests include an X-Northwind-Signature header computed using HMAC-SHA256.
+Verify this signature before acting on an event. Webhooks retry failed deliveries
+three times, after 1 minute, 5 minutes and 30 minutes. A delivery is successful only
+when the receiver returns an HTTP status between 200 and 299.
+
+Webhook event IDs are stable across retries, so receivers should deduplicate events.
+The service does not provide an inbound email integration. Owners can disable a webhook
+without removing the webhook's configuration. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,614,119,0.002725,estimated at reference prices,0,token_f1,0.0,7.155200000852346,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,41,nw-014,For how many days are Team security audit logs retained?,180 days,"# Security overview
+
+Northwind Cloud encrypts customer documents at rest with AES-256. Connections use TLS 1.2
+or later. Staff access to production requires hardware-backed multi-factor authentication
+and a recorded support or incident ticket. Customer passwords are never stored in plaintext.
+
+Workspace owners can require multi-factor authentication for all members. Security audit
+logs are retained for 180 days on Team. Report suspected vulnerabilities to
+security@northwind.example; the security team acknowledges reports within 2 business days.
+
+This fictional service makes no SOC 2 certification claim. Security overview facts are
+provided for retrieval experiments. SAML single sign-on is available on Team and Enterprise;
+the Pro plan supports password and multi-factor authentication only. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,614,109,0.002625,estimated at reference prices,0,token_f1,0.0,7.437100168317556,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,42,nw-030,Can a workspace's hosting region be changed after creation?,A workspace's hosting region cannot be changed after creation,"# Regional hosting
+
+Northwind Cloud offers hosting in Frankfurt (eu-central) and Virginia (us-east).
+Workspace owners choose the hosting region during onboarding. Document data and backups
+stay in the selected region. Account email addresses and billing metadata are stored
+in a separate global account system.
+
+A workspace's hosting region cannot be changed after creation. To move regions, create
+a new workspace in the target region, export documents from the old workspace and
+import them into the new one. API keys must be recreated in the new workspace.
+
+The billing address controls the refund policy; the hosting region does not control it.
+For example, an EU customer hosting in Virginia follows the EU refund policy. Hosting
+is not currently available in Singapore, Sydney or Mumbai. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,618,124,0.002785,estimated at reference prices,0,token_f1,0.0,8.13570013269782,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,43,nw-040,Which timezone do the documentation's scheduled job examples use?,UTC,"# Northwind Cloud product FAQ
+
+Northwind Cloud is a fictional managed workspace for publishing internal documentation
+and running scheduled automation jobs. A workspace contains projects; each project has
+documents, automation jobs and an activity log. Northwind Cloud does not sell virtual
+machines or provide a cryptocurrency exchange.
+
+Workspace names must contain between 3 and 40 characters. Workspace names can use
+letters, digits and hyphens. A project can be archived without deleting its documents.
+Archived projects are read-only and their scheduled automation jobs stop running.
+
+The web console supports the latest two stable releases of Edge, Chrome and Firefox.
+The command-line tool is named nwctl. Northwind Cloud's documentation examples use
+UTC for every scheduled job, regardless of the user's browser timezone. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,621,121,0.0027625,estimated at reference prices,0,token_f1,0.0,8.52769985795021,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,44,nw-039,What is the name of the Northwind command-line tool?,nwctl,"# United States refund policy
+
+Customers with a US billing address may request a subscription refund within 7 calendar
+days of their first paid subscription purchase. The US refund window is 7 calendar days.
+Renewal invoices and usage-based storage overages are not eligible for this refund.
+
+Submit the invoice ID and workspace ID to billing@northwind.example and describe the
+reason for the request. Approved refunds return to the original payment method within
+10 business days. Cancelling a subscription alone does not submit a refund request.
+
+The workspace remains readable until the end of the paid period unless the owner requests
+immediate closure. The EU policy is documented separately and uses a different window. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,597,113,0.0026225,estimated at reference prices,0,token_f1,0.0,10.534099768847227,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,45,nw-016,What is an invited user's default member role?,viewer,"# Incident communications
+
+The public status page is status.northwind.example. The incident team publishes an
+initial notification within 15 minutes of confirming a production outage. During
+an active priority-one incident, updates are published every 30 minutes.
+
+A post-incident review is published within 5 business days after resolution. Reviews
+include the timeline, impact and prevention actions. Customer names and document
+contents are excluded from public incident reports. Team owners can subscribe to
+incident notifications from Settings > Notifications.
+
+The status page covers the document API, web console and automation scheduler separately.
+An incident notification does not automatically create an SLA credit request. Owners
+must request credits using the process described in the SLA document. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,624,113,0.00269,estimated at reference prices,0,token_f1,0.0,9.470999706536531,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,46,nw-027,How many document API requests per minute does Pro permit?,60 document API requests per minute per workspace,"# Document API rate limits
+
+The Pro plan permits 60 document API requests per minute per workspace. The Team plan
+permits 300 document API requests per minute per workspace. The Free plan permits
+20 document API requests per minute per workspace. All API keys in a workspace share
+the same rate-limit bucket.
+
+Requests above the limit receive HTTP 429. The Retry-After response header gives the
+number of seconds to wait. Use exponential backoff with jitter when retrying. Rate-limit
+windows reset every minute, and unused capacity does not carry over.
+
+Bulk import requests count as one API request, even when they contain multiple files.
+The rate limit applies to reads and writes together. A revoked API key returns HTTP 401,
+not HTTP 429. Contact sales if a Team workspace needs a higher sustained rate. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,652,134,0.00297,estimated at reference prices,0,token_f1,0.0,8.3686001598835,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,47,nw-008,Please How many member seats are included on Team?,25 member seats,"# Team plan
+
+The Team plan costs 79 USD per workspace per month. Team includes 25 member seats, 100 GB
+of document storage and 1000 scheduled automation runs per month. Team supports multiple
+workspace owners. Unused automation runs do not roll over.
+
+Team includes SAML single sign-on, priority email support and a contractual 99.9 percent
+monthly uptime SLA. The target first support response is 4 business hours. Team allows
+up to 100 active projects and supports a dedicated billing contact.
+
+Extra seats cannot be purchased individually on Team. Workspaces needing more than
+25 members must contact sales for an Enterprise agreement. Storage overages cost
+0.08 USD per GB per month and appear on the following invoice. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,619,117,0.0027175,estimated at reference prices,0,token_f1,0.0,8.113999851047993,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,48,nw-032,What archive format is used for a full document export?,ZIP archive,"# Exporting documents
+
+Workspace owners can request a full document export from Settings > Data > Export.
+The export is a ZIP archive containing UTF-8 Markdown documents and a manifest.json
+file with document IDs and project names. API secrets and billing payment details
+are never included in document exports.
+
+An export download link expires after 24 hours. Exports are encrypted in storage and
+require the requesting owner's authenticated session to download. Export preparation
+usually completes asynchronously, and the owner receives an email when it is ready.
+
+Read-only workspaces can still export documents. An export does not include deleted
+documents or the security audit log; audit logs have a separate Team-only export.
+Exporting documents does not cancel the subscription or delete the workspace. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,614,123,0.002765,estimated at reference prices,0,token_f1,0.0,8.087399881333113,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,49,nw-015,After how many hours do onboarding invitations expire?,72 hours,"# Onboarding a workspace
+
+To onboard, verify your email address, choose a workspace name, select a hosting region,
+and invite teammates. The onboarding checklist has four steps. A workspace initially uses
+the Free plan unless its owner explicitly selects a paid plan.
+
+Invitations expire after 72 hours. Only workspace owners can send or revoke invitations.
+An invited user must verify their email address before joining. The default member role
+is viewer; an owner can change it to editor after the invitation is accepted.
+
+Import Markdown or plain-text documents from the Documents > Import screen. A single
+import accepts up to 100 files. The welcome project can be deleted after your own first
+project has been created. The console shows checklist completion to workspace owners. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,617,125,0.0027925,estimated at reference prices,0,token_f1,0.0,7.420599926263094,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,50,nw-012,Which prefix identifies an API key?,nw_live_,"# API keys
+
+Create an API key from Settings > Developer > API Keys. API keys have a nw_live_ prefix
+and are shown only once at creation. Store keys in a secret manager. Never put an API
+key in a public repository, browser bundle or support ticket.
+
+API keys expire after 90 days. Rotate a key by creating a replacement, updating clients,
+and then revoking the old key. Revocation takes effect immediately. Existing keys cannot
+be recovered; create a new key if the secret has been lost.
+
+Each API key is bound to its creating workspace and receives a read or read-write scope.
+Send the key using the Authorization: Bearer header. API keys cannot be transferred
+between workspaces, and deleting a workspace revokes all of its API keys. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,617,129,0.0028325,estimated at reference prices,0,token_f1,0.0,8.616899605840445,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,51,nw-002,Please Within how many business days do approved EU refunds return?,5 business days,"# API keys
+
+Create an API key from Settings > Developer > API Keys. API keys have a nw_live_ prefix
+and are shown only once at creation. Store keys in a secret manager. Never put an API
+key in a public repository, browser bundle or support ticket.
+
+API keys expire after 90 days. Rotate a key by creating a replacement, updating clients,
+and then revoking the old key. Revocation takes effect immediately. Existing keys cannot
+be recovered; create a new key if the secret has been lost.
+
+Each API key is bound to its creating workspace and receives a read or read-write scope.
+Send the key using the Authorization: Bearer header. API keys cannot be transferred
+between workspaces, and deleting a workspace revokes all of its API keys. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,619,129,0.0028375,estimated at reference prices,0,token_f1,0.0,7.634600158780813,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,52,nw-042,Who is the chief executive officer of Northwind Cloud?,I don't know,"# Northwind Cloud product FAQ
+
+Northwind Cloud is a fictional managed workspace for publishing internal documentation
+and running scheduled automation jobs. A workspace contains projects; each project has
+documents, automation jobs and an activity log. Northwind Cloud does not sell virtual
+machines or provide a cryptocurrency exchange.
+
+Workspace names must contain between 3 and 40 characters. Workspace names can use
+letters, digits and hyphens. A project can be archived without deleting its documents.
+Archived projects are read-only and their scheduled automation jobs stop running.
+
+The web console supports the latest two stable releases of Edge, Chrome and Firefox.
+The command-line tool is named nwctl. Northwind Cloud's documentation examples use
+UTC for every scheduled job, regardless of the user's browser timezone. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,611,121,0.0027375,estimated at reference prices,0,token_f1,0.0,7.43350014090538,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,53,nw-025,What algorithm signs outbound webhook requests?,HMAC-SHA256,"# Integrations and outbound webhooks
+
+Northwind Cloud supports Slack notifications and outbound HTTPS webhooks. A workspace
+owner configures integrations from Settings > Integrations. The Slack integration sends
+notifications when automation jobs fail; it does not upload document contents to Slack.
+
+Webhook requests include an X-Northwind-Signature header computed using HMAC-SHA256.
+Verify this signature before acting on an event. Webhooks retry failed deliveries
+three times, after 1 minute, 5 minutes and 30 minutes. A delivery is successful only
+when the receiver returns an HTTP status between 200 and 299.
+
+Webhook event IDs are stable across retries, so receivers should deduplicate events.
+The service does not provide an inbound email integration. Owners can disable a webhook
+without removing the webhook's configuration. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,615,119,0.0027275,estimated at reference prices,0,token_f1,0.0,7.601799909025431,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,54,nw-045,Which programming language powers the automation scheduler?,I don't know,"# Onboarding a workspace
+
+To onboard, verify your email address, choose a workspace name, select a hosting region,
+and invite teammates. The onboarding checklist has four steps. A workspace initially uses
+the Free plan unless its owner explicitly selects a paid plan.
+
+Invitations expire after 72 hours. Only workspace owners can send or revoke invitations.
+An invited user must verify their email address before joining. The default member role
+is viewer; an owner can change it to editor after the invitation is accepted.
+
+Import Markdown or plain-text documents from the Documents > Import screen. A single
+import accepts up to 100 files. The welcome project can be deleted after your own first
+project has been created. The console shows checklist completion to workspace owners. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,605,125,0.0027625,estimated at reference prices,0,token_f1,0.0,7.252800278365612,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,55,nw-005,How much does the Pro plan cost per workspace per month?,19 USD per workspace per month,"# Pro plan
+
+The Pro plan costs 19 USD per workspace per month. Pro includes 5 member seats, 20 GB of
+document storage and 100 scheduled automation runs per month. Pro supports one workspace
+owner and up to four additional members. Unused automation runs do not roll over.
+
+Pro includes email support with a target first response of 2 business days. Pro does not
+include SAML single sign-on, a contractual uptime SLA or priority incident support. API
+access is included, with the limits described in the rate limits document.
+
+Extra seats cannot be purchased individually on Pro. Upgrade to Team when a workspace
+needs more than 5 members. Storage overages cost 0.10 USD per GB per month and appear on
+the following invoice. A Pro workspace can have up to 10 active projects. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,642,134,0.002945,estimated at reference prices,0,token_f1,0.0,7.998299784958363,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,56,nw-034,When is a post-incident review published?,within 5 business days after resolution,"# Incident communications
+
+The public status page is status.northwind.example. The incident team publishes an
+initial notification within 15 minutes of confirming a production outage. During
+an active priority-one incident, updates are published every 30 minutes.
+
+A post-incident review is published within 5 business days after resolution. Reviews
+include the timeline, impact and prevention actions. Customer names and document
+contents are excluded from public incident reports. Team owners can subscribe to
+incident notifications from Settings > Notifications.
+
+The status page covers the document API, web console and automation scheduler separately.
+An incident notification does not automatically create an SLA credit request. Owners
+must request credits using the process described in the SLA document. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,623,113,0.0026875,estimated at reference prices,0,token_f1,0.0,7.542000152170658,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,57,nw-007,Please How much does the Team plan cost per workspace per month?,79 USD per workspace per month,"# Team plan
+
+The Team plan costs 79 USD per workspace per month. Team includes 25 member seats, 100 GB
+of document storage and 1000 scheduled automation runs per month. Team supports multiple
+workspace owners. Unused automation runs do not roll over.
+
+Team includes SAML single sign-on, priority email support and a contractual 99.9 percent
+monthly uptime SLA. The target first support response is 4 business hours. Team allows
+up to 100 active projects and supports a dedicated billing contact.
+
+Extra seats cannot be purchased individually on Team. Workspaces needing more than
+25 members must contact sales for an Enterprise agreement. Storage overages cost
+0.08 USD per GB per month and appear on the following invoice. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,643,117,0.0027775,estimated at reference prices,0,token_f1,0.0,7.608799729496241,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,58,nw-004,Within how many business days do approved US refunds return?,10 business days,"# API keys
+
+Create an API key from Settings > Developer > API Keys. API keys have a nw_live_ prefix
+and are shown only once at creation. Store keys in a secret manager. Never put an API
+key in a public repository, browser bundle or support ticket.
+
+API keys expire after 90 days. Rotate a key by creating a replacement, updating clients,
+and then revoking the old key. Revocation takes effect immediately. Existing keys cannot
+be recovered; create a new key if the secret has been lost.
+
+Each API key is bound to its creating workspace and receives a read or read-write scope.
+Send the key using the Authorization: Bearer header. API keys cannot be transferred
+between workspaces, and deleting a workspace revokes all of its API keys. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,618,129,0.002835,estimated at reference prices,0,token_f1,0.0,7.371200248599052,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,59,nw-013,What encryption protects customer documents at rest?,AES-256,"# Security overview
+
+Northwind Cloud encrypts customer documents at rest with AES-256. Connections use TLS 1.2
+or later. Staff access to production requires hardware-backed multi-factor authentication
+and a recorded support or incident ticket. Customer passwords are never stored in plaintext.
+
+Workspace owners can require multi-factor authentication for all members. Security audit
+logs are retained for 180 days on Team. Report suspected vulnerabilities to
+security@northwind.example; the security team acknowledges reports within 2 business days.
+
+This fictional service makes no SOC 2 certification claim. Security overview facts are
+provided for retrieval experiments. SAML single sign-on is available on Team and Enterprise;
+the Pro plan supports password and multi-factor authentication only. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,622,109,0.002645,estimated at reference prices,0,token_f1,0.0,6.987500004470348,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,60,nw-023,What are the email support opening hours in UTC?,Monday through Friday from 09:00 to 17:00 UTC,"# Regional hosting
+
+Northwind Cloud offers hosting in Frankfurt (eu-central) and Virginia (us-east).
+Workspace owners choose the hosting region during onboarding. Document data and backups
+stay in the selected region. Account email addresses and billing metadata are stored
+in a separate global account system.
+
+A workspace's hosting region cannot be changed after creation. To move regions, create
+a new workspace in the target region, export documents from the old workspace and
+import them into the new one. API keys must be recreated in the new workspace.
+
+The billing address controls the refund policy; the hosting region does not control it.
+For example, an EU customer hosting in Virginia follows the EU refund policy. Hosting
+is not currently available in Singapore, Sydney or Mumbai. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,634,124,0.002825,estimated at reference prices,0,token_f1,0.0,8.049500174820423,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,61,nw-039,Please What is the name of the Northwind command-line tool?,nwctl,"# United States refund policy
+
+Customers with a US billing address may request a subscription refund within 7 calendar
+days of their first paid subscription purchase. The US refund window is 7 calendar days.
+Renewal invoices and usage-based storage overages are not eligible for this refund.
+
+Submit the invoice ID and workspace ID to billing@northwind.example and describe the
+reason for the request. Approved refunds return to the original payment method within
+10 business days. Cancelling a subscription alone does not submit a refund request.
+
+The workspace remains readable until the end of the paid period unless the owner requests
+immediate closure. The EU policy is documented separately and uses a different window. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,598,113,0.002625,estimated at reference prices,0,token_f1,0.0,10.740600060671568,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,62,nw-041,What was Northwind Cloud's revenue in 2025?,I don't know,"# Northwind Cloud product FAQ
+
+Northwind Cloud is a fictional managed workspace for publishing internal documentation
+and running scheduled automation jobs. A workspace contains projects; each project has
+documents, automation jobs and an activity log. Northwind Cloud does not sell virtual
+machines or provide a cryptocurrency exchange.
+
+Workspace names must contain between 3 and 40 characters. Workspace names can use
+letters, digits and hyphens. A project can be archived without deleting its documents.
+Archived projects are read-only and their scheduled automation jobs stop running.
+
+The web console supports the latest two stable releases of Edge, Chrome and Firefox.
+The command-line tool is named nwctl. Northwind Cloud's documentation examples use
+UTC for every scheduled job, regardless of the user's browser timezone. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,616,121,0.00275,estimated at reference prices,0,token_f1,0.0,7.782700005918741,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,63,nw-033,How soon after confirming an outage is the initial notification published?,within 15 minutes,"# Incident communications
+
+The public status page is status.northwind.example. The incident team publishes an
+initial notification within 15 minutes of confirming a production outage. During
+an active priority-one incident, updates are published every 30 minutes.
+
+A post-incident review is published within 5 business days after resolution. Reviews
+include the timeline, impact and prevention actions. Customer names and document
+contents are excluded from public incident reports. Team owners can subscribe to
+incident notifications from Settings > Notifications.
+
+The status page covers the document API, web console and automation scheduler separately.
+An incident notification does not automatically create an SLA credit request. Owners
+must request credits using the process described in the SLA document. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,619,113,0.0026775,estimated at reference prices,0,token_f1,0.0,7.93150020763278,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,64,nw-029,In which locations is hosting offered?,Frankfurt and Virginia,"# Regional hosting
+
+Northwind Cloud offers hosting in Frankfurt (eu-central) and Virginia (us-east).
+Workspace owners choose the hosting region during onboarding. Document data and backups
+stay in the selected region. Account email addresses and billing metadata are stored
+in a separate global account system.
+
+A workspace's hosting region cannot be changed after creation. To move regions, create
+a new workspace in the target region, export documents from the old workspace and
+import them into the new one. API keys must be recreated in the new workspace.
+
+The billing address controls the refund policy; the hosting region does not control it.
+For example, an EU customer hosting in Virginia follows the EU refund policy. Hosting
+is not currently available in Singapore, Sydney or Mumbai. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,628,124,0.00281,estimated at reference prices,0,token_f1,0.0,8.21110000833869,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,65,nw-045,Please Which programming language powers the automation scheduler?,I don't know,"# Onboarding a workspace
+
+To onboard, verify your email address, choose a workspace name, select a hosting region,
+and invite teammates. The onboarding checklist has four steps. A workspace initially uses
+the Free plan unless its owner explicitly selects a paid plan.
+
+Invitations expire after 72 hours. Only workspace owners can send or revoke invitations.
+An invited user must verify their email address before joining. The default member role
+is viewer; an owner can change it to editor after the invitation is accepted.
+
+Import Markdown or plain-text documents from the Documents > Import screen. A single
+import accepts up to 100 files. The welcome project can be deleted after your own first
+project has been created. The console shows checklist completion to workspace owners. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,614,125,0.002785,estimated at reference prices,0,token_f1,0.0,7.484300062060356,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,66,nw-010,How many scheduled automation runs per month does Free include?,10 scheduled automation runs per month,"# Free plan
+
+The Free plan costs 0 USD and includes 2 member seats, 1 GB of document storage and
+10 scheduled automation runs per month. A Free workspace can have 2 active projects.
+The Free plan has no contractual uptime SLA and support is provided through the public
+community forum. A credit card is not required to create a Free workspace.
+
+Free workspaces that exceed their storage allowance become unable to upload new
+documents. Existing documents remain readable and exportable. Deleting documents
+or upgrading restores uploads. Automation runs stop when the monthly allowance
+is exhausted and resume on the first day of the next calendar month.
+
+Free workspaces are never automatically upgraded or charged. Only an owner can start
+a paid subscription. The Pro and Team plans are documented separately. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,630,132,0.002895,estimated at reference prices,0,token_f1,0.0,7.967300247400999,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,67,nw-024,What is the target first support response time for Team?,4 business hours,"# Support channels
+
+Email support is available Monday through Friday from 09:00 to 17:00 UTC, excluding
+published company holidays. Contact support@northwind.example and include your workspace
+ID. Never include passwords, API secrets or customer financial data in a support ticket.
+
+Pro has a target first response of 2 business days. Team has a target first response
+of 4 business hours. Free customers use the community forum and have no response-time
+commitment. Target first response is not a guarantee of issue resolution time.
+
+Team workspace owners can flag a production outage as priority one. The incident team
+provides updates through the public status page every 30 minutes during an active
+priority-one outage. Sales questions go to sales@northwind.example. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,601,116,0.0026625,estimated at reference prices,0,token_f1,0.0,7.846400141716003,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,68,nw-024,What is the target first support response time for Team?,4 business hours,"# Support channels
+
+Email support is available Monday through Friday from 09:00 to 17:00 UTC, excluding
+published company holidays. Contact support@northwind.example and include your workspace
+ID. Never include passwords, API secrets or customer financial data in a support ticket.
+
+Pro has a target first response of 2 business days. Team has a target first response
+of 4 business hours. Free customers use the community forum and have no response-time
+commitment. Target first response is not a guarantee of issue resolution time.
+
+Team workspace owners can flag a production outage as priority one. The incident team
+provides updates through the public status page every 30 minutes during an active
+priority-one outage. Sales questions go to sales@northwind.example. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,601,116,0.0026625,estimated at reference prices,0,token_f1,0.0,7.482999935746193,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,69,nw-024,Please What is the target first support response time for Team?,4 business hours,"# Support channels
+
+Email support is available Monday through Friday from 09:00 to 17:00 UTC, excluding
+published company holidays. Contact support@northwind.example and include your workspace
+ID. Never include passwords, API secrets or customer financial data in a support ticket.
+
+Pro has a target first response of 2 business days. Team has a target first response
+of 4 business hours. Free customers use the community forum and have no response-time
+commitment. Target first response is not a guarantee of issue resolution time.
+
+Team workspace owners can flag a production outage as priority one. The incident team
+provides updates through the public status page every 30 minutes during an active
+priority-one outage. Sales questions go to sales@northwind.example. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,618,116,0.002705,estimated at reference prices,0,token_f1,0.0,7.597200106829405,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,70,nw-011,After how many days do API keys expire?,90 days,"# API keys
+
+Create an API key from Settings > Developer > API Keys. API keys have a nw_live_ prefix
+and are shown only once at creation. Store keys in a secret manager. Never put an API
+key in a public repository, browser bundle or support ticket.
+
+API keys expire after 90 days. Rotate a key by creating a replacement, updating clients,
+and then revoking the old key. Revocation takes effect immediately. Existing keys cannot
+be recovered; create a new key if the secret has been lost.
+
+Each API key is bound to its creating workspace and receives a read or read-write scope.
+Send the key using the Authorization: Bearer header. API keys cannot be transferred
+between workspaces, and deleting a workspace revokes all of its API keys. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,643,129,0.0028975,estimated at reference prices,0,token_f1,0.0,7.34109990298748,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,71,nw-026,At what intervals do failed webhooks retry?,"1 minute, 5 minutes and 30 minutes","# Integrations and outbound webhooks
+
+Northwind Cloud supports Slack notifications and outbound HTTPS webhooks. A workspace
+owner configures integrations from Settings > Integrations. The Slack integration sends
+notifications when automation jobs fail; it does not upload document contents to Slack.
+
+Webhook requests include an X-Northwind-Signature header computed using HMAC-SHA256.
+Verify this signature before acting on an event. Webhooks retry failed deliveries
+three times, after 1 minute, 5 minutes and 30 minutes. A delivery is successful only
+when the receiver returns an HTTP status between 200 and 299.
+
+Webhook event IDs are stable across retries, so receivers should deduplicate events.
+The service does not provide an inbound email integration. Owners can disable a webhook
+without removing the webhook's configuration. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,614,119,0.002725,estimated at reference prices,0,token_f1,0.0,7.238900288939476,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,72,nw-037,When in the month are invoices issued?,the first day of each calendar month,"# Billing and invoices
+
+Northwind Cloud invoices are issued on the first day of each calendar month in USD.
+Invoices are payable within 15 calendar days. Workspace owners can download PDF invoices
+from Settings > Billing > Invoices. Billing contacts receive an email copy of each invoice.
+
+Only a workspace owner can change the billing contact or payment method. Supported
+payment methods are Visa, Mastercard and bank transfer. A failed card payment is retried
+after 3 days and again after 7 days. A workspace becomes read-only after 14 days of
+nonpayment; documents remain available for export.
+
+Upgrades take effect immediately and are prorated for the remaining days in the month.
+Downgrades take effect at the next monthly renewal. Taxes appear as separate invoice
+line items and depend on the customer's billing address. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,619,133,0.0028775,estimated at reference prices,0,token_f1,0.0,7.643700111657381,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,73,nw-022,What is the target document recovery time after verification?,8 business hours,"# Backups and recovery
+
+Northwind Cloud takes encrypted document backups every 24 hours and retains backups
+for 30 days. Backups remain in the workspace's selected hosting region. Backup copies
+are not accessible through the document API and are managed by the operations team.
+
+Workspace owners can request document recovery within 30 days of accidental deletion.
+Send the workspace ID, document ID and deletion time to support@northwind.example.
+The target recovery time is 8 business hours after the request is verified. Recovery
+requests do not restore deleted API keys or cancelled automation runs.
+
+Backups protect against operational failures but do not replace a customer's independent
+export. The export document describes portable ZIP downloads and their retention period. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,624,116,0.00272,estimated at reference prices,0,token_f1,0.0,8.696099743247032,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,74,nw-019,What is the maximum size of a single uploaded document?,10 MB,"# Document storage and uploads
+
+The maximum size of a single uploaded document is 10 MB. Supported document formats are
+Markdown (.md) and plain text (.txt), encoded as UTF-8. Images, archives and PDFs cannot
+be uploaded as documents. Each uploaded document receives a stable document ID.
+
+The Pro plan includes 20 GB of storage; Team includes 100 GB. Storage is measured using
+the original UTF-8 file size. Document revision history counts toward storage usage.
+Deleted documents stop counting toward storage after the daily cleanup job.
+
+An upload that would exceed the storage allowance is rejected on Free. Paid plans permit
+overages at their documented rates. Workspace owners can view storage usage from
+Settings > Usage. Bulk imports accept up to 100 documents in a single request. [1]",0,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,631,127,0.0028475,estimated at reference prices,0,token_f1,0.0,7.613599766045809,service wall time including request logging; excluding judge
+MOCK,p1_baseline_20261013T123355859270Z,75,nw-005,Please How much does the Pro plan cost per workspace per month?,19 USD per workspace per month,"# Pro plan
+
+The Pro plan costs 19 USD per workspace per month. Pro includes 5 member seats, 20 GB of
+document storage and 100 scheduled automation runs per month. Pro supports one workspace
+owner and up to four additional members. Unused automation runs do not roll over.
+
+Pro includes email support with a target first response of 2 business days. Pro does not
+include SAML single sign-on, a contractual uptime SLA or priority incident support. API
+access is included, with the limits described in the rate limits document.
+
+Extra seats cannot be purchased individually on Pro. Upgrade to Team when a workspace
+needs more than 5 members. Storage overages cost 0.10 USD per GB per month and appear on
+the following invoice. A Pro workspace can have up to 10 active projects. [1]",1,0.4,0.4,complex,ollama/qwen2.5:7b,0,0,643,134,0.0029475,estimated at reference prices,0,token_f1,0.0,7.290999870747328,service wall time including request logging; excluding judge
