@@ -1,0 +1,1 @@
+602 passed (600 adversarial cases + revoke test + negative control), live Qdrant server v1.17.0 at localhost:6333, RAG_MODE=real, 2026-10-17
