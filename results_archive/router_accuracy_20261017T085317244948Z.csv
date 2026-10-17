@@ -1,0 +1,201 @@
+mode,id,router,question,expected,predicted,correct,reason,classifier_in_tokens,classifier_out_tokens,classifier_reference_cost
+REAL,route-001,rule,How long is the EU refund window?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-001,llm,How long is the EU refund window?,simple,complex,0,invalid_classifier_output,72,5,1.3799999999999998e-05
+REAL,route-002,rule,How long is the US refund window?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-002,llm,How long is the US refund window?,simple,complex,0,invalid_classifier_output,72,5,1.3799999999999998e-05
+REAL,route-003,rule,How much does Pro cost?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-003,llm,How much does Pro cost?,simple,complex,0,invalid_classifier_output,70,5,1.35e-05
+REAL,route-004,rule,How much does Team cost?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-004,llm,How much does Team cost?,simple,complex,0,invalid_classifier_output,70,5,1.35e-05
+REAL,route-005,rule,Explain Pro's included seat count.,simple,complex,0,complexity_words,0,0,0.0
+REAL,route-005,llm,Explain Pro's included seat count.,simple,complex,0,invalid_classifier_output,72,11,1.74e-05
+REAL,route-006,rule,How many seats does Team include?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-006,llm,How many seats does Team include?,simple,complex,0,invalid_classifier_output,71,6,1.425e-05
+REAL,route-007,rule,How much storage does Pro include?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-007,llm,How much storage does Pro include?,simple,simple,1,llm,71,2,1.185e-05
+REAL,route-008,rule,Explain Team's included storage allowance.,simple,complex,0,complexity_words,0,0,0.0
+REAL,route-008,llm,Explain Team's included storage allowance.,simple,simple,1,llm,72,2,1.1999999999999999e-05
+REAL,route-009,rule,Does Free require a credit card?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-009,llm,Does Free require a credit card?,simple,complex,0,invalid_classifier_output,71,5,1.365e-05
+REAL,route-010,rule,When do API keys expire?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-010,llm,When do API keys expire?,simple,complex,0,invalid_classifier_output,70,4,1.29e-05
+REAL,route-011,rule,What prefix do API keys use?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-011,llm,What prefix do API keys use?,simple,simple,1,llm,71,2,1.185e-05
+REAL,route-012,rule,Explain the encryption algorithm used at rest.,simple,complex,0,complexity_words,0,0,0.0
+REAL,route-012,llm,Explain the encryption algorithm used at rest.,simple,complex,0,invalid_classifier_output,73,14,1.9350000000000003e-05
+REAL,route-013,rule,How long are audit logs retained on Team?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-013,llm,How long are audit logs retained on Team?,simple,simple,1,llm,73,2,1.2149999999999999e-05
+REAL,route-014,rule,When do invitations expire?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-014,llm,When do invitations expire?,simple,complex,0,invalid_classifier_output,69,4,1.275e-05
+REAL,route-015,rule,Explain the default role assigned to an invited member.,simple,complex,0,complexity_words,0,0,0.0
+REAL,route-015,llm,Explain the default role assigned to an invited member.,simple,complex,0,invalid_classifier_output,75,13,1.9050000000000002e-05
+REAL,route-016,rule,What uptime does Team guarantee?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-016,llm,What uptime does Team guarantee?,simple,simple,1,llm,70,2,1.17e-05
+REAL,route-017,rule,Explain the single-document upload size limit.,simple,complex,0,complexity_words,0,0,0.0
+REAL,route-017,llm,Explain the single-document upload size limit.,simple,complex,0,invalid_classifier_output,73,12,1.8149999999999997e-05
+REAL,route-018,rule,What document formats can I upload?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-018,llm,What document formats can I upload?,simple,simple,1,llm,71,2,1.185e-05
+REAL,route-019,rule,How often are backups taken?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-019,llm,How often are backups taken?,simple,simple,1,llm,70,2,1.17e-05
+REAL,route-020,rule,Explain the backup retention period.,simple,complex,0,complexity_words,0,0,0.0
+REAL,route-020,llm,Explain the backup retention period.,simple,complex,0,invalid_classifier_output,71,64,4.905e-05
+REAL,route-021,rule,What are the support opening hours?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-021,llm,What are the support opening hours?,simple,complex,0,invalid_classifier_output,71,12,1.785e-05
+REAL,route-022,rule,What algorithm signs webhooks?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-022,llm,What algorithm signs webhooks?,simple,simple,1,llm,70,2,1.17e-05
+REAL,route-023,rule,How many webhook retries happen?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-023,llm,How many webhook retries happen?,simple,simple,1,llm,70,2,1.17e-05
+REAL,route-024,rule,What API rate limit applies to Pro?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-024,llm,What API rate limit applies to Pro?,simple,simple,1,llm,72,2,1.1999999999999999e-05
+REAL,route-025,rule,What API rate limit applies to Team?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-025,llm,What API rate limit applies to Team?,simple,simple,1,llm,72,2,1.1999999999999999e-05
+REAL,route-026,rule,Which locations offer hosting?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-026,llm,Which locations offer hosting?,simple,complex,0,invalid_classifier_output,69,5,1.335e-05
+REAL,route-027,rule,Explain the export link expiration period.,simple,complex,0,complexity_words,0,0,0.0
+REAL,route-027,llm,Explain the export link expiration period.,simple,complex,0,invalid_classifier_output,72,17,2.1e-05
+REAL,route-028,rule,What format does a document export use?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-028,llm,What format does a document export use?,simple,simple,1,llm,72,2,1.1999999999999999e-05
+REAL,route-029,rule,What is the public status page?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-029,llm,What is the public status page?,simple,complex,0,invalid_classifier_output,71,5,1.365e-05
+REAL,route-030,rule,When are invoices issued?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-030,llm,When are invoices issued?,simple,simple,1,llm,69,2,1.155e-05
+REAL,route-031,rule,Explain the invoice payment deadline.,simple,complex,0,complexity_words,0,0,0.0
+REAL,route-031,llm,Explain the invoice payment deadline.,simple,simple,1,llm,71,2,1.185e-05
+REAL,route-032,rule,What is the CLI tool called?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-032,llm,What is the CLI tool called?,simple,complex,0,invalid_classifier_output,71,8,1.545e-05
+REAL,route-033,rule,What timezone do scheduled examples use?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-033,llm,What timezone do scheduled examples use?,simple,simple,1,llm,71,2,1.185e-05
+REAL,route-034,rule,Does Free include a contractual SLA?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-034,llm,Does Free include a contractual SLA?,simple,simple,1,llm,72,2,1.1999999999999999e-05
+REAL,route-035,rule,Does Team include SAML?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-035,llm,Does Team include SAML?,simple,complex,0,invalid_classifier_output,70,3,1.23e-05
+REAL,route-036,rule,Does Pro include SAML?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-036,llm,Does Pro include SAML?,simple,complex,0,invalid_classifier_output,70,3,1.23e-05
+REAL,route-037,rule,Explain the active project count allowed on Free.,simple,complex,0,complexity_words,0,0,0.0
+REAL,route-037,llm,Explain the active project count allowed on Free.,simple,complex,0,invalid_classifier_output,74,3,1.2899999999999998e-05
+REAL,route-038,rule,How many active projects does Pro allow?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-038,llm,How many active projects does Pro allow?,simple,simple,1,llm,72,2,1.1999999999999999e-05
+REAL,route-039,rule,How many active projects does Team allow?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-039,llm,How many active projects does Team allow?,simple,complex,0,invalid_classifier_output,72,5,1.3799999999999998e-05
+REAL,route-040,rule,Which payment methods are supported?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-040,llm,Which payment methods are supported?,simple,complex,0,invalid_classifier_output,70,7,1.47e-05
+REAL,route-041,rule,Who can change the billing contact?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-041,llm,Who can change the billing contact?,simple,simple,1,llm,71,2,1.185e-05
+REAL,route-042,rule,What is the first card retry delay?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-042,llm,What is the first card retry delay?,simple,simple,1,llm,72,2,1.1999999999999999e-05
+REAL,route-043,rule,What is the second card retry delay?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-043,llm,What is the second card retry delay?,simple,simple,1,llm,72,2,1.1999999999999999e-05
+REAL,route-044,rule,When does nonpayment make a workspace read-only?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-044,llm,When does nonpayment make a workspace read-only?,simple,simple,1,llm,74,2,1.2299999999999999e-05
+REAL,route-045,rule,How long can a cancelled workspace export documents?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-045,llm,How long can a cancelled workspace export documents?,simple,simple,1,llm,73,2,1.2149999999999999e-05
+REAL,route-046,rule,When are live documents permanently deleted?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-046,llm,When are live documents permanently deleted?,simple,simple,1,llm,71,2,1.185e-05
+REAL,route-047,rule,When is a post-incident review published?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-047,llm,When is a post-incident review published?,simple,simple,1,llm,73,2,1.2149999999999999e-05
+REAL,route-048,rule,What header communicates rate-limit wait time?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-048,llm,What header communicates rate-limit wait time?,simple,simple,1,llm,72,2,1.1999999999999999e-05
+REAL,route-049,rule,Explain the number of files allowed in one import.,simple,complex,0,complexity_words,0,0,0.0
+REAL,route-049,llm,Explain the number of files allowed in one import.,simple,simple,1,llm,75,2,1.245e-05
+REAL,route-050,rule,Where do backups remain?,simple,simple,1,short_factual_question,0,0,0.0
+REAL,route-050,llm,Where do backups remain?,simple,complex,0,invalid_classifier_output,69,4,1.275e-05
+REAL,route-051,rule,"An owner needs eight seats and SAML. Which plan meets both needs, and what does it cost?",complex,simple,0,short_factual_question,0,0,0.0
+REAL,route-051,llm,"An owner needs eight seats and SAML. Which plan meets both needs, and what does it cost?",complex,complex,1,invalid_classifier_output,85,17,2.295e-05
+REAL,route-052,rule,Compare EU and US refund windows and processing times.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-052,llm,Compare EU and US refund windows and processing times.,complex,complex,1,invalid_classifier_output,74,36,3.2699999999999995e-05
+REAL,route-053,rule,"Explain how cancellation, refund requests and permanent deletion differ.",complex,complex,1,complexity_words,0,0,0.0
+REAL,route-053,llm,"Explain how cancellation, refund requests and permanent deletion differ.",complex,complex,1,invalid_classifier_output,76,63,4.9199999999999997e-05
+REAL,route-054,rule,"A workspace missed payment and became read-only. Can the owner export its documents, and when did the restriction start?",complex,simple,0,short_factual_question,0,0,0.0
+REAL,route-054,llm,"A workspace missed payment and became read-only. Can the owner export its documents, and when did the restriction start?",complex,complex,1,invalid_classifier_output,87,9,1.8449999999999998e-05
+REAL,route-055,rule,What is the difference between a support response target and resolution time?,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-055,llm,What is the difference between a support response target and resolution time?,complex,complex,1,invalid_classifier_output,77,3,1.3349999999999998e-05
+REAL,route-056,rule,Compare API key revocation with rotating a key safely.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-056,llm,Compare API key revocation with rotating a key safely.,complex,complex,1,invalid_classifier_output,75,6,1.485e-05
+REAL,route-057,rule,Explain the trade-off between Pro and Team for growing member counts.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-057,llm,Explain the trade-off between Pro and Team for growing member counts.,complex,complex,1,invalid_classifier_output,78,138,9.45e-05
+REAL,route-058,rule,"An EU customer hosts in Virginia and cancelled after ten days. Which refund policy applies, and are they within its window?",complex,simple,0,short_factual_question,0,0,0.0
+REAL,route-058,llm,"An EU customer hosts in Virginia and cancelled after ten days. Which refund policy applies, and are they within its window?",complex,complex,1,invalid_classifier_output,88,19,2.46e-05
+REAL,route-059,rule,Compare upgrade timing versus downgrade timing and proration.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-059,llm,Compare upgrade timing versus downgrade timing and proration.,complex,complex,1,invalid_classifier_output,74,20,2.3100000000000002e-05
+REAL,route-060,rule,Explain how backups and independent exports complement each other.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-060,llm,Explain how backups and independent exports complement each other.,complex,complex,1,invalid_classifier_output,75,50,4.125e-05
+REAL,route-061,rule,Compare Free upload restrictions with paid storage overages.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-061,llm,Compare Free upload restrictions with paid storage overages.,complex,complex,1,invalid_classifier_output,74,6,1.47e-05
+REAL,route-062,rule,What actions migrate documents to Frankfurt and update API credentials without losing client access?,complex,simple,0,short_factual_question,0,0,0.0
+REAL,route-062,llm,What actions migrate documents to Frankfurt and update API credentials without losing client access?,complex,complex,1,invalid_classifier_output,79,19,2.325e-05
+REAL,route-063,rule,"Compare monthly automation limits across Free, Pro and Team.",complex,complex,1,complexity_words,0,0,0.0
+REAL,route-063,llm,"Compare monthly automation limits across Free, Pro and Team.",complex,complex,1,invalid_classifier_output,75,25,2.625e-05
+REAL,route-064,rule,Explain how an outage notification differs from an SLA credit request.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-064,llm,Explain how an outage notification differs from an SLA credit request.,complex,complex,1,invalid_classifier_output,78,104,7.41e-05
+REAL,route-065,rule,Why should webhook receivers deduplicate stable event IDs?,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-065,llm,Why should webhook receivers deduplicate stable event IDs?,complex,simple,0,llm,74,2,1.2299999999999999e-05
+REAL,route-066,rule,"Team uptime was 98.8 percent last month. What credit applies, and how soon must the owner request it?",complex,simple,0,short_factual_question,0,0,0.0
+REAL,route-066,llm,"Team uptime was 98.8 percent last month. What credit applies, and how soon must the owner request it?",complex,complex,1,invalid_classifier_output,88,5,1.62e-05
+REAL,route-067,rule,Explain how to recover a document and what cannot be restored.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-067,llm,Explain how to recover a document and what cannot be restored.,complex,complex,1,invalid_classifier_output,77,8,1.6349999999999998e-05
+REAL,route-068,rule,What is the difference between API key scopes and workspace boundaries?,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-068,llm,What is the difference between API key scopes and workspace boundaries?,complex,complex,1,invalid_classifier_output,76,287,0.0001836
+REAL,route-069,rule,Compare Team support with Free community support.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-069,llm,Compare Team support with Free community support.,complex,complex,1,invalid_classifier_output,72,32,3e-05
+REAL,route-070,rule,"The owner permanently deleted the workspace yesterday. When do live documents disappear, and when do its backup copies expire?",complex,simple,0,short_factual_question,0,0,0.0
+REAL,route-070,llm,"The owner permanently deleted the workspace yesterday. When do live documents disappear, and when do its backup copies expire?",complex,complex,1,invalid_classifier_output,86,5,1.59e-05
+REAL,route-071,rule,Why does cancelling a subscription not automatically submit a refund?,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-071,llm,Why does cancelling a subscription not automatically submit a refund?,complex,complex,1,invalid_classifier_output,75,3,1.305e-05
+REAL,route-072,rule,Compare Pro and Team API rate limits and shared key buckets.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-072,llm,Compare Pro and Team API rate limits and shared key buckets.,complex,complex,1,invalid_classifier_output,76,6,1.5e-05
+REAL,route-073,rule,Explain how rate limiting and revoked credentials produce different status codes.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-073,llm,Explain how rate limiting and revoked credentials produce different status codes.,complex,complex,1,invalid_classifier_output,77,104,7.395000000000001e-05
+REAL,route-074,rule,What is the difference between a document export and an audit log export?,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-074,llm,What is the difference between a document export and an audit log export?,complex,complex,1,invalid_classifier_output,78,3,1.35e-05
+REAL,route-075,rule,Compare EU refunds with future invoice service credits.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-075,llm,Compare EU refunds with future invoice service credits.,complex,complex,1,invalid_classifier_output,73,6,1.455e-05
+REAL,route-076,rule,Explain the trade-off between a single bulk import and many individual API uploads.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-076,llm,Explain the trade-off between a single bulk import and many individual API uploads.,complex,complex,1,invalid_classifier_output,80,317,0.00020219999999999998
+REAL,route-077,rule,Why should API keys never be placed in a browser bundle?,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-077,llm,Why should API keys never be placed in a browser bundle?,complex,complex,1,invalid_classifier_output,76,3,1.3199999999999999e-05
+REAL,route-078,rule,A Pro owner needs SAML and authentication enforcement for all members. What changes are needed?,complex,simple,0,short_factual_question,0,0,0.0
+REAL,route-078,llm,A Pro owner needs SAML and authentication enforcement for all members. What changes are needed?,complex,complex,1,invalid_classifier_output,82,47,4.05e-05
+REAL,route-079,rule,Explain onboarding steps and invitation role changes after acceptance.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-079,llm,Explain onboarding steps and invitation role changes after acceptance.,complex,complex,1,invalid_classifier_output,76,109,7.68e-05
+REAL,route-080,rule,Compare archiving a project versus deleting a workspace.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-080,llm,Compare archiving a project versus deleting a workspace.,complex,complex,1,invalid_classifier_output,74,24,2.55e-05
+REAL,route-081,rule,"Can I cancel a paid workspace today, export next week, and permanently delete its data afterward? Give the applicable deadlines.",complex,simple,0,short_factual_question,0,0,0.0
+REAL,route-081,llm,"Can I cancel a paid workspace today, export next week, and permanently delete its data afterward? Give the applicable deadlines.",complex,complex,1,invalid_classifier_output,88,34,3.36e-05
+REAL,route-082,rule,What is the difference between monthly included storage and billable revision history?,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-082,llm,What is the difference between monthly included storage and billable revision history?,complex,complex,1,invalid_classifier_output,78,3,1.35e-05
+REAL,route-083,rule,Compare first purchase refund eligibility with renewal invoice eligibility.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-083,llm,Compare first purchase refund eligibility with renewal invoice eligibility.,complex,complex,1,invalid_classifier_output,74,20,2.3100000000000002e-05
+REAL,route-084,rule,Explain how scheduled maintenance affects monthly SLA availability calculations.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-084,llm,Explain how scheduled maintenance affects monthly SLA availability calculations.,complex,complex,1,invalid_classifier_output,76,266,0.000171
+REAL,route-085,rule,Why does an export omit API secrets and payment details?,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-085,llm,Why does an export omit API secrets and payment details?,complex,complex,1,invalid_classifier_output,75,6,1.485e-05
+REAL,route-086,rule,Compare incident update frequency with post-incident review timing.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-086,llm,Compare incident update frequency with post-incident review timing.,complex,complex,1,invalid_classifier_output,75,6,1.485e-05
+REAL,route-087,rule,"Three Pro API keys each sent 25 requests in one minute. Is the workspace over its limit, and how should clients retry?",complex,simple,0,short_factual_question,0,0,0.0
+REAL,route-087,llm,"Three Pro API keys each sent 25 requests in one minute. Is the workspace over its limit, and how should clients retry?",complex,complex,1,invalid_classifier_output,90,11,2.01e-05
+REAL,route-088,rule,Explain the trade-off between deleting revisions and paying storage overages.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-088,llm,Explain the trade-off between deleting revisions and paying storage overages.,complex,complex,1,invalid_classifier_output,78,48,4.05e-05
+REAL,route-089,rule,What is the difference between a workspace owner and a default invited viewer?,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-089,llm,What is the difference between a workspace owner and a default invited viewer?,complex,complex,1,invalid_classifier_output,78,3,1.35e-05
+REAL,route-090,rule,Compare backup data residency with global account metadata storage.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-090,llm,Compare backup data residency with global account metadata storage.,complex,complex,1,invalid_classifier_output,74,6,1.47e-05
+REAL,route-091,rule,"Explain how nonpayment affects uploads, readability and exports.",complex,complex,1,complexity_words,0,0,0.0
+REAL,route-091,llm,"Explain how nonpayment affects uploads, readability and exports.",complex,complex,1,invalid_classifier_output,76,90,6.54e-05
+REAL,route-092,rule,Why must an API key be recreated after migrating to a new workspace?,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-092,llm,Why must an API key be recreated after migrating to a new workspace?,complex,simple,0,llm,78,2,1.2899999999999998e-05
+REAL,route-093,rule,A US customer requested a refund and document recovery. What processing and recovery targets apply to those two requests?,complex,complex,1,ambiguous_retrieval,0,0,0.0
+REAL,route-093,llm,A US customer requested a refund and document recovery. What processing and recovery targets apply to those two requests?,complex,complex,1,invalid_classifier_output,85,160,0.00010875
+REAL,route-094,rule,Explain how to verify webhook signatures before retry deduplication.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-094,llm,Explain how to verify webhook signatures before retry deduplication.,complex,complex,1,invalid_classifier_output,77,409,0.00025695
+REAL,route-095,rule,What is the difference between an archived project's data and its scheduled jobs?,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-095,llm,What is the difference between an archived project's data and its scheduled jobs?,complex,complex,1,invalid_classifier_output,79,16,2.145e-05
+REAL,route-096,rule,Compare included member seats and extra-seat purchasing options on both paid plans.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-096,llm,Compare included member seats and extra-seat purchasing options on both paid plans.,complex,complex,1,invalid_classifier_output,78,74,5.6099999999999995e-05
+REAL,route-097,rule,Explain cancellation versus deleting only the owner's user account.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-097,llm,Explain cancellation versus deleting only the owner's user account.,complex,complex,1,invalid_classifier_output,76,133,9.120000000000001e-05
+REAL,route-098,rule,Compare refund eligibility for subscriptions versus storage overages.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-098,llm,Compare refund eligibility for subscriptions versus storage overages.,complex,complex,1,invalid_classifier_output,74,160,0.00010709999999999999
+REAL,route-099,rule,Explain how HTTP 429 retries should use the server's wait header and jitter.,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-099,llm,Explain how HTTP 429 retries should use the server's wait header and jitter.,complex,complex,1,invalid_classifier_output,81,23,2.595e-05
+REAL,route-100,rule,Why should customers keep independent exports despite daily backups?,complex,complex,1,complexity_words,0,0,0.0
+REAL,route-100,llm,Why should customers keep independent exports despite daily backups?,complex,complex,1,invalid_classifier_output,74,3,1.2899999999999998e-05

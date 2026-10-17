@@ -1,0 +1,155 @@
+{
+  "mode": "REAL",
+  "label": "REAL",
+  "repeat_ratio": 0.4,
+  "actual_repeat_ratio": 0.4,
+  "requests_per_system": 75,
+  "cost_basis": "estimated at reference prices",
+  "baseline": {
+    "quality_basis": "reference_in_answer",
+    "judge_accuracy": 0.6133333333333333,
+    "cost": 0.178185,
+    "quality": 0.8933333333333333,
+    "judge_unparseable_count": 0,
+    "p50_latency_ms": 11180.545499999425,
+    "p95_latency_ms": 15350.567469999078,
+    "cache_hit_rate": 0.0,
+    "simple_routed_requests": 0,
+    "escalated_requests": 0,
+    "escalation_rate": null,
+    "route_shares": {
+      "simple": 0.0,
+      "complex": 1.0,
+      "cache": 0.0
+    },
+    "escalation_reasons": {
+      "weak_retrieval": {
+        "count": 0,
+        "share_of_simple": null
+      },
+      "missing_citation": {
+        "count": 0,
+        "share_of_simple": null
+      },
+      "i_dont_know": {
+        "count": 0,
+        "share_of_simple": null
+      }
+    }
+  },
+  "optimized": {
+    "quality_basis": "reference_in_answer",
+    "judge_accuracy": 0.48,
+    "cost": 0.0747728,
+    "quality": 0.92,
+    "judge_unparseable_count": 0,
+    "p50_latency_ms": 15408.643700000539,
+    "p95_latency_ms": 37847.60761999714,
+    "cache_hit_rate": 0.13333333333333333,
+    "simple_routed_requests": 65,
+    "escalated_requests": 28,
+    "escalation_rate": 0.4307692307692308,
+    "route_shares": {
+      "simple": 0.8666666666666667,
+      "complex": 0.0,
+      "cache": 0.13333333333333333
+    },
+    "escalation_reasons": {
+      "weak_retrieval": {
+        "count": 0,
+        "share_of_simple": 0.0
+      },
+      "missing_citation": {
+        "count": 0,
+        "share_of_simple": 0.0
+      },
+      "i_dont_know": {
+        "count": 28,
+        "share_of_simple": 0.4307692307692308
+      }
+    }
+  },
+  "quality_basis": "reference_in_answer",
+  "citation_policies": {
+    "off": {
+      "optimized": {
+        "quality_basis": "reference_in_answer",
+        "judge_accuracy": 0.48,
+        "cost": 0.0747728,
+        "quality": 0.92,
+        "judge_unparseable_count": 0,
+        "p50_latency_ms": 15408.643700000539,
+        "p95_latency_ms": 37847.60761999714,
+        "cache_hit_rate": 0.13333333333333333,
+        "simple_routed_requests": 65,
+        "escalated_requests": 28,
+        "escalation_rate": 0.4307692307692308,
+        "route_shares": {
+          "simple": 0.8666666666666667,
+          "complex": 0.0,
+          "cache": 0.13333333333333333
+        },
+        "escalation_reasons": {
+          "weak_retrieval": {
+            "count": 0,
+            "share_of_simple": 0.0
+          },
+          "missing_citation": {
+            "count": 0,
+            "share_of_simple": 0.0
+          },
+          "i_dont_know": {
+            "count": 28,
+            "share_of_simple": 0.4307692307692308
+          }
+        }
+      },
+      "csv": "project1_optimized_20261017T102733493678Z.csv"
+    },
+    "on": {
+      "optimized": {
+        "quality_basis": "reference_in_answer",
+        "judge_accuracy": 0.5733333333333334,
+        "cost": 0.1419853,
+        "quality": 0.8666666666666667,
+        "judge_unparseable_count": 0,
+        "p50_latency_ms": 32937.6584000056,
+        "p95_latency_ms": 38268.357699996704,
+        "cache_hit_rate": 0.17333333333333334,
+        "simple_routed_requests": 62,
+        "escalated_requests": 56,
+        "escalation_rate": 0.9032258064516129,
+        "route_shares": {
+          "simple": 0.8266666666666667,
+          "complex": 0.0,
+          "cache": 0.17333333333333334
+        },
+        "escalation_reasons": {
+          "weak_retrieval": {
+            "count": 0,
+            "share_of_simple": 0.0
+          },
+          "missing_citation": {
+            "count": 28,
+            "share_of_simple": 0.45161290322580644
+          },
+          "i_dont_know": {
+            "count": 29,
+            "share_of_simple": 0.46774193548387094
+          }
+        }
+      },
+      "csv": "citation_policy_on_20261017T102733519237Z.csv"
+    }
+  },
+  "cost_reduction_percent": 58.03642281898028,
+  "p50_change_ms": 4228.098200001114,
+  "p95_change_ms": 22497.040149998065,
+  "quality_delta": 0.026666666666666727,
+  "cache_hit_rate": 0.13333333333333333,
+  "escalation_rate": 0.4307692307692308,
+  "csvs": [
+    "project1_baseline_20261017T102733482372Z.csv",
+    "project1_optimized_20261017T102733493678Z.csv"
+  ]
+}

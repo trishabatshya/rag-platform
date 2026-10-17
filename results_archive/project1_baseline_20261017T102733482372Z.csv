@@ -1,0 +1,222 @@
+mode,run_tag,request_no,id,question,reference,answer,repeat,repeat_ratio,actual_repeat_ratio,route,model,cache_hit,escalated,escalation_reasons,escalate_no_citation,in_tokens,out_tokens,cost,cost_basis,correct,reference_in_answer,quality_basis,judge_correct,judge_method,judge_label,judge_raw,judge_cost,latency_ms,latency_scope
+REAL,p1_baseline_20261017T085322985935Z,1,nw-041,What was Northwind Cloud's revenue in 2025?,I don't know,I don't know.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,885,6,0.0022725,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction does not provide an answer to the question. The reference explicitly states that the user does not know the answer, and the prediction also states that the user does not know, which is a correct representation of the reference.",0.001125,23528.99030000117,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,2,nw-008,How many member seats are included on Team?,25 member seats,"According to the context, Team includes 25 member seats. [1]",0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,895,16,0.0023975,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction is phrased as a statement rather than a direct answer to the question. The question asks for the number of member seats included on Team, but the prediction provides a paraphrased explanation rather than a numerical answer.",0.0011525,11324.566499999491,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,3,nw-002,Within how many business days do approved EU refunds return?,5 business days,Approved EU refunds return within 5 business days. [1],0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,846,14,0.002255,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0006025,12304.91450000045,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,4,nw-018,What service credit applies if monthly eligible uptime is below 99.0 percent?,25 percent of that month's subscription charge,The service credit for a monthly eligible uptime below 99.0 percent is 25 percent of that month's subscription charge. [1],0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,884,29,0.0025,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.000665,13206.008900000597,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,5,nw-016,What is an invited user's default member role?,viewer,"According to the context, an invited user's default member role is viewer. [1]",0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,868,19,0.00236,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction does not directly answer the question with the key fact from the reference. The reference states the default member role for an invited user as ""viewer"", but the prediction provides a contextual explanation rather than a direct answer.",0.001135,12357.957299998816,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,6,nw-016,What is an invited user's default member role?,viewer,"According to the context, an invited user's default member role is viewer. [1]",1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,868,19,0.00236,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction does not directly answer the question with the key fact from the reference. The reference states the default member role for an invited user as ""viewer"", but the prediction provides a contextual explanation rather than a direct answer.",0.001135,1539.3395999999484,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,7,nw-016,Please What is an invited user's default member role?,viewer,"According to the context, an invited user's default member role is viewer. [1]",1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,869,19,0.0023625,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction is missing the key fact that the default member role is not explicitly stated in the reference. The reference only mentions the viewer role, but the prediction implies that the viewer role is the default role.",0.0011075,1822.3279000012553,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,8,nw-015,After how many hours do onboarding invitations expire?,72 hours,"[1] # Onboarding a workspace
+
+Invitations expire after 72 hours.",0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,848,18,0.0023,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0006075,10043.673299998773,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,9,nw-008,How many member seats are included on Team?,25 member seats,"According to the context, Team includes 25 member seats. [1]",1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,895,16,0.0023975,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction is phrased as a statement rather than a direct answer to the question. The question asks for the number of member seats included on Team, but the prediction provides a paraphrased explanation rather than a numerical answer.",0.0011525,1190.7498000000487,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,10,nw-009,Does a Free workspace need a credit card?,A credit card is not required,I don't know.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,898,6,0.002305,estimated at reference prices,0,0,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction does not provide an answer to the question, which is a yes/no question. The reference clearly states that a credit card is not required for a Free workspace, which directly answers the question. The prediction's response of ""I don't know"" does not address the question and is therefore incorrect.",0.0012825,12540.715200000704,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,11,nw-008,Please How many member seats are included on Team?,25 member seats,"According to the context, Team includes 25 member seats. [1]",1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,896,16,0.0024,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction is phrased as a statement rather than a direct answer to the question. The question asks for the number of member seats included on Team, but the prediction provides a contextual explanation rather than a numerical answer.",0.001135,1706.8461000017123,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,12,nw-007,How much does the Team plan cost per workspace per month?,79 USD per workspace per month,The Team plan costs 79 USD per workspace per month.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,916,13,0.00242,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.00061,9294.417500001146,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,13,nw-035,For how long after the paid period can a cancelled workspace export documents?,30 calendar days,[1] Permanent workspace deletion requires typing the workspace name and confirming by email. Live documents are deleted within 7 calendar days of confirmation.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,852,29,0.00242,estimated at reference prices,0,0,reference_in_answer,0,llm,INCORRECT,"INCORRECT
+
+The prediction does not mention the time frame for exporting documents after a workspace is cancelled.",0.0008375,15062.752500001807,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,14,nw-006,How many member seats are included on Pro?,5 member seats,"According to the context, the Pro plan includes 5 member seats. [1]",0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,894,18,0.002415,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction does not directly state the number of member seats included on Pro, but rather paraphrases the information. The reference directly states that the Pro plan includes 5 member seats.",0.0010575,15461.946499999613,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,15,nw-028,Which header tells a rate-limited API client how long to wait?,Retry-After,[1] The Retry-After response header gives the number of seconds to wait.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,905,18,0.0024425,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,VERDICT: CORRECT,0.0006575,15802.326899996842,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,16,nw-007,How much does the Team plan cost per workspace per month?,79 USD per workspace per month,The Team plan costs 79 USD per workspace per month. [1],1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,916,16,0.00245,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,"### Verdict:
+CORRECT",0.0006575,1407.0019999999204,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,17,nw-003,How long is the US refund window for a first paid subscription?,7 calendar days,The US refund window for a first paid subscription is 7 calendar days. [1],0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,867,19,0.0023575,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,"### Verdict:
+CORRECT",0.00066,15302.833599998849,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,18,nw-015,Please After how many hours do onboarding invitations expire?,72 hours,"[1] # Onboarding a workspace
+
+Invitations expire after 72 hours.",1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,849,18,0.0023025,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.00061,1355.5163000019093,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,19,nw-028,Which header tells a rate-limited API client how long to wait?,Retry-After,The Retry-After response header gives the number of seconds to wait.,1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,905,15,0.0024125,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,"Prediction: The Retry-After response header gives the number of seconds to wait.
+
+Verdict: CORRECT",0.0008,1359.2395999985456,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,20,nw-028,Please Which header tells a rate-limited API client how long to wait?,Retry-After,The Retry-After response header gives the number of seconds to wait.,1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,886,15,0.002365,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,"Prediction: The Retry-After response header gives the number of seconds to wait.
+
+Verdict: CORRECT",0.0008025,6564.606800002366,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,21,nw-043,What is the Enterprise subscription price?,I don't know,I don't know.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,887,6,0.0022775,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,"### Verdict:
+CORRECT",0.0006125,8286.235999999917,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,22,nw-036,How soon are live documents deleted after permanent deletion confirmation?,within 7 calendar days,"According to [2] # Cancellation and workspace closure, live documents are deleted within 7 calendar days of confirmation of permanent workspace deletion.",0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,841,29,0.0023925,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"INCORRECT
+
+The prediction includes extra information not present in the reference. The reference only states that live documents are deleted within 7 calendar days of permanent workspace deletion confirmation, without mentioning ""Cancellation and workspace closure"".",0.0010525,13524.103799998556,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,23,nw-003,How long is the US refund window for a first paid subscription?,7 calendar days,The US refund window for a first paid subscription is 7 calendar days. [1],1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,867,19,0.0023575,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,"### Verdict:
+CORRECT",0.00066,1600.5443999965792,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,24,nw-007,Please How much does the Team plan cost per workspace per month?,79 USD per workspace per month,The Team plan costs 79 USD per workspace per month. [1],1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,917,16,0.0024525,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction matches the key fact in the reference, but the unit is missing. The reference states the cost is 79 USD per workspace per month, but the prediction only states the cost without specifying the unit.",0.00113,1829.7533000004478,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,25,nw-028,Which header tells a rate-limited API client how long to wait?,Retry-After,[1] The Retry-After response header gives the number of seconds to wait.,1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,905,18,0.0024425,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,VERDICT: CORRECT,0.0006575,6949.73630000095,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,26,nw-038,Within how many days must an invoice be paid?,15 calendar days,[1] Invoices are payable within 15 calendar days.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,868,14,0.00231,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0006,10140.303600001062,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,27,nw-015,Please After how many hours do onboarding invitations expire?,72 hours,[1] Invitations expire after 72 hours.,1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,849,12,0.0022425,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.000595,844.0487999978359,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,28,nw-044,What is Northwind Cloud's office street address?,I don't know,I don't know.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,887,6,0.0022775,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,"### Verdict:
+CORRECT",0.00062,13373.756499997398,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,29,nw-017,What monthly document API uptime does the Team SLA guarantee?,99.9 percent,The Team plan guarantees 99.9 percent monthly uptime for the document API.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,892,17,0.0024,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.000615,10660.789499997918,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,30,nw-008,How many member seats are included on Team?,25 member seats,"According to the context, Team includes 25 member seats. [1]",1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,895,16,0.0023975,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction is phrased as a statement rather than a direct answer to the question. The question asks for the number of member seats included on Team, but the prediction provides a paraphrased explanation rather than a numerical answer.",0.0011525,8341.996300001483,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,31,nw-020,Which document formats can be uploaded?,"Markdown (.md) and plain text (.txt), encoded as UTF-8","According to the provided context, the supported document formats for upload are Markdown (.md) and plain text (.txt), encoded as UTF-8. [1]",0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,872,33,0.00251,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0006675,14065.7332999981,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,32,nw-001,How long is the EU refund window for a first paid subscription?,14 calendar days,The EU refund window for a first paid subscription is 14 calendar days. [1],0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,871,19,0.0023675,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,"### Verdict:
+CORRECT",0.00066,9751.344099997368,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,33,nw-001,Please How long is the EU refund window for a first paid subscription?,14 calendar days,The EU refund window for a first paid subscription is 14 calendar days. [1],1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,872,19,0.00237,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,"### Verdict:
+CORRECT",0.0006625,8706.808700000693,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,34,nw-042,Who is the chief executive officer of Northwind Cloud?,I don't know,I don't know.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,880,6,0.00226,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,"### Verdict:
+CORRECT",0.0006225,7586.831299999176,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,35,nw-044,What is Northwind Cloud's office street address?,I don't know,I don't know.,1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,887,6,0.0022775,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,"### Verdict:
+CORRECT",0.00062,7523.573599999509,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,36,nw-031,After how many hours does an export download link expire?,24 hours,"According to the context, an export download link expires after 24 hours. [1]",0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,878,19,0.002385,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction does not provide a specific number of hours, but rather a general statement about the context. The reference clearly states that the export download link expires after 24 hours.",0.0010525,13667.990400001145,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,37,nw-023,What are the email support opening hours in UTC?,Monday through Friday from 09:00 to 17:00 UTC,"The email support opening hours are from 09:00 to 17:00 UTC, excluding published company holidays.",0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,897,24,0.0024825,estimated at reference prices,0,0,reference_in_answer,0,llm,INCORRECT,"Prediction: The email support opening hours are from 09:00 to 17:00 UTC, excluding published company holidays.
+
+Verdict: INCORRECT
+
+Explanation: The reference only mentions the hours of operation, without mentioning holidays.",0.0011,15160.496799999237,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,38,nw-021,How often are encrypted document backups taken?,every 24 hours,Northwind Cloud takes encrypted document backups every 24 hours. [1],0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,887,16,0.0023775,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"INCORRECT
+
+The prediction incorrectly added extra information (""Northwind Cloud"") that is not present in the reference.",0.00081,11886.98690000092,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,39,nw-007,Please How much does the Team plan cost per workspace per month?,79 USD per workspace per month,The Team plan costs 79 USD per workspace per month.,1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,917,13,0.0024225,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0006125,8931.935999997222,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,40,nw-026,At what intervals do failed webhooks retry?,"1 minute, 5 minutes and 30 minutes","Failed webhooks retry at the following intervals:
+
+* 1 minute
+* 5 minutes
+* 30 minutes",0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,891,24,0.0024675,estimated at reference prices,0,0,reference_in_answer,1,llm,CORRECT,"Prediction: Failed webhooks retry at the following intervals:
+
+* 1 minute
+* 5 minutes
+* 30 minutes
+
+Verdict: CORRECT",0.0009325,14358.945899999526,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,41,nw-014,For how many days are Team security audit logs retained?,180 days,[1] Team security audit logs are retained for 180 days.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,835,15,0.0022375,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0006025,8843.113999999332,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,42,nw-030,Can a workspace's hosting region be changed after creation?,A workspace's hosting region cannot be changed after creation,I don't know.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,888,6,0.00228,estimated at reference prices,0,0,reference_in_answer,1,llm,CORRECT,"CORRECT
+
+The reference states that a workspace's hosting region cannot be changed after creation, and the prediction does not provide any information that contradicts this fact.",0.0008975,13902.86560000095,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,43,nw-040,Which timezone do the documentation's scheduled job examples use?,UTC,"The documentation's scheduled job examples use UTC for every scheduled job, regardless of the user's browser timezone. [1]",0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,878,25,0.002445,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction incorrectly states that the documentation's scheduled job examples use UTC for every scheduled job, regardless of the user's browser timezone. The reference only states that the examples use UTC, without specifying the conditions under which this is the case.",0.0011825,12864.463900001283,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,44,nw-039,What is the name of the Northwind command-line tool?,nwctl,The name of the Northwind command-line tool is nwctl. [1],0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,881,17,0.0023725,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction is missing the word ""The"". The reference contains the word ""The"" before the name of the tool.",0.0009375,12429.77890000111,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,45,nw-016,What is an invited user's default member role?,viewer,"According to the context, an invited user's default member role is viewer. [1]",1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,868,19,0.00236,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction does not directly answer the question with the key fact from the reference. The reference states the default member role for an invited user as ""viewer"", but the prediction provides a contextual explanation rather than a direct answer.",0.001135,12169.358499999362,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,46,nw-027,How many document API requests per minute does Pro permit?,60 document API requests per minute per workspace,The Pro plan permits 60 document API requests per minute per workspace.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,920,15,0.00245,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0006175,11660.40140000041,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,47,nw-008,Please How many member seats are included on Team?,25 member seats,"According to the context, Team includes 25 member seats. [1]",1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,896,16,0.0024,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction is phrased as a statement rather than a direct answer to the question. The question asks for the number of member seats included on Team, but the prediction provides a contextual explanation rather than a numerical answer.",0.001135,7937.58600000001,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,48,nw-032,What archive format is used for a full document export?,ZIP archive,[1] The export is a ZIP archive containing UTF-8 Markdown documents and a manifest.json file with document IDs and project names.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,861,28,0.0024325,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"VERDICT: INCORRECT
+
+The prediction includes additional information not present in the reference, such as UTF-8 Markdown documents and a manifest.json file. The key fact that the archive format used for a full document export is ZIP is not present in the prediction.",0.0011525,12350.988600002893,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,49,nw-015,After how many hours do onboarding invitations expire?,72 hours,"[1] # Onboarding a workspace
+
+Invitations expire after 72 hours.",1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,848,18,0.0023,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0006075,11221.175000002404,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,50,nw-012,Which prefix identifies an API key?,nw_live_,"[1] # API keys
+
+The prefix ""nw_live_"" identifies an API key.",0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,890,19,0.002415,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT",0.00065,13855.9548000012,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,51,nw-002,Please Within how many business days do approved EU refunds return?,5 business days,"According to the provided context, approved EU refunds return within 5 business days. [1]",1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,862,20,0.002355,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction is missing the key fact that the refunds return within 5 business days. The prediction only states that the refunds return within 5 business days, but it does not explicitly state the timeframe.",0.00111,8882.49580000047,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,52,nw-042,Who is the chief executive officer of Northwind Cloud?,I don't know,I don't know.,1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,880,6,0.00226,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,"### Verdict:
+CORRECT",0.0006225,11180.545499999425,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,53,nw-025,What algorithm signs outbound webhook requests?,HMAC-SHA256,"The algorithm that signs outbound webhook requests is HMAC-SHA256, as stated in the context: ""Webhook requests include an X-Northwind-Signature header computed using HMAC-SHA256."" [1]",0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,887,44,0.0026575,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0006675,13581.982200001221,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,54,nw-045,Which programming language powers the automation scheduler?,I don't know,I don't know.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,900,6,0.00231,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,"### Verdict:
+CORRECT",0.000615,10395.098699998925,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,55,nw-005,How much does the Pro plan cost per workspace per month?,19 USD per workspace per month,The Pro plan costs 19 USD per workspace per month. [1],0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,908,16,0.00243,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0006175,6032.888500001718,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,56,nw-034,When is a post-incident review published?,within 5 business days after resolution,A post-incident review is published within 5 business days after resolution.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,870,16,0.002335,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.00061,13862.994499999331,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,57,nw-007,Please How much does the Team plan cost per workspace per month?,79 USD per workspace per month,The Team plan costs 79 USD per workspace per month.,1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,917,13,0.0024225,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0006125,8682.50480000279,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,58,nw-004,Within how many business days do approved US refunds return?,10 business days,Within 10 business days. [1],0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,861,10,0.0022525,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0005925,8456.851099999767,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,59,nw-013,What encryption protects customer documents at rest?,AES-256,[1] Northwind Cloud encrypts customer documents at rest with AES-256.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,868,18,0.00235,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"INCORRECT
+
+The prediction incorrectly adds extra information (""Northwind Cloud"") that is not present in the reference. The key fact that matches is the encryption method (""AES-256""), but the prediction includes additional details that are not supported by the reference.",0.0010925,14398.349799997959,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,60,nw-023,What are the email support opening hours in UTC?,Monday through Friday from 09:00 to 17:00 UTC,"The email support opening hours are from 09:00 to 17:00 UTC, excluding published company holidays.",1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,897,24,0.0024825,estimated at reference prices,0,0,reference_in_answer,1,llm,CORRECT,CORRECT,0.00065,2265.157999998337,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,61,nw-039,Please What is the name of the Northwind command-line tool?,nwctl,The Northwind Cloud command-line tool is named nwctl. [1],1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,870,16,0.002335,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction incorrectly added the phrase ""The Northwind Cloud command-line tool is named"" which is not present in the reference. The key fact ""nwctl"" is present in both the reference and prediction, but the surrounding context and additional information make the prediction incorrect.",0.0012275,10962.720100000297,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,62,nw-041,What was Northwind Cloud's revenue in 2025?,I don't know,I don't know.,1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,885,6,0.0022725,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction does not provide an answer to the question. The reference explicitly states that the user does not know the answer, and the prediction should have reflected this uncertainty.",0.001005,11048.864599997614,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,63,nw-033,How soon after confirming an outage is the initial notification published?,within 15 minutes,The initial notification is published within 15 minutes of confirming a production outage. [1],0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,902,19,0.002445,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0006175,9864.625599999272,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,64,nw-029,In which locations is hosting offered?,Frankfurt and Virginia,Hosting is offered in Frankfurt (eu-central) and Virginia (us-east).,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,880,16,0.00236,estimated at reference prices,0,0,reference_in_answer,1,llm,CORRECT,CORRECT,0.000595,11599.755100000039,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,65,nw-045,Please Which programming language powers the automation scheduler?,I don't know,I don't know.,1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,901,6,0.0023125,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction does not provide an answer to the question. The reference states ""I don't know"", but the prediction also says ""I don't know"", which is not an answer.",0.0010375,11935.511900002894,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,66,nw-010,How many scheduled automation runs per month does Free include?,10 scheduled automation runs per month,The Free plan includes 10 scheduled automation runs per month. [1],0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,915,16,0.0024475,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.000615,14600.428300000203,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,67,nw-024,What is the target first support response time for Team?,4 business hours,The target first support response time for Team is 4 business hours. [1],0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,888,18,0.0024,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0006125,13272.928900001716,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,68,nw-024,What is the target first support response time for Team?,4 business hours,The target first support response time for Team is 4 business hours. [1],1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,888,18,0.0024,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0006125,1496.7892000022402,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,69,nw-024,Please What is the target first support response time for Team?,4 business hours,The target first support response time for Team is 4 business hours. [1],1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,889,18,0.0024025,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.000615,2132.9925999998522,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,70,nw-011,After how many days do API keys expire?,90 days,API keys expire after 90 days.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,886,9,0.002305,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0005825,9734.15919999752,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,71,nw-026,At what intervals do failed webhooks retry?,"1 minute, 5 minutes and 30 minutes","Failed webhooks retry at the following intervals:
+
+* 1 minute
+* 5 minutes
+* 30 minutes",1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,891,24,0.0024675,estimated at reference prices,0,0,reference_in_answer,1,llm,CORRECT,"Prediction: Failed webhooks retry at the following intervals:
+
+* 1 minute
+* 5 minutes
+* 30 minutes
+
+Verdict: CORRECT",0.0009325,17428.615899996657,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,72,nw-037,When in the month are invoices issued?,the first day of each calendar month,Invoices are issued on the first day of each calendar month in USD.,0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,858,16,0.002305,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"INCORRECT
+
+The prediction is missing the unit ""USD"" from the reference, which is a key fact.",0.0008175,11926.559100000304,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,73,nw-022,What is the target document recovery time after verification?,8 business hours,The target recovery time for document recovery is 8 business hours after the request is verified. [1],0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,884,22,0.00243,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.00062,13330.557000001136,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,74,nw-019,What is the maximum size of a single uploaded document?,10 MB,The maximum size of a single uploaded document is 10 MB. [1],0,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,875,17,0.0023575,estimated at reference prices,1,1,reference_in_answer,1,llm,CORRECT,CORRECT,0.0006075,14867.797699997027,service wall time including request logging; excluding judge
+REAL,p1_baseline_20261017T085322985935Z,75,nw-005,Please How much does the Pro plan cost per workspace per month?,19 USD per workspace per month,The Pro plan costs 19 USD per workspace per month. [1],1,0.4,0.4,complex,ollama/llama3.2:3b,0,0,,0,909,16,0.0024325,estimated at reference prices,1,1,reference_in_answer,0,llm,INCORRECT,"### Verdict:
+INCORRECT
+
+### Explanation:
+The prediction is missing the word ""per"" before ""workspace"". The reference states that the Pro plan costs 19 USD per workspace per month, but the prediction only states that the Pro plan costs 19 USD per workspace per month without the ""per"" descriptor.",0.00124,14466.560699998809,service wall time including request logging; excluding judge
