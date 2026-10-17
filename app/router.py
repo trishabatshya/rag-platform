@@ -77,11 +77,29 @@ def llm_route(question: str) -> RouteDecision:
     )
 
 
-def needs_escalation(response: RAGResult, chunks: list[Chunk]) -> bool:
-    """Escalate weak evidence, absent valid citations, or an abstaining small-model answer."""
+def escalation_reasons(
+    response: RAGResult, chunks: list[Chunk], *, escalate_no_citation: bool | None = None
+) -> tuple[str, ...]:
+    """Return all first-answer triggers; citation escalation is optional and off by default."""
+    if escalate_no_citation is None:
+        escalate_no_citation = Settings().escalate_no_citation
     top_score = max((chunk["score"] for chunk in chunks), default=0)
-    return (
-        top_score < Settings().retrieval_threshold
-        or not parse_citations(response["answer"], chunks)
-        or "i don't know" in response["answer"].casefold()
+    return tuple(
+        reason
+        for reason, applies in (
+            ("weak_retrieval", top_score < Settings().retrieval_threshold),
+            (
+                "missing_citation",
+                escalate_no_citation and not parse_citations(response["answer"], chunks),
+            ),
+            ("i_dont_know", "i don't know" in response["answer"].casefold()),
+        )
+        if applies
     )
+
+
+def needs_escalation(
+    response: RAGResult, chunks: list[Chunk], *, escalate_no_citation: bool | None = None
+) -> bool:
+    """Whether any configured first-answer trigger requires the large model."""
+    return bool(escalation_reasons(response, chunks, escalate_no_citation=escalate_no_citation))

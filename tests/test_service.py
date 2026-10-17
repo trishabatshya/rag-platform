@@ -151,6 +151,26 @@ def test_escalation_sums_both_calls_and_optional_classifier(
     assert record["escalated"] and record["model"] == settings.large_model
 
 
+@pytest.mark.parametrize("citation_policy", [False, True])
+def test_citation_policy_controls_actual_second_call(service_fixture, monkeypatch, citation_policy):
+    calls = []
+
+    def completion(prompt, model, system=None):
+        calls.append(model)
+        return LLMResult("Allowed fact", 10, 3, model, 1)
+
+    monkeypatch.setattr(rag, "complete", completion)
+    monkeypatch.setattr(service_module, "rule_route", lambda *args: RouteDecision("simple", "test"))
+    monkeypatch.setenv("RETRIEVAL_THRESHOLD", "0")
+    service_fixture.service.escalate_no_citation = citation_policy
+    result = service_fixture.service.ask(
+        "What is ACME-SALARY-7731?", CurrentUser("acme.hr", "acme", ("employee", "hr"))
+    )
+    assert len(calls) == (2 if citation_policy else 1)
+    assert result.escalated is citation_policy
+    assert result.escalation_reasons == (("missing_citation",) if citation_policy else ())
+
+
 def test_generation_error_is_logged_and_not_cached(service_fixture, monkeypatch):
     def broken(*args, **kwargs):
         raise RuntimeError("fake provider failure")

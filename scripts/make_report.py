@@ -246,6 +246,10 @@ def render_results(directory: Path) -> str:
         original, optimized = (sum(_number(r, "cost") for r in run.rows) for run in (b, o))
         oq, bq = _quality(o.rows), _quality(b.rows)
         quality = oq - bq if oq is not None and bq is not None else None
+        simple_rows = [r for r in o.rows if r.get("route") == "simple"]
+        escalation_rate = (
+            mean(_number(r, "escalated") for r in simple_rows) if simple_rows else None
+        )
         change = [
             float(np.percentile([_number(r, "latency_ms") for r in o.rows], q))
             - float(np.percentile([_number(r, "latency_ms") for r in b.rows], q))
@@ -255,12 +259,14 @@ def render_results(directory: Path) -> str:
             f"| {len(o.rows)} | {_fmt(_number(o.rows[0], 'actual_repeat_ratio'))} | "
             f"{_fmt(100 * (original - optimized) / original if original else None)} | "
             f"{_fmt(quality)} | {_fmt(mean(_number(r, 'cache_hit') for r in o.rows))} | "
-            f"{_fmt(mean(_number(r, 'escalated') for r in o.rows))} | "
+            f"{_fmt(escalation_rate)} | "
             f"{_fmt(change[0])} / {_fmt(change[1])} |"
         )
         lines += [
             "",
-            f"Paired baseline: {_source(b)}. Quality is the recorded judge verdict; "
+            f"Paired baseline: {_source(b)}. Quality basis: "
+            f"{o.rows[0].get('quality_basis', 'legacy judge verdict')}; "
+            "escalation rate is conditional on simple-routed requests; "
             "latency includes the service and excludes judging.",
         ]
     else:

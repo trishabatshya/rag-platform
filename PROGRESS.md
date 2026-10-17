@@ -279,3 +279,63 @@ were recorded separately. This is an observed five-question smoke run, not gener
 quality validation or an estimate of the judge's human-label accuracy. Existing Qdrant
 version warning and an optional LiteLLM remote-cost-map fetch denial occurred; LiteLLM
 used its bundled backup and the run completed. Project reference costs use local PRICES.
+
+Live-Qdrant leakage follow-up (2026-10-16): Confirmed the original test_leakage.py uses
+RecordingClient() -> QdrantClient(":memory:"), independent of shell RAG_MODE, and
+conftest sets per-test mode to mock. RecordingClient now accepts an explicit URL while
+retaining the in-memory default. Added tests/test_leakage_qdrant_integration.py marked
+integration and gated by RUN_QDRANT_INTEGRATION=1. Its fixed URL is localhost:6333;
+it reuses the exact original 600 user/query assertion cases and both negative controls,
+with mock hash embeddings/completions, actual live Qdrant filtering/payload indexes,
+and SQLite audit. Enabled service errors fail rather than silently falling back.
+
+Ran the integration suite against the local server: 602 passed in 15.65s (600 cases and
+two controls). The disabled-filter control detected forbidden raw chunks while the
+Python post-check protected the answer; disabling both defenses produced detected
+response leaks. Server info reported Qdrant 1.17.0 and client metadata 1.19.1. The existing
+minor-version warning was retained (one warning). Verified no leakage_integration_*
+collections remained after fixture cleanup; only its UUID-owned collection was deleted.
+Also verified opt-in gating: with flag=0 the two selected controls skipped, 600 cases
+deselected. No live-cache, real-model or PostgreSQL claim was made from these checks.
+
+Both original module-scoped harnesses now force mock model mode before ingestion,
+because module setup can precede function-scoped conftest fixtures, and close resources
+using context managers. Original retrieval/cache suites passed 1205 tests in a targeted
+run. After both fixture updates, the full offline suite, launched with RAG_MODE=real,
+passed 1454 tests with 603 integration cases deselected in 51.96s. Lint passed. README
+and AGENTS now state the precise backend/adapter scope, versions, reproduction command,
+opt-in behavior and warning, replacing outdated claims that live Qdrant filtering was
+untested. Generated benchmark tables still describe benchmark artifacts; this fixture
+run is security integration evidence, not a production leakage-rate/performance result.
+
+## Project 1 sweep, escalation and quality follow-up (2026-10-16)
+
+Extended both guarded/unguarded sweeps through 0.99 with per-threshold
+true_paraphrase_hit_rate and false_hits. Full REAL pretrained-embedding sweep:
+`eval/results/cache_sweep_20261016T133308209063Z.csv`, 50 pairs per class.
+Lowest guarded zero-false-hit threshold is 0.96: 3/50 (6%) paraphrase hits,
+0/50 false hits; 0.95 has one false hit. Set CACHE_THRESHOLD default and
+.env.example to 0.96; documented tuning limitations and existing-env overrides.
+
+Added ESCALATE_NO_CITATION (default false), first-answer reason capture,
+conditional simple-route escalation rates, reason counts/rates and all-request
+route shares. Compare now independently clears caches and replays identical
+workloads for citation OFF and ON. Primary quality/request-log score is
+reference_in_answer; judge_correct/raw/label and judge_accuracy remain secondary.
+Report generation uses the recorded quality basis and conditional escalation rate;
+legacy CSVs without routes have unknown conditional escalation rate.
+
+Full 75-request/system MOCK (not a result) compare, explicit CACHE_THRESHOLD=0.96:
+`eval/results/project1_optimized_20261016T133403252156Z.csv` (OFF) and
+`eval/results/citation_policy_on_20261016T133403260168Z.csv` (ON).
+Both: quality 47/75, cache hits 24/75; simple 50/75, complex 1/75, cache 24/75;
+6/50 simple requests escalated (12%), all weak retrieval; missing citation and
+abstention each zero. Mock completion supplies citations; targeted service tests
+verify policy ON adds a large-model call for uncited answers while OFF does not.
+Full REAL end-to-end compare for these two policies: NOT YET RUN.
+
+Validation: lint passed; full offline suite passed 1460 tests, with 603 integration
+cases deselected, in 51.34s. Added tests cover optional citation policy, overlapping
+reasons, denominator arithmetic, primary/secondary quality, both policy outputs,
+and sweep bounds. An initial report regression on legacy CSVs missing route was
+fixed before the passing full rerun. No evaluation questions were changed.

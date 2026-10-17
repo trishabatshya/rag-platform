@@ -11,7 +11,7 @@ from streamlit.testing.v1 import AppTest
 
 from app.config import ROOT
 from app.logging_db import RequestEvent, create_request_store
-from eval.bench_cache_router import build_workload
+from eval.bench_cache_router import build_workload, summarize
 from eval.run_eval import load_items
 
 
@@ -87,12 +87,55 @@ def test_benchmark_all_modes_cli_and_summary_reconcile_with_csvs(tmp_path):
     )
     with next(output_dir.glob("cache_sweep_*.csv")).open(encoding="utf-8", newline="") as handle:
         sweep = list(csv.DictReader(handle))
-    assert len(sweep) == 26
-    assert {float(row["threshold"]) for row in sweep} == {i / 100 for i in range(85, 98)}
+    assert len(sweep) == 30
+    assert {float(row["threshold"]) for row in sweep} == {i / 100 for i in range(85, 100)}
+    assert all(row["true_paraphrase_hit_rate"] == row["good_hit_rate"] for row in sweep)
+    for policy, flag in (("off", "0"), ("on", "1")):
+        comparison = summary["citation_policies"][policy]
+        with (output_dir / comparison["csv"]).open(encoding="utf-8", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+        assert all(row["escalate_no_citation"] == flag for row in rows)
+        assert all(row["correct"] == row["reference_in_answer"] for row in rows)
+        assert all("judge_correct" in row for row in rows)
+        assert comparison["optimized"]["quality"] == pytest.approx(
+            sum(int(row["reference_in_answer"]) for row in rows) / len(rows)
+        )
+        assert sum(comparison["optimized"]["route_shares"].values()) == pytest.approx(1)
     assert {row["guard"] for row in sweep} == {"0", "1"}
     assert list(output_dir.glob("router_accuracy_*.csv")) and list(
         output_dir.glob("router_tradeoff_*.csv")
     )
+
+
+def test_escalation_denominator_and_secondary_judge():
+    base = {
+        "correct": 1,
+        "judge_correct": None,
+        "cost": 0,
+        "latency_ms": 1,
+        "cache_hit": 0,
+        "escalated": 0,
+        "escalation_reasons": "",
+    }
+    rows = [
+        {
+            **base,
+            "route": "simple",
+            "escalated": 1,
+            "escalation_reasons": "weak_retrieval|missing_citation",
+        },
+        {**base, "route": "simple"},
+        {**base, "route": "complex"},
+        {**base, "route": "cache", "cache_hit": 1},
+    ]
+    result = summarize(rows)
+    assert result["escalation_rate"] == 0.5
+    assert result["route_shares"] == {"simple": 0.5, "complex": 0.25, "cache": 0.25}
+    assert result["quality"] == 1 and result["judge_accuracy"] is None
+    assert result["judge_unparseable_count"] == 4
+    for reason in ("weak_retrieval", "missing_citation"):
+        assert result["escalation_reasons"][reason] == {"count": 1, "share_of_simple": 0.5}
+    assert summarize([rows[-1]])["escalation_rate"] is None
 
 
 def test_dashboard_empty_state_runs_without_exception():

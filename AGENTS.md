@@ -206,6 +206,18 @@ External tests are `integration` and skip unless NEO4J_URI is explicitly set, e.
 PowerShell `$env:NEO4J_URI="bolt://localhost:7687"`. An opted-in missing service must fail.
 The test embeddings are deterministic; live integration tests need only Neo4j, not models.
 
+Live Qdrant leakage is a separate integration suite: set PowerShell
+`$env:RUN_QDRANT_INTEGRATION="1"` and run
+`python tasks.py test tests/test_leakage_qdrant_integration.py -m integration -q`.
+It explicitly uses http://localhost:6333 despite mock model mode, a UUID-owned disposable
+collection, SQLite audit, and the same 600 case assertions/negative controls as the
+in-memory suite. Never describe it as real-model/Postgres/cache or load-test coverage.
+The original test_leakage.py remains in-memory even under a real shell configuration;
+module fixture setup must also force mock embeddings before function fixtures execute.
+Do not silently skip an opted-in unavailable Qdrant or fall back to memory. Delete only
+the owned collection and preserve application collections. Report server/client versions
+and compatibility warnings with any live-server claim.
+
 ## M5 integration and reporting
 
 ```powershell
@@ -239,3 +251,15 @@ never enter the repository's report/results. Preserve human reviews before rerun
 Real model install/download and service startup remain human-run until tools/models are
 available. Inspect and pin compatible installed APIs before publishing real numbers; do
 not present configured adapters or Compose validation as live provider/database evidence.
+
+## Project 1 benchmark follow-up
+
+Sweep CACHE_THRESHOLD from 0.85 through 0.99; preserve true-paraphrase hit rate
+and false-hit count at every threshold. Default 0.96 was selected from a full
+real guarded tuning sweep; mock numbers must never retune real deployments.
+PowerShell overrides: `$env:CACHE_THRESHOLD="0.96"` and
+`$env:ESCALATE_NO_CITATION="false"` (default; `"true"` enables citation escalation).
+Compare both citation policies on the identical workload, with independently
+cleared caches. Quality is reference_in_answer; retain the LLM judge as secondary.
+Escalation reasons come from the original small answer; divide escalations by
+simple-routed requests, and route counts by all requests. Reasons can overlap.

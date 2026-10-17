@@ -1,5 +1,6 @@
 """600 adversarial cases plus negative controls and real-JWT HTTP security coverage."""
 
+from contextlib import closing
 from types import SimpleNamespace
 
 import pytest
@@ -30,15 +31,18 @@ from tests.acl_helpers import (
 @pytest.fixture(scope="module")
 def leakage_harness(tmp_path_factory):
     root = tmp_path_factory.mktemp("Leakage Windows paths")
-    client = RecordingClient()
-    state = CorpusState(root / "state.db")
-    audit = AuditStore(URL.create("sqlite", database=str(root / "audit.db")))
-    ingest_acl_documents(SEED_DOCUMENTS, client, state)
-    points, _ = client.scroll("chunks", limit=1000)
-    mapping = {str(point.id): point.payload["doc_id"] for point in points}
-    harness = SimpleNamespace(engine=SecureRAGEngine(client, state, audit), mapping=mapping)
-    yield harness
-    harness.engine.close()
+    with (
+        pytest.MonkeyPatch.context() as patch,
+        closing(RecordingClient()) as client,
+        closing(AuditStore(URL.create("sqlite", database=str(root / "audit.db")))) as audit,
+    ):
+        # Module setup runs before function-scoped offline_settings, including under a real .env.
+        patch.setenv("RAG_MODE", "mock")
+        state = CorpusState(root / "state.db")
+        ingest_acl_documents(SEED_DOCUMENTS, client, state)
+        points, _ = client.scroll("chunks", limit=1000)
+        mapping = {str(point.id): point.payload["doc_id"] for point in points}
+        yield SimpleNamespace(engine=SecureRAGEngine(client, state, audit), mapping=mapping)
 
 
 @pytest.mark.parametrize("record", SEED_USERS, ids=[user["user_id"] for user in SEED_USERS])

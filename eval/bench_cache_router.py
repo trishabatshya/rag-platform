@@ -26,7 +26,7 @@ from app.router import llm_route, rule_route
 from app.secure_rag import SecureRAGEngine
 from app.service import RAGService
 from app.vectorstore import create_client
-from eval.judge import judge
+from eval.judge import judge, reference_in_answer
 from eval.run_eval import load_items
 
 
@@ -43,7 +43,7 @@ def write_csv(output_dir: Path, tag: str, rows: list[dict]) -> Path:
 
 
 def sweep(output_dir: Path, limit: int | None = None) -> Path:
-    """Evaluate pairwise embedding thresholds 0.85..0.97 with and without the guard."""
+    """Evaluate pairwise embedding thresholds 0.85..0.99 with and without the guard."""
     pairs = {}
     for kind, filename in (("good", "paraphrase_pairs.jsonl"), ("bad", "near_miss_pairs.jsonl")):
         rows = [
@@ -63,7 +63,7 @@ def sweep(output_dir: Path, limit: int | None = None) -> Path:
         ]
     measured = []
     for guard in (False, True):
-        for percentage in range(85, 98):
+        for percentage in range(85, 100):
             threshold = percentage / 100
             hits = {
                 kind: sum(score >= threshold and (not guard or passes) for score, passes in values)
@@ -78,9 +78,15 @@ def sweep(output_dir: Path, limit: int | None = None) -> Path:
                     "near_miss_pairs": len(pairs["bad"]),
                     "good_hits": hits["good"],
                     "good_hit_rate": hits["good"] / len(pairs["good"]),
+                    "true_paraphrase_hit_rate": hits["good"] / len(pairs["good"]),
                     "false_hits": hits["bad"],
                     "scope": "pairwise tuning set, not held-out production accuracy",
                 }
+            )
+            print(
+                f"guard={guard} threshold={threshold:.2f} "
+                f"true_paraphrase_hit_rate={hits['good'] / len(pairs['good']):.4f} "
+                f"false_hits={hits['bad']}"
             )
         safe = [
             row["threshold"]
@@ -183,8 +189,8 @@ def replay(
         result = service.ask(item["question"], user, run_tag=run_tag)
         elapsed = (perf_counter() - start) * 1000
         verdict = judge(item["question"], result.response["answer"], item["reference"])
-        if verdict.correct is not None:
-            service.requests.set_quality(result.request_id, float(verdict.correct))
+        quality = reference_in_answer(result.response["answer"], item["reference"])
+        service.requests.set_quality(result.request_id, float(quality))
         measured.append(
             {
                 "mode": Settings().mode.upper(),
@@ -201,11 +207,16 @@ def replay(
                 "model": result.response["model"],
                 "cache_hit": int(result.cache_hit),
                 "escalated": int(result.escalated),
+                "escalation_reasons": "|".join(result.escalation_reasons),
+                "escalate_no_citation": int(service.escalate_no_citation),
                 "in_tokens": result.response["in_tokens"],
                 "out_tokens": result.response["out_tokens"],
                 "cost": result.cost,
                 "cost_basis": "estimated at reference prices",
-                "correct": int(verdict.correct) if verdict.correct is not None else None,
+                "correct": int(quality),
+                "reference_in_answer": int(quality),
+                "quality_basis": "reference_in_answer",
+                "judge_correct": int(verdict.correct) if verdict.correct is not None else None,
                 "judge_method": verdict.method,
                 "judge_label": verdict.label,
                 "judge_raw": verdict.raw,
@@ -217,18 +228,40 @@ def replay(
     return measured
 
 
-def summarize(rows: list[dict]) -> dict[str, float | int | None]:
+def summarize(rows: list[dict]) -> dict:
     """Summarize only recorded service calls; zero-quality mock data is not a model result."""
+    simple = [row for row in rows if row["route"] == "simple"]
+    parsed = [row["judge_correct"] for row in rows if row["judge_correct"] is not None]
     return {
+        "quality_basis": "reference_in_answer",
+        "judge_accuracy": float(np.mean(parsed)) if parsed else None,
         "cost": sum(row["cost"] for row in rows),
         "quality": float(np.mean([row["correct"] for row in rows if row["correct"] is not None]))
         if any(row["correct"] is not None for row in rows)
         else None,
-        "judge_unparseable_count": sum(row["correct"] is None for row in rows),
+        "judge_unparseable_count": len(rows) - len(parsed),
         "p50_latency_ms": float(np.percentile([row["latency_ms"] for row in rows], 50)),
         "p95_latency_ms": float(np.percentile([row["latency_ms"] for row in rows], 95)),
         "cache_hit_rate": float(np.mean([row["cache_hit"] for row in rows])),
-        "escalation_rate": float(np.mean([row["escalated"] for row in rows])),
+        "simple_routed_requests": len(simple),
+        "escalated_requests": sum(row["escalated"] for row in simple),
+        "escalation_rate": float(np.mean([row["escalated"] for row in simple])) if simple else None,
+        "route_shares": {
+            route: sum(row["route"] == route for row in rows) / len(rows)
+            for route in ("simple", "complex", "cache")
+        },
+        "escalation_reasons": {
+            reason: {
+                "count": sum(reason in row["escalation_reasons"].split("|") for row in simple),
+                "share_of_simple": sum(
+                    reason in row["escalation_reasons"].split("|") for row in simple
+                )
+                / len(simple)
+                if simple
+                else None,
+            }
+            for reason in ("weak_retrieval", "missing_citation", "i_dont_know")
+        },
     }
 
 
@@ -246,10 +279,18 @@ def compare(output_dir: Path, repeat_ratio: float = 0.4, limit: int | None = Non
         )
         cache.clear()
         routed = replay(
-            RAGService(engine, cache, requests),
+            RAGService(engine, cache, requests, escalate_no_citation=False),
             workload,
             user,
             f"p1_optimized_{run_id}",
+            repeat_ratio,
+        )
+        cache.clear()
+        citation_on = replay(
+            RAGService(engine, cache, requests, escalate_no_citation=True),
+            workload,
+            user,
+            f"p1_citation_on_{run_id}",
             repeat_ratio,
         )
     paths = [
@@ -257,6 +298,7 @@ def compare(output_dir: Path, repeat_ratio: float = 0.4, limit: int | None = Non
         write_csv(output_dir, "project1_optimized", routed),
     ]
     original, optimized = summarize(baseline), summarize(routed)
+    citation_path = write_csv(output_dir, "citation_policy_on", citation_on)
     summary = {
         "mode": Settings().mode.upper(),
         "label": "MOCK (not a result)" if Settings().mode == "mock" else "REAL",
@@ -266,6 +308,11 @@ def compare(output_dir: Path, repeat_ratio: float = 0.4, limit: int | None = Non
         "cost_basis": "estimated at reference prices",
         "baseline": original,
         "optimized": optimized,
+        "quality_basis": "reference_in_answer",
+        "citation_policies": {
+            "off": {"optimized": optimized, "csv": paths[1].name},
+            "on": {"optimized": summarize(citation_on), "csv": citation_path.name},
+        },
         "cost_reduction_percent": 100 * (original["cost"] - optimized["cost"]) / original["cost"]
         if original["cost"]
         else None,

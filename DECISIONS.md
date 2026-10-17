@@ -1,5 +1,26 @@
 # Decisions
 
+## Live Qdrant leakage scope (2026-10-16)
+
+- The original leakage suite is in-memory regardless of an externally selected real
+  mode: conftest resets per-test RAG_MODE, and RecordingClient() independently defaults
+  to QdrantClient(":memory:"). Module fixtures precede the per-test reset, so both the
+  retrieval and cached harness now explicitly force mock model mode during ingestion
+  too, and reliably close their owned clients/audit handles.
+- New integration tests opt in with RUN_QDRANT_INTEGRATION=1 and explicitly construct
+  the recording client with http://localhost:6333. Mock embeddings/completions and SQLite
+  audit remain intentional; the only live adapter in this suite is Qdrant. No environment
+  mode switch or application factory can redirect this explicit URL to memory. Enabled
+  connection failures fail, and there is no backend fallback. Reuse the original exact
+  600 positive case assertions and both negative-control functions to avoid divergent
+  security oracles. A disabled prefilter must produce an oracle-detected raw leak while
+  the post-check protects the response; disabling both must expose response leaks.
+- The fixture owns only a UUID-named test collection, refuses an existing name, creates
+  server ACL indexes through production ingestion and cleans up only that collection.
+  Application collections are untouched. The observed live server/client versions are
+  1.17.0/1.19.1; retain the compatibility warning and limit the claim to this tested small
+  fixture. Do not claim real-model, PostgreSQL, live cache or load-test verification.
+
 ## Judge tolerance and independent reference check (2026-10-16)
 
 - Search whole verdict words case-insensitively, INCORRECT first, then CORRECT. Preserve
@@ -322,3 +343,31 @@
   fabricated real-mode UI capture. Real provider dependency installation/API validation,
   live services, full HotpotQA download, GPU setup, browser use and hosted CI remain
   pending; completing offline M5 acceptance does not turn these into verified results.
+
+## Project 1 threshold and citation policy (2026-10-16)
+
+Select CACHE_THRESHOLD=0.96, the lowest hundredth with zero false hits in the
+full REAL guarded all-MiniLM-L6-v2 sweep (50 paraphrases, 50 near misses), run
+in this session using cached pretrained weights. Source:
+`eval/results/cache_sweep_20261016T133308209063Z.csv`.
+At 0.95: 4/50 true hits and 1/50 false hits; at 0.96: 3/50 (6%) true hits
+and 0/50 false hits; at 0.97: 1/50 true hits and 0/50 false hits;
+0.98 and 0.99: zero true hits and zero false hits. Prefer 0.96 to retain the
+most recall among tested guarded zero-false-hit thresholds. This is tuning-set
+evidence, not a held-out safety guarantee; different embedding models/corpora
+require retuning. Existing environment overrides still apply; do not edit user .env.
+Mock sweep scores are software checks and did not select the real default.
+
+Missing citations no longer escalate by default: correct factual answers can
+lack markers. ESCALATE_NO_CITATION=true restores that trigger. Weak retrieval
+and abstention remain unconditional triggers; cache admission still requires
+citations. Record all first-answer reasons before large-model generation, so
+successful escalations do not erase their cause. Reason counts may overlap.
+Escalation denominator is simple-routed requests; route shares use all requests.
+
+Compare reuses one always-large baseline and independently clears the cache for
+OFF and ON optimized runs of the identical seeded workload. Preserve ordinary
+baseline/OFF filenames for report pairing; store ON in citation_policy_on CSV
+and both policies in the summary. Primary answer quality and request-log quality
+are reference_in_answer; retain judge verdict/raw reply as secondary evidence.
+Lexical matching is transparent but cannot establish semantic correctness.

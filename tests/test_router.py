@@ -61,10 +61,30 @@ def test_llm_router_accounts_for_classifier_usage(monkeypatch, label, expected):
     [
         ("Allowed fact [1]", (0.8,), False),
         ("Allowed fact [1]", (0.1,), True),
-        ("Allowed fact", (0.8,), True),
-        ("Allowed fact [99]", (0.8,), True),
+        ("Allowed fact", (0.8,), False),
+        ("Allowed fact [99]", (0.8,), False),
         ("I don't know [1]", (0.8,), True),
     ],
 )
 def test_escalation(answer, scores, expected):
-    assert needs_escalation({"answer": answer}, evidence(scores)) is expected
+    assert (
+        needs_escalation({"answer": answer}, evidence(scores), escalate_no_citation=False)
+        is expected
+    )
+
+
+@pytest.mark.parametrize("answer", ["Allowed fact", "Allowed fact [99]"])
+def test_optional_citation_escalation(answer):
+    from app.router import escalation_reasons
+
+    assert escalation_reasons({"answer": answer}, evidence(), escalate_no_citation=True) == (
+        "missing_citation",
+    )
+
+
+def test_all_escalation_reasons_preserved():
+    from app.router import escalation_reasons
+
+    assert escalation_reasons(
+        {"answer": "I don't know"}, evidence((0.1,)), escalate_no_citation=True
+    ) == ("weak_retrieval", "missing_citation", "i_dont_know")

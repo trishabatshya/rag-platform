@@ -37,8 +37,11 @@ ADVERSARIAL_QUERIES = (
 class RecordingClient(QdrantClient):
     """Capture actual vector-query results before the production post-check."""
 
-    def __init__(self) -> None:
-        super().__init__(":memory:")
+    def __init__(self, *, url: str | None = None) -> None:
+        if url is None:
+            super().__init__(":memory:")
+        else:
+            super().__init__(url=url, timeout=10)
         self.last_points = []
         self.last_filter = None
 

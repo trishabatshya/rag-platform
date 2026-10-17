@@ -12,7 +12,7 @@ from app.contracts import CurrentUser, RAGResult
 from app.embed import embed
 from app.logging_db import RequestEvent, RequestStore, create_request_store
 from app.rag import generate_answer
-from app.router import RouteDecision, llm_route, needs_escalation, rule_route
+from app.router import RouteDecision, escalation_reasons, llm_route, rule_route
 from app.secure_rag import SecureRAGEngine, get_secure_engine
 
 
@@ -26,6 +26,7 @@ class ServiceResult:
     cache_hit: bool
     escalated: bool
     cost: float
+    escalation_reasons: tuple[str, ...] = ()
 
 
 class RAGService:
@@ -40,10 +41,16 @@ class RAGService:
         cache_enabled: bool = True,
         routing_enabled: bool = True,
         router_mode: str | None = None,
+        escalate_no_citation: bool | None = None,
     ) -> None:
         self.engine, self.cache, self.requests = engine, cache, requests
         self.cache_enabled, self.routing_enabled = cache_enabled, routing_enabled
         self.router_mode = router_mode or Settings().router_mode
+        self.escalate_no_citation = (
+            Settings().escalate_no_citation
+            if escalate_no_citation is None
+            else escalate_no_citation
+        )
 
     def ask(
         self, question: str, user: CurrentUser | None, *, run_tag: str | None = None
@@ -59,6 +66,7 @@ class RAGService:
         cache_hit = escalated = stored = False
         in_tokens = out_tokens = 0
         cost = 0.0
+        reasons = ()
         try:
             vector = embed([normalize_query(question)])[0].tolist()
             with self.engine.state.access_lock:
@@ -110,7 +118,11 @@ class RAGService:
             in_tokens += response["in_tokens"]
             out_tokens += response["out_tokens"]
             cost += compute_cost(model, response["in_tokens"], response["out_tokens"])
-            if route == "simple" and needs_escalation(response, chunks):
+            if route == "simple":
+                reasons = escalation_reasons(
+                    response, chunks, escalate_no_citation=self.escalate_no_citation
+                )
+            if reasons:
                 escalated = True
                 model = settings.large_model
                 self.engine.audit.append(
@@ -149,7 +161,7 @@ class RAGService:
                     settings.mode.upper(),
                 )
             )
-            return ServiceResult(response, request_id, route, cache_hit, escalated, cost)
+            return ServiceResult(response, request_id, route, cache_hit, escalated, cost, reasons)
         except Exception as error:
             if stored:
                 self.cache.discard(question, user)

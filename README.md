@@ -28,8 +28,9 @@ separate from real measurements. The public baseline and GraphRAG corpus are sep
 from protected tenant documents.
 
 **M0–M5 implemented; offline acceptance verified on Windows/Python 3.11.** Real model
-quality and live Qdrant/Postgres/Neo4j behavior remain unverified. Ollama/model setup was
-unavailable here. The results below show that distinction; no mock scores are presented
+quality/performance benchmarks and live Postgres/Neo4j behavior remain unverified.
+Five-question real baseline smokes and live-Qdrant ACL fixture checks have run; their
+limited scope is documented below. No mock scores are presented
 as production results. See [PROGRESS.md](PROGRESS.md) for the milestone verification log
 and [interview study notes](docs/STUDY_NOTES.md) for the three projects' trade-offs.
 
@@ -299,6 +300,48 @@ leaks. HTTP tests use genuinely signed local JWTs and cover body spoofing, missi
 expired, tampered and unsupported-algorithm tokens. These are mock security regression
 tests, not real-model quality or production-scale performance measurements.
 
+**Backend clarification:** `tests/test_leakage.py` always uses in-memory Qdrant, even
+when pytest is launched with `RAG_MODE=real`. `tests/conftest.py` sets the per-test mode
+to mock, and `RecordingClient()` explicitly defaults to `QdrantClient(":memory:")`.
+The module fixture now also sets mock mode during ingestion, before the function fixture
+runs. `RAG_MODE=real` alone never turns that file into a live-server test.
+
+The separate `tests/test_leakage_qdrant_integration.py` reuses the exact same 600
+user/question assertion cases against `http://localhost:6333`, plus both negative
+controls. It uses a uniquely named disposable `leakage_integration_<uuid>` collection,
+server-side ACL payload indexes and filtering, and deletes only that owned collection.
+It does not write to the application's `chunks`, `baseline_chunks` or cache collections.
+The URL is explicit, independent of RAG_MODE/QDRANT_URL; no in-memory fallback exists.
+
+```powershell
+$env:RUN_QDRANT_INTEGRATION="1"
+python tasks.py test tests/test_leakage_qdrant_integration.py -m integration -q
+Remove-Item Env:RUN_QDRANT_INTEGRATION
+```
+
+Start Qdrant first if necessary: `docker compose up -d qdrant`. On POSIX, use
+`RUN_QDRANT_INTEGRATION=1 python tasks.py test tests/test_leakage_qdrant_integration.py -m integration -q`.
+The suite skips without that opt-in; when enabled, connection/service failures fail
+visibly. Embeddings and completions remain deterministic mocks and audit uses temporary
+SQLite, deliberately isolating live Qdrant permission behavior from LLM/GPU/Postgres setup.
+Disabling the prefilter must expose a forbidden raw result that the independent oracle
+detects, while the post-check still protects the response. Disabling both defenses must
+also make the response oracle detect leaks. These are expected negative controls.
+
+| Security check / recorded output | Qdrant backend | Other adapters | Evidence scope |
+| --- | --- | --- | --- |
+| Original leakage suite (`test_leakage.py`) | In-memory Qdrant client, no server | Mock hash embeddings/completions; SQLite audit | 600 adversarial combinations plus controls and signed-JWT HTTP checks |
+| Cached leakage suite (`test_cache_leakage.py`) | In-memory Qdrant client, no server | Mock models; SQLite audit/state | 600 cached-service combinations; no live-cache claim |
+| New live leakage integration | HTTP localhost:6333; server 1.17.0, client 1.19.1 | Mock hash embeddings/completions; SQLite audit | 602 tests passed on 2026-10-16: 600 cases and two negative controls; collection cleanup verified |
+| Recorded MOCK ACL benchmark CSVs | In-memory Qdrant (`qdrant_memory` in CSV) | No LLM generation in raw timing | Software timing only; not server performance |
+
+The live run emitted the client/server minor-version compatibility warning; it was not
+suppressed. This verifies the small seed fixture's live filter/index behavior despite
+that warning, not general version compatibility or production-scale performance.
+Five-question REAL baseline smokes use the public baseline pipeline and real models;
+they are separate from tenant ACL/cache leakage verification. The generated results
+tables describe benchmarks, not a production leakage-rate estimate.
+
 The ACL benchmark creates a disposable collection, alternates filtered/unfiltered query
 order over at least 200 pairs, writes per-pair timings and prints median paired overhead.
 It tests that a previously accessible document is absent from the very next query after
@@ -369,13 +412,14 @@ a new token, while document ACL revocation affects the next query immediately.
 
 The `/ask` service embeds a normalized question, checks a separate vector cache, then
 on a miss retrieves permitted evidence, routes to the small or large model, and escalates
-a small-model answer when evidence is weak, no valid citation exists, or it says
-`I don't know`. Each returned response retains the original RAG interface. Detailed
+a small-model answer when evidence is weak or it says `I don't know`. Missing valid
+citations additionally trigger escalation when `ESCALATE_NO_CITATION=true` (default off).
+Each returned response retains the original RAG interface. Detailed
 route, cache, escalation, usage and reference-cost measurements go into `requests`.
 
 A cache hit requires all of the following:
 
-- Similarity at least `CACHE_THRESHOLD` (initially 0.90).
+- Similarity at least `CACHE_THRESHOLD` (default 0.96; existing environment overrides still apply).
 - Matching corpus version and current ACL epoch.
 - Nonnegative age below `CACHE_TTL_SECONDS` (initially 600 seconds).
 - Same verified tenant, sorted-role fingerprint **and user ID**.
@@ -419,12 +463,24 @@ python -m eval.bench_cache_router --router
 python -m eval.bench_cache_router --compare --repeat-ratio 0.40
 ```
 
-The sweep evaluates thresholds 0.85 through 0.97 against 50 curated paraphrase pairs
+The sweep evaluates thresholds 0.85 through 0.99 against 50 curated paraphrase pairs
 and 50 near-miss pairs, with and without the guard. It reports the lowest threshold with
 zero false hits on this tuning set, or reports none. These are pairwise comparisons,
 not a held-out evaluation of every competing cache entry. Do not select a real deployment
 threshold from mock embedding scores. Regenerate the fixtures with
 `python -m scripts.make_paraphrases`.
+
+Each threshold prints and records `true_paraphrase_hit_rate` and `false_hits`.
+The full real all-MiniLM-L6-v2 guarded sweep on 2026-10-16 selected 0.96:
+0/50 false hits and 3/50 (6%) true-paraphrase hits, versus 1/50 false hits
+at 0.95. This conservative tuning choice sacrifices recall and does not guarantee
+zero production false hits. See DECISIONS.md for the measured artifact and rationale.
+If an existing `.env` specifies 0.90, explicitly override it in PowerShell:
+
+```powershell
+$env:CACHE_THRESHOLD="0.96"
+$env:ESCALATE_NO_CITATION="false"
+```
 
 The router experiment evaluates both classifiers on 100 hand-labeled intent questions,
 including simple questions containing complexity words and multi-step questions without
@@ -440,16 +496,32 @@ repeat events use a template paraphrase. Repeats follow an earlier occurrence of
 source question. Both requested and actual repeat ratios are written to outputs because
 small `--limit` runs require rounding. Indexing happens before the measured replay.
 The benchmark writes baseline/optimized request CSVs and `summary_project1.json` with
-cost reduction, p50/p95 changes, judged quality delta, cache hit and escalation rates.
+cost reduction, p50/p95 changes, deterministic quality delta, cache hit and escalation rates.
+Quality is `reference_in_answer`: the normalized reference occurs in the normalized answer.
+It is also recorded as `correct` for report compatibility. The LLM judge remains secondary
+in `judge_correct`, `judge_label`, `judge_raw`, and summary `judge_accuracy`.
+This lexical metric can miss equivalent wording or accept a fact inside a negated answer.
+
+Every compare invocation runs citation escalation both OFF (the default) and ON on the
+same workload, clearing the cache before each optimized replay. `citation_policies` in
+the summary contains both results and their CSV filenames; the ON CSV is named
+`citation_policy_on_*.csv`, keeping the normal paired report on the default OFF policy.
+`escalation_rate` is escalated requests divided by **simple-routed requests**, or null
+when there are none. Route shares include simple, complex and cache over all requests;
+an escalated request keeps its original simple route. First-answer reasons are
+`weak_retrieval`, `missing_citation` and `i_dont_know`, with counts and shares of simple
+requests. Reasons can overlap. Weak retrieval and abstention always escalate;
+`ESCALATE_NO_CITATION=true` additionally escalates answers without a valid evidence citation.
+Uncited answers still cannot enter the semantic cache.
 Rows account for both escalation calls and optional classifier usage; judge cost is
 separate. Benchmark latency wraps the whole service, including request logging, and
 excludes the subsequent reference judge.
 
 The dashboard at http://localhost:8501 shows reference cost/request, cache hit rate,
-route split, escalation rate, latency percentiles and judged quality by route over time.
+route split, escalation rate, latency percentiles and measured quality by route over time.
 Filter by runtime mode and `run_tag`; API calls use `RUN_TAG` and benchmarks create
 distinct tags. `RAG_REQUESTS_DB` selects the SQLite log in mock mode; real mode uses
-PostgreSQL. Ordinary API quality is unknown (`NULL`) until a reference judge runs;
+PostgreSQL. Ordinary API quality is unknown (`NULL`) until an evaluator attaches a score;
 the dashboard displays that absence rather than assigning a quality score. Its logged
 latency ends just before the final request-log commit; benchmark CSVs also capture that
 commit's wall time. The dashboard is a local operator tool without tenant login.
@@ -603,7 +675,8 @@ before deploying. Container Ollama calls use `host.docker.internal:11434`.
 
 ## Producing real results
 
-No real benchmark has run yet. All experiments, the dashboard and report generator are
+Only five-question real baseline smokes and live-Qdrant ACL fixture checks have run;
+full real quality/performance benchmarks remain NOT YET RUN. All experiments, the dashboard and report generator are
 implemented. `requirements.txt` pins the offline stack; `requirements-real.txt` includes
 it and pins the additional real model libraries.
 
@@ -668,6 +741,7 @@ For the real workflow, first complete the model setup and service startup above.
 | Project 1 all experiments together | `python tasks.py bench-cache` | Executes sweep, router and comparison |
 | Project 2 paired overhead and immediate revocation | `python tasks.py bench-acl --queries 200` | Raw disposable-vector collection operations, excludes generation/audit |
 | Project 2 offline leakage regressions | `python tasks.py test tests/test_leakage.py tests/test_cache_leakage.py -q` | Seed-derived oracle; 600 retrieval plus 600 cached-service combinations and negative controls |
+| Project 2 live Qdrant leakage integration | `python tasks.py test tests/test_leakage_qdrant_integration.py -m integration -q` | Set RUN_QDRANT_INTEGRATION=1; localhost:6333; same 600 cases + two controls; mock models/SQLite audit |
 | Project 3 real multi-hop comparison | `python tasks.py bench-graph --dataset hotpotqa --n 150 --seed 42 --no-fallback` | Three systems, all/multi-hop/single-hop subsets, indexing separately |
 | Project 3 offline sanity comparison | `python tasks.py bench-graph --dataset fixture --n 15 --seed 42` | Set RAG_MODE=mock; fictional fixture, not a quality result |
 | Live Neo4j storage integration | `python tasks.py test tests/test_graph_store.py -m integration -q` | Opt in with NEO4J_URI; deterministic test vectors, no real LLM |
@@ -722,15 +796,17 @@ after a failure, and avoid querying while ingestion runs. The baseline evaluator
 public-only; authenticated tenant data must use ACL ingestion and the separate collection.
 The current epoch store and security counters are local, and the demo service is intended
 for one worker. Production horizontal scaling requires shared invalidation state and
-centralized metrics. Real Qdrant filtering/indexes and PostgreSQL triggers remain untested
-with live services; the implemented security regression checks ran in mock mode.
+centralized metrics. Live Qdrant filtering/indexes passed the 600-case seed fixture and
+two negative controls using mock models/SQLite audit; PostgreSQL triggers remain untested
+against a live service. Cached leakage coverage remains in-memory, not live Qdrant.
 Cache hits deliberately revalidate evidence, which costs extra vector/audit work. Small
 hand-curated tuning and router sets do not establish production hit rates or quality;
 capitalized-token guards miss some action/negation differences. Generation that started
 before an ACL update can finish its earlier snapshot, but that snapshot is not inserted
 into the new epoch. Request errors record usage from completed calls; unreturned provider
-usage is unknown. Dashboard browser interaction, live model routing and live database/
-vector behavior have not been exercised here; Streamlit was tested headlessly.
+usage is unknown. Dashboard browser interaction, live cost-aware routing, PostgreSQL/
+Neo4j and cached live-vector behavior remain unverified; Streamlit was tested headlessly.
+The live Qdrant retrieval checks are limited to the seed fixture described above.
 The finished evaluation must account for a small corpus, LLM judge bias, estimated
 reference costs, semantic cache false hits, extraction and resolution errors,
 GraphRAG indexing cost, and demo-grade authentication. Graph expansion has no tenant ACLs;
@@ -740,5 +816,5 @@ invent useful connections. The perfect-annotation fixture and graph-enriched lex
 do not predict real cross-encoder quality. Decomposition consumes more evidence/model work
 than a one-shot system. First-use latency includes model loading, and indexing reference
 cost excludes embeddings, database/storage and compute. Tests are offline contract checks;
-hosted Windows/Linux CI, model/GPU setup and full HotpotQA loading remain unverified.
+hosted Windows/Linux CI, GPU behavior and full HotpotQA loading remain unverified.
 See DECISIONS.md for trade-offs.

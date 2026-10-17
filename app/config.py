@@ -75,13 +75,16 @@ class Settings:
         )
     )
     cache_threshold: float = field(
-        default_factory=lambda: float(os.getenv("CACHE_THRESHOLD", "0.90"))
+        default_factory=lambda: float(os.getenv("CACHE_THRESHOLD", "0.96"))
     )
     cache_ttl: float = field(default_factory=lambda: float(os.getenv("CACHE_TTL_SECONDS", "600")))
     cache_guard: bool = field(
         default_factory=lambda: os.getenv("CACHE_GUARD", "true").lower() == "true"
     )
     router_mode: str = field(default_factory=lambda: os.getenv("ROUTER_MODE", "rule"))
+    escalate_no_citation: bool = field(
+        default_factory=lambda: os.getenv("ESCALATE_NO_CITATION", "false").lower() == "true"
+    )
     retrieval_threshold: float = field(
         default_factory=lambda: float(os.getenv("RETRIEVAL_THRESHOLD", "0.20"))
     )

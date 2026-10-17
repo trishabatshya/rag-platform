@@ -1,5 +1,6 @@
 """The independent seed oracle through the cached service, including every repeated hit."""
 
+from contextlib import closing
 from types import SimpleNamespace
 
 import pytest
@@ -29,22 +30,23 @@ from tests.acl_helpers import (
 @pytest.fixture(scope="module")
 def cached_harness(tmp_path_factory):
     root = tmp_path_factory.mktemp("Cached leakage Windows paths")
-    client = RecordingClient()
-    state = CorpusState(root / "state.db")
-    audit = AuditStore(URL.create("sqlite", database=str(root / "audit.db")))
-    requests = RequestStore(URL.create("sqlite", database=str(root / "requests.db")))
-    ingest_acl_documents(SEED_DOCUMENTS, client, state)
-    points, _ = client.scroll("chunks", limit=1000)
-    mapping = {str(point.id): point.payload["doc_id"] for point in points}
-    engine = SecureRAGEngine(client, state, audit)
-    harness = SimpleNamespace(
-        engine=engine,
-        mapping=mapping,
-        service=RAGService(engine, SemanticCache(client, state), requests),
-    )
-    yield harness
-    requests.close()
-    engine.close()
+    with (
+        pytest.MonkeyPatch.context() as patch,
+        closing(RecordingClient()) as client,
+        closing(AuditStore(URL.create("sqlite", database=str(root / "audit.db")))) as audit,
+        closing(RequestStore(URL.create("sqlite", database=str(root / "requests.db")))) as requests,
+    ):
+        patch.setenv("RAG_MODE", "mock")
+        state = CorpusState(root / "state.db")
+        ingest_acl_documents(SEED_DOCUMENTS, client, state)
+        points, _ = client.scroll("chunks", limit=1000)
+        mapping = {str(point.id): point.payload["doc_id"] for point in points}
+        engine = SecureRAGEngine(client, state, audit)
+        yield SimpleNamespace(
+            engine=engine,
+            mapping=mapping,
+            service=RAGService(engine, SemanticCache(client, state), requests),
+        )
 
 
 @pytest.mark.parametrize("record", SEED_USERS, ids=[user["user_id"] for user in SEED_USERS])
