@@ -12,7 +12,9 @@ from scripts.failure_analysis import write_failures
 def test_benchmark_all_subsets_and_cached_indexing_accounting(tmp_path):
     output = tmp_path / "results with spaces Ω"
     cache = tmp_path / "cache with spaces"
-    path, summary = run_benchmark(output, cache_dir=cache)
+    path, summary = run_benchmark(
+        output, cache_dir=cache, systems=("vector", "graph_hybrid", "decomposition")
+    )
     assert summary["label"] == "MOCK (not a result)"
     assert summary["question_count"] == 15 and summary["indexing"]["paragraph_count"] == 39
     assert summary["indexing"]["cache_hits"] == 0

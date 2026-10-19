@@ -32,7 +32,11 @@ class Plan(BaseModel):
 
 
 def answer_decomposed(
-    question: str, pipeline: GraphPipeline, model: str | None = None
+    question: str,
+    pipeline: GraphPipeline,
+    model: str | None = None,
+    *,
+    diagnostics: dict | None = None,
 ) -> RAGResult:
     """Plan and answer each step; aggregate evidence/usage without consulting evaluation labels."""
     start = perf_counter()
@@ -55,6 +59,8 @@ def answer_decomposed(
     try:
         plan = Plan.model_validate_json(response.text)
     except ValidationError:
+        if diagnostics is not None:
+            diagnostics["invalid_decomposition"] = True
         logger.warning("Invalid decomposition; falling back to original question")
         plan = Plan(steps=[question])
     answers, chunks = [], {}

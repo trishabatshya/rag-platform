@@ -187,14 +187,45 @@ use paragraph annotations, but retrieval/generation must never consult question 
 Mock completions operate on supplied evidence, not fixture answers. All outputs must
 record mode and actual dataset origin; fallback does not become a real HotpotQA result.
 
-Extraction means initial attempt plus three retries, strict schema validation and logged
-skip on final failure. Persist successes only. Cache keys isolate mode/model/text/schema
+Extraction means initial attempt plus at most two retries, strict schema validation and logged
+skip on final failure. EXTRACT_TIMEOUT_SECONDS defaults to 90 per call; disable provider
+retries and abort after three consecutive timeout/connection failures. Use json_schema
+response_format with the fixed Extraction enums, at most 8 entities/8 relations. Repair
+string entities, empty names and entity aliases before strict validation; unknown entity
+types become OTHER, unknown relation types become RELATED_TO. Drop dangling relations
+after repair. Keep the schema type lists fixed and document predicate-semantic loss.
+Record kept/dropped relations and fully failed chunks. Persist successes only.
+EXTRACT_MAX_TOKENS defaults to 1000 (PowerShell `$env:EXTRACT_MAX_TOKENS="1000"`).
+Count fresh attempted/clean/repaired/failed chunks and repair occurrences separately
+from cache hits. Console failures must be short; append full errors/raw responses to
+extraction_failures.log, with test logs isolated in temporary directories.
+Skip truncated JSON for that chunk only, preserving vector evidence and never caching
+partial results. Include skipped_chunk_details/skipped_reasons in indexing summaries
+and mode-labeled skipped_chunks.txt, including on outage abort; mark aborted summaries
+incomplete without a benchmark CSV.
+All complete() calls must apply LLM_TIMEOUT_SECONDS=120 and LLM_MAX_TOKENS=400
+when not explicitly overridden; always pass finite limits and num_retries=0 to LiteLLM.
+Graph benchmark defaults to --systems vector,graph_hybrid; decomposition is opt-in.
+Catch per-question generation exceptions, checkpoint terminal successes/failures
+immediately, and resume only matching corpus/mode/model/config checkpoints. Count
+completed/failed/timed_out and invalid_decomposition per system; timeout counts are
+a subset of failures. Failed partial usage is unknown, never fabricated as zero.
+Cache keys isolate mode/model/text/schema
 and mock annotations. Sum every completed extraction call, including invalid JSON; cache
 hits add zero new tokens/cost. Failed extraction preserves vector-only evidence. Indexing
 cost excludes embeddings, reranking, database and local compute charges; label that scope.
 
 Keep entities typed throughout resolution/linking/traversal. Review `merge_groups.txt`:
-nickname aliases and token subsets can merge distinct people. Optional embedding resolution
+Use normalized plain ratio >=92, never token_set_ratio. Block strict token subsets,
+including optional embedding matches, except PERSON two-token first/last matches with
+inserted middle names. Preserve type separation and complete-link grouping. Record
+canonical-assignment merge_counts by reason in indexing summaries and merge reports.
+--fresh-extraction must bypass cache reads without overwriting first-fill provenance.
+Always include first_fill_extraction time/tokens/cost separately from current-run usage;
+legacy entries without measurements are unknown/null, never zero. Persist successful
+first-fill measurements, deduplicate cache keys and fingerprint resolved graph evidence
+for checkpoint compatibility. Do not cache failed extractions.
+Nickname aliases and the PERSON exception can still merge distinct people. Optional embedding resolution
 is off by default. Every graph relation retains supporting chunk_id; prompt triples must
 come only from selected evidence. Keep bounded two-hop expansion, top15 vectors, top6
 reranked evidence and <=10 prompt triples. Planner usage counts toward decomposition.

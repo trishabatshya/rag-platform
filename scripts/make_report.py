@@ -307,8 +307,8 @@ def render_results(directory: Path) -> str:
         "| --- | --- | --- | --- | --- | --- | --- | --- |",
     ]
     g = real[3]
-    if g and {r["system"] for r in g.rows} != {"vector", "graph_hybrid", "decomposition"}:
-        raise ValueError(f"Incomplete GraphRAG comparison: {g.path.name}")
+    if g and not {r["system"] for r in g.rows} <= {"vector", "graph_hybrid", "decomposition"}:
+        raise ValueError(f"Unknown GraphRAG system: {g.path.name}")
     for system in ("vector", "graph_hybrid", "decomposition"):
         for subset in ("all", "multihop", "singlehop"):
             rows = (
@@ -320,14 +320,23 @@ def render_results(directory: Path) -> str:
                 if g
                 else []
             )
-            if not g:
+            if not g or system not in {r["system"] for r in g.rows}:
                 cells = [PENDING] * 7
             elif not rows:
                 cells = ["0"] + ["not applicable (empty subset)"] * 6
             else:
 
                 def avg(key: str) -> str:
-                    return _fmt(mean(_number(r, key) for r in rows))
+                    values = []
+                    for row in rows:
+                        if (
+                            row.get("status") == "failed"
+                            and key in {"in_tokens", "out_tokens", "reference_cost"}
+                            and row.get(key) in (None, "")
+                        ):
+                            continue
+                        values.append(_number(row, key))
+                    return _fmt(mean(values) if values else None)
 
                 cells = [
                     str(len(rows)),
@@ -345,13 +354,37 @@ def render_results(directory: Path) -> str:
         indexing = _indexing(directory, g)
         if indexing:
             lines.append(
-                "One-time indexing: "
+                "This run's indexing: "
                 f"{_fmt(_number(indexing, 'total_indexing_ms'))} ms; "
                 f"{_number(indexing, 'in_tokens'):g} input / "
                 f"{_number(indexing, 'out_tokens'):g} output tokens; "
                 f"USD {_fmt(_number(indexing, 'reference_cost'))} reference extraction cost; "
                 f"{_number(indexing, 'cache_hits'):g} reused cache entries. "
+                "Relations kept / dropped: "
+                f"{_fmt(indexing.get('kept_relations'))} / "
+                f"{_fmt(indexing.get('dropped_relations'))}; fully failed chunks: "
+                f"{_fmt(indexing.get('failed_chunks'))}. "
+                "Fresh chunks attempted / clean / repaired / failed: "
+                f"{_fmt(indexing.get('chunks_attempted'))} / "
+                f"{_fmt(indexing.get('extracted_cleanly'))} / "
+                f"{_fmt(indexing.get('extracted_after_repair'))} / "
+                f"{_fmt(indexing.get('failed_chunks'))}. "
+                "Repaired entity / relation type occurrences: "
+                f"{_fmt(indexing.get('repaired_entity_types'))} / "
+                f"{_fmt(indexing.get('repaired_relation_types'))}; "
+                "unknown relations become RELATED_TO. "
                 "Excludes embedding/storage/compute charges."
+            )
+            first_fill = indexing.get("first_fill_extraction", {})
+            lines.append(
+                "Original successful extraction-cache fills: "
+                f"{_fmt(first_fill.get('elapsed_ms'))} ms; "
+                f"{_fmt(first_fill.get('in_tokens'))} input / "
+                f"{_fmt(first_fill.get('out_tokens'))} output tokens; "
+                f"USD {_fmt(first_fill.get('reference_cost'))} reference extraction cost. "
+                f"Entries with unknown history: {_fmt(first_fill.get('unknown_chunks'))}. "
+                "Legacy history is unknown, not zero. Merge counts by reason: "
+                f"{_cell(str(indexing.get('merge_counts', 'not recorded')))}."
             )
         else:
             lines.append("Indexing usage: not recorded in a matching retained JSON summary.")

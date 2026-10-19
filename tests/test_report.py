@@ -152,6 +152,14 @@ def test_graph_empty_subset_origin_and_matching_archived_indexing_summary(tmp_pa
             "out_tokens": 20,
             "reference_cost": 0.04,
             "cache_hits": 3,
+            "kept_relations": 7,
+            "dropped_relations": 2,
+            "failed_chunks": 1,
+            "chunks_attempted": 5,
+            "extracted_cleanly": 2,
+            "extracted_after_repair": 2,
+            "repaired_entity_types": 3,
+            "repaired_relation_types": 4,
         },
     }
     (tmp_path / "project3_real.json").write_text(json.dumps(summary), encoding="utf-8")
@@ -168,6 +176,13 @@ def test_graph_empty_subset_origin_and_matching_archived_indexing_summary(tmp_pa
     text = render_results(tmp_path)
     assert "test-fixture" in text and "empty subset" in text
     assert "25.0000 ms" in text and "USD 0.0400" in text and "999" not in text
+    assert "Relations kept / dropped: 7.0000 / 2.0000; fully failed chunks: 1.0000" in text
+    assert (
+        "Fresh chunks attempted / clean / repaired / failed: 5.0000 / 2.0000 / 2.0000 / 1.0000"
+        in text
+    )
+    assert "Repaired entity / relation type occurrences: 3.0000 / 4.0000" in text
+    assert "unknown relations become RELATED_TO" in text
 
 
 def test_missing_graph_summary_does_not_reuse_stale_indexing(tmp_path):

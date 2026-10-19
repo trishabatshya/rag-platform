@@ -371,3 +371,125 @@ baseline/OFF filenames for report pairing; store ON in citation_policy_on CSV
 and both policies in the summary. Primary answer quality and request-log quality
 are reference_in_answer; retain judge verdict/raw reply as secondary evidence.
 Lexical matching is transparent but cannot establish semantic correctness.
+
+## Extraction timeout and relation salvage (2026-10-17)
+
+Limit extraction to three total attempts (two retries), overriding the earlier M4
+retry rule at the user's request. Pass EXTRACT_TIMEOUT_SECONDS (positive finite,
+default 90) through the shared completion adapter only for extraction, disabling
+LiteLLM retries on those calls to avoid multiplying attempts. Three consecutive
+timeout/connection failures abort indexing rather than skipping an entire unavailable
+provider's corpus. A returned completion resets the outage streak independently of
+JSON validity. Other completion callers retain their existing provider options.
+
+Only salvage the strict schema's endpoint-membership error. Structural/type/extra-field
+errors still fail the chunk after bounded retries; never invent missing entities or
+widen allowed types. Keep declared entities and valid relations, caching the successful
+salvaged extraction. Existing schema-valid caches remain usable. Failures are not cached.
+Indexing usage counts kept relations including cached successes, newly dropped relations,
+and fully failed chunks (skipped_chunks remains a compatible alias). Archived benchmark
+JSON carries these counts through existing dataclass serialization; report unknown counts
+for older summaries rather than assuming zeros. Live provider behavior: NOT YET RUN;
+offline injected failures verify the control flow and request parameters.
+
+## Extraction output cap and skipped diagnostics (2026-10-17)
+
+EXTRACT_MAX_TOKENS defaults to 700 and must be positive. Forward it only on graph
+extraction calls; other completion callers retain their existing generation limits.
+Preserve the provider finish_reason to detect token-limited replies, and also recognize
+JSON validation EOF errors when a provider omits finish metadata. Reject the whole
+partial extraction immediately, retain vector evidence and continue to the next chunk;
+do not retry a capped partial response repeatedly or cache it. Other validation errors
+retain two retries and endpoint-only salvage remains unchanged.
+
+Record one final reason per skipped chunk, not per failed attempt. Summaries carry
+skipped_chunk_details and skipped_reasons; skipped_chunks.txt is a mode-labeled UTF-8
+JSON-lines diagnostic rewritten for each indexing run. Persist it in a finally block
+so the existing three-timeout abort cannot erase diagnostic evidence. Abort summaries
+are explicitly incomplete, have no CSV reference, and are archived separately; they
+cannot be mistaken for completed benchmark measurements. Successful summary archives
+remain intact. Failure records never become extraction-cache entries.
+
+## Constrained extraction and explicit lossy repair (2026-10-18)
+
+Keep EntityType/RelationType unchanged. Send Extraction.model_json_schema via
+LiteLLM response_format.type=json_schema, with maxItems=8 on both top-level arrays.
+Use a short important-facts prompt and default EXTRACT_MAX_TOKENS=1000. The installed
+LiteLLM 1.105.1 Ollama completion/chat adapters map json_schema to the schema-valued
+Ollama format argument; the running server reports 0.40.5. Three fresh llama3.2:3b
+calls verified allowed types on raw objects before any repair (no invented types).
+Artifact: eval/results/extraction_schema_smoke_20261018T073650034507Z.json.
+This is adapter/schema evidence for three authored paragraphs, not corpus quality.
+
+Repair before strict validation: coerce string entities, discard blank names, apply
+the requested entity aliases then OTHER fallback; unknown predicates become RELATED_TO.
+This deliberately loses predicate semantics rather than widening the fixed vocabulary.
+Repair typed endpoints consistently; resolve bare endpoint names only when unique, then
+drop relations without declared typed endpoints. Do not guess names or add entities.
+Malformed shapes/extra fields still fail, and failures never enter the cache.
+
+Count fresh attempted/clean/repaired/failed chunks separately from historical cache hits.
+Count repaired type occurrences in successful outputs, including endpoint objects and
+unknown predicates later dropped as dangling relations. Preserve valid old cache entries;
+their original repair history is unknown, so do not label cache hits as newly clean.
+Console diagnostics contain one chunk ID/reason per skipped chunk; append full errors
+and raw responses to extraction_failures.log. Isolate all unit-test logs in temporary
+directories and keep diagnostics out of Git because they include public corpus text.
+
+## Bounded completions and resumable graph evaluation (2026-10-18)
+
+Always resolve missing completion limits centrally: LLM_TIMEOUT_SECONDS=120 and
+LLM_MAX_TOKENS=400. Validate positive finite limits and explicitly pass timeout,
+max_tokens and num_retries=0 to the sole LiteLLM completion boundary. Extraction's
+explicit 90/1000 overrides remain intact. Source search found no other direct provider
+completion calls. Timeouts bound individual calls, not an entire multi-step question.
+
+Default graph benchmark systems to vector,graph_hybrid; decomposition is explicit
+--systems opt-in. Catch each question/system Exception, retain the full failure reason,
+score failed answer/evidence metrics zero and continue. Preserve unknown partial total
+usage as null rather than claiming zero cost. Count timeouts as a subset of failures;
+count invalid decomposition even when its fallback answer later fails, through optional
+diagnostics that leave the shared response contract unchanged. Interrupts and indexing,
+configuration/checkpoint I/O failures still propagate instead of claiming success.
+
+Append/flush/fsync each terminal result to a corpus/configuration-hashed JSONL. Include
+mode, corpus/questions/mock annotations, model names, endpoint, limits and resolution
+policy in the key; omit selected systems so adding decomposition can reuse vector rows.
+Skip both successes and recorded failures on rerun; use a new output directory to retry
+terminal failures. Rebuild the index through its existing success-only cache. Discard
+only a partial trailing checkpoint line, fail on earlier corruption/duplicates, and keep
+one writer per checkpoint. Summary counts separate reused rows from new measurements.
+Report omitted systems as NOT YET RUN and allow unknown failed-row usage without
+silently accepting malformed blank measurements on successful rows.
+
+## Subset-safe resolution and original extraction-fill costs (2026-10-18)
+
+Replace token_set_ratio with normalized plain ratio >=92. Reject strict token subsets
+before fuzzy or optional embedding comparison, except PERSON names where the shorter
+name contains exactly first+last tokens matching the longer name's first/last, with
+inserted middle names. Keep normalization/nickname handling, type separation, longest
+canonical selection and complete-link groups. Count one canonical-assignment reason
+per eliminated unique typed entity (normalized_equal/person_first_last/ratio/embedding),
+not all matching pairs. Close-spelling collisions remain possible at the requested ratio.
+
+--fresh-extraction bypasses successful extraction-cache reads, still recording every
+completed call and including validation retries in current usage. Preserve older valid
+successes when a forced extraction fails; never return them for that failed forced call.
+Store original successful-fill time, tokens, completed calls and reference cost under
+cache/provenance, independently of current-run counters. Later cache hits and forced
+regenerations must not overwrite the original record. Deduplicate cache keys in totals.
+First-fill scope excludes failed uncached runs and non-extraction costs; token/reference
+costs cover completed provider replies, not unknown usage from timed-out calls.
+
+Always emit first_fill_extraction in indexing summaries, with known/unknown entry counts
+and null complete totals when legacy records are missing. Do not backfill old provenance
+using a cache-hit timing or a later fresh measurement. This run's fresh usage is separately
+available even when historical original fill costs cannot be reconstructed. README report
+labels current indexing separately from original fill costs, and retains matching archives.
+
+Fingerprint the resolved graph in query checkpoints and bump resolver/checkpoint version,
+so changing merges or forced extraction evidence cannot silently reuse older QA rows.
+Rebuild merge_groups.txt from matching cached real HotpotQA paragraphs without models,
+databases or a new QA benchmark. Read the cached Arrow dataset with in-memory sampling:
+the normal dataset loader attempted an unwritable external cache lock. Do not rewrite
+the earlier real benchmark summary/CSV with new graph counts and old QA measurements.

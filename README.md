@@ -639,15 +639,141 @@ so its single-hop subset may be empty. Without `--no-fallback`, a download/cache
 loads the fixture and records the fallback reason and actual data origin prominently.
 Fallback never changes runtime mode: real-mode fixture extraction still uses the LLM.
 
-Extraction uses a fixed typed Pydantic schema, an initial attempt plus three retries,
-and logs/skips graph extraction on final failure while preserving vector evidence.
+All `complete()` callers, including decomposition planning and final generation, use
+`LLM_TIMEOUT_SECONDS=120` and `LLM_MAX_TOKENS=400` unless explicit values are supplied.
+Provider retries are disabled to prevent multiplying timeout budgets. Extraction retains
+its explicit 90-second/1000-token limits. PowerShell configuration:
+
+```powershell
+$env:LLM_TIMEOUT_SECONDS="120"
+$env:LLM_MAX_TOKENS="400"
+python tasks.py bench-graph --dataset fixture --systems vector,graph_hybrid
+# Decomposition runs only when explicitly requested:
+python tasks.py bench-graph --dataset fixture --systems vector,graph_hybrid,decomposition
+```
+
+Graph benchmark defaults to vector and graph_hybrid. Every question/system generation
+exception becomes a failed CSV/checkpoint row with `failure_reason` and `timed_out`;
+the next question continues. Per-system summary counts are `completed`, `failed`,
+`timed_out` (a subset of failed), and `invalid_decomposition`. Invalid planner JSON
+retains the existing original-question fallback and is counted even if fallback fails.
+Failed requests score zero EM/F1/supporting recall; partially completed token/cost usage
+is unknown (null), with usage averages computed over known rows only. A timeout bounds
+each model call, so multi-step decomposition can still take several call budgets.
+
+Each terminal result is immediately flushed/fsynced to a `graph_checkpoint_HASH.jsonl`
+in the output directory. Rerunning the same corpus/settings skips finished results,
+including failures. Checkpoints isolate corpus/questions/annotations, mode, model names,
+endpoint, generation limits and resolution settings. Adding systems reuses prior systems;
+indexing is rebuilt from its normal success-only extraction cache on each run. Summary
+`resumed_results` / `new_results` distinguish replayed measurements from new ones.
+To retry terminal failures, use a new output directory. A partial final JSONL write is
+discarded on resume; corruption earlier in the file fails clearly. Use one writer per
+checkpoint. Indexing/configuration/I/O failures still stop the run; per-question model
+failures do not. Live timeout/recovery behavior for this change: NOT YET RUN.
+
+Extraction uses a fixed typed Pydantic schema, an initial attempt plus at most two retries,
+and logs/skips graph extraction on final validation failure while preserving vector evidence.
+Each extraction request has a 90-second timeout, configurable in PowerShell with
+`$env:EXTRACT_TIMEOUT_SECONDS="90"`. Provider retries are disabled for these calls.
+Three consecutive timeout/connection failures abort the run with an Ollama diagnostic;
+a completed provider call resets that streak, even when its JSON is invalid.
+Extraction passes the fixed `Extraction` JSON schema through LiteLLM's
+`response_format={"type":"json_schema",...}` to Ollama, including the existing enums
+and at most 8 entities / 8 relations. The short prompt requests important explicit facts only.
+Before final strict validation, repair coerces string entities to `{name,type:OTHER}`,
+drops empty names, and maps COUNTY/CITY/STATE/COUNTRY/REGION/PROVINCE to PLACE,
+MOVIE/SONG/ALBUM/DVD/SINGLE/PLAY to WORK, BAND/COMPANY/ORGANIZATION to ORG,
+and OPERATION to EVENT. Other unknown entity types become OTHER. **Unknown relation
+types become RELATED_TO**, losing their original predicate semantics. Dangling relations
+are dropped after endpoint repair; string endpoints resolve only to a unique declared name.
+Other malformed structures and extra fields still fail strict validation. The type lists
+are unchanged; these repairs do not establish factual accuracy.
+Benchmark summary `indexing` records `kept_relations`, `dropped_relations`, and
+`failed_chunks` (also retained as `skipped_chunks` for compatibility). Kept counts include
+cache hits; dropped counts describe relations removed from new extractions this run.
+The generated real-results indexing paragraph reports these counts when available;
+older summaries have unknown counts. Full real benchmark counts for this change: NOT YET RUN.
+New summary fields are `chunks_attempted`, `extracted_cleanly`,
+`extracted_after_repair`, `repaired_entity_types`, and `repaired_relation_types`.
+Attempted counts exclude cache hits and count each fresh chunk once, across retries;
+attempted = clean + repaired + failed. Type-repair counts are successful-output
+occurrences (including typed relation endpoints); relation repairs include unknown
+predicates subsequently dropped for dangling endpoints. `coerced_string_entities`
+and `dropped_entities` provide additional repair detail. Cached successes are counted
+separately because historical repair provenance is unavailable.
+Failed chunks are never cached and are attempted again on the next run.
+Extraction output defaults to 1000 tokens per call; override with PowerShell
+`$env:EXTRACT_MAX_TOKENS="1000"` (positive integer). Existing environment/.env overrides
+still apply. Token-limit completions or
+JSON ending unexpectedly at EOF skip only that chunk without caching partial data;
+its original paragraph remains available to vector retrieval. Other validation failures
+retain the existing bounded retries. Timeouts retain the three-consecutive-failure abort.
+The summary's `indexing.skipped_chunk_details` records chunk IDs, final reasons
+(`timeout`, `validation failure`, `truncated JSON`, or `provider failure`) and attempts;
+`skipped_reasons` counts skipped chunks by reason. `eval/results/skipped_chunks.txt`
+contains the same per-chunk records as UTF-8 JSON lines below a runtime-mode label.
+It is rewritten each run, even with no skips. Outage aborts also write diagnostics and
+an incomplete summary (`completed=false`, no benchmark CSV), plus an archived aborted
+summary; these are not completed benchmark measurements.
+Console failures are one short chunk-ID/reason line per skipped chunk. Full per-attempt
+errors and raw replies are appended to `eval/results/extraction_failures.log` (or the
+benchmark output directory's file); do not commit diagnostics containing corpus text.
+
+Real schema smoke verification on 2026-10-18: installed LiteLLM **1.105.1**, running
+Ollama **0.40.5**, `ollama/llama3.2:3b`. Both the installed adapter's schema forwarding
+and three fresh model replies were checked. Raw replies are validated before repair;
+this is a three-paragraph adapter/schema check, not benchmark quality or proof for all inputs.
+Source: `eval/results/extraction_schema_smoke_20261018T073650034507Z.json`.
+Of 3 fresh chunks: 2 clean, 1 after repair, 0 failed; 0 entity-type repairs,
+0 relation-type repairs, 2 dropped dangling relations, 6 kept relations. All 3 raw
+replies had allowed types and stopped normally (259, 187 and 146 output tokens).
+Reproduce with `$env:RAG_MODE="real"`, `$env:EXTRACT_MAX_TOKENS="1000"`, then
+`python -m scripts.verify_graph_extraction` (requires a running local Ollama).
+Session verification on 2026-10-17: **MOCK (not a result)** fixture benchmark,
+39 kept relations, 0 dropped relations, 0 fully failed chunks across 39 paragraphs;
+source `eval/results/project3_20261017T121344674043Z.json`. Offline injected-response
+tests exercise dangling relations, strict failures and the three-failure outage abort.
 Disk-cache keys include text hash, model, runtime mode and schema; mock keys also include
 annotations. Cache hits add no new extraction tokens/reference cost. Mock annotation
 extraction has zero LLM calls, not invented indexing tokens. Indexing time is measured;
 reference cost covers new extraction completions, excluding embeddings/storage/compute.
-Resolution groups names by type at rapidfuzz score >=92, chooses the longest canonical
-name, and writes merge groups. The optional `--embedding-resolution` cosine pass is
-off by default. Review nickname/subset-name false-merge risks in DECISIONS.md.
+Resolution uses normalized **plain RapidFuzz ratio >=92**, with separate groups per
+entity type and the longest name as canonical. Strict token subsets never merge except
+for PERSON: a two-token first/last name may match the same first/last tokens surrounding
+additional middle names. Single names, suffix extensions and non-person subsets do not
+qualify. The optional `--embedding-resolution` pass cannot bypass this subset guard.
+Complete-link grouping still checks every group member. `indexing.merge_counts` and
+`merge_groups.txt` count eliminated unique typed entities by their canonical-pair reason:
+`normalized_equal` (including the existing Chris/Christopher alias), `person_first_last`,
+`ratio`, or `embedding`. Counts sum to raw unique entities minus canonical entities.
+Other close spellings can still conflate entities; review the regenerated groups.
+
+On 2026-10-18, regenerated the **REAL cached-extraction** merge report for the same
+20-question/200-paragraph HotpotQA sample: 966 unique typed entities -> 956 canonical,
+with 3 normalized-equal, 3 person-first/last and 4 plain-ratio merges; 0 embedding merges.
+All five reported non-person subset pairs now remain separate. This was a cache-only
+resolver rebuild (200 hits, no model calls), not a new QA quality/performance benchmark.
+Source: `eval/results/resolution_rebuild_20261018T173547647813Z.json`.
+
+Use `python tasks.py bench-graph --dataset fixture --fresh-extraction` to ignore extraction
+cache reads and measure new extraction timing/usage (set real mode and your dataset for
+real measurements). It preserves existing success caches if new extraction fails and
+never substitutes cached evidence for a failed forced extraction. Summary current-run
+`elapsed_ms`, `in_tokens`, `out_tokens`, `reference_cost` and cache-hit counts remain actual
+new-run measurements. They are separate from `indexing.first_fill_extraction`, which
+always reports original successful-fill time/tokens/cost and known/unknown entry counts.
+New cache entries retain these measurements under `CACHE_DIR/provenance`; cache hits and
+fresh regenerations preserve the original record. Summaries deduplicate identical cache
+keys. First-fill scope includes retries within a successful fill, but excludes failed
+uncached runs and embedding/storage/compute costs. Failed-run usage remains in that run's
+current counters. Checkpoints also include a resolved-graph fingerprint, so old answers
+cannot be reused after resolver changes or a fresh extraction changes graph evidence.
+
+The 200 legacy real cache entries have no original timing/token records: first-fill
+totals are **unknown/null**, not zero. A forced rerun can measure a new extraction but
+cannot reconstruct those lost historical measurements. Fresh real extraction timing
+for this change: **NOT YET RUN**. Mock timing/token values remain **MOCK (not a result)**.
 
 Neo4j uses typed Entity/Chunk constraints, MERGE, evidence-bearing REL edges and a
 384-dimensional cosine `chunk_embeddings` index. The implementation targets Neo4j 5's

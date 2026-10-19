@@ -38,6 +38,12 @@ def test_fixture_hybrid_supporting_recall_meets_vector_acceptance(tmp_path):
             assert len(result["chunks"]) <= 6
         assert sum(hybrid) / len(hybrid) >= sum(vector) / len(vector)
         assert usage["skipped_chunks"] == 0 and usage["paragraph_count"] == 39
+        assert usage["failed_chunks"] == usage["dropped_relations"] == 0
+        assert usage["chunks_attempted"] == usage["extracted_cleanly"] == 39
+        assert usage["extracted_after_repair"] == 0
+        assert usage["kept_relations"] == sum(
+            len(p.annotation.relations) for p in corpus.paragraphs
+        )
     finally:
         pipeline.store.close()
 

@@ -339,3 +339,158 @@ cases deselected, in 51.34s. Added tests cover optional citation policy, overlap
 reasons, denominator arithmetic, primary/secondary quality, both policy outputs,
 and sweep bounds. An initial report regression on legacy CSVs missing route was
 fixed before the passing full rerun. No evaluation questions were changed.
+
+## Graph extraction timeout and salvage follow-up (2026-10-17)
+
+Implemented EXTRACT_TIMEOUT_SECONDS (default 90), at most two extraction retries,
+and disabled nested provider retries for extraction only. Three consecutive timeout
+or connection failures abort the run with an Ollama/config diagnostic; returned
+completions reset the outage streak. Failed chunks are not cached and retry on rerun.
+Endpoint-only validation failures now retain declared entities and valid relations,
+dropping only relations with undeclared typed endpoints. Other strict schema errors
+still fail. Existing valid caches and allowed schema types remain unchanged.
+
+Indexing summaries now record kept_relations, dropped_relations and failed_chunks;
+README and generated indexing reports describe these counts and unknown legacy fields.
+Session fixture benchmark: MOCK (not a result), 39 paragraphs, 39 kept relations,
+0 dropped, 0 failed, no extraction cache hits. Source:
+`eval/results/project3_20261017T121344674043Z.json`.
+Real extraction/outage behavior for this change: NOT YET RUN.
+
+Validation: lint passed. Full offline suite: 1465 passed, 603 integration cases
+deselected in 90.13s. Focused extraction/retrieval/report suite: 41 passed, including
+an additional provider-option forwarding regression added after full-suite collection.
+Tests cover bounded retries, timeout forwarding, outage abort, reset after completed
+invalid JSON, failure retry on a fresh extractor, relation salvage, unknown-type
+rejection, cache accounting, summary propagation and README report rendering.
+
+## Extraction token cap and skipped-chunk diagnostics (2026-10-17)
+
+Added EXTRACT_MAX_TOKENS (positive integer, default 700) and forwarded max_tokens
+only on graph extraction requests. Completion results preserve finish_reason;
+token-limit completions and unexpected JSON EOF skip just that paragraph's graph
+extraction immediately. Partial results are not cached, original vector evidence
+remains available, and future runs can retry the paragraph. Other validation failures
+and the three-consecutive-timeout abort retain their existing behavior.
+
+Summaries now include indexing.skipped_chunk_details (chunk ID, reason, attempts)
+and skipped_reasons counts. Indexing writes mode-labeled skipped_chunks.txt even
+when no chunks are skipped or an outage aborts. Aborted benchmarks preserve an
+incomplete summary and separate archive, without a completed CSV reference.
+README, AGENTS and .env.example document configuration and diagnostics; generated
+skipped_chunks.txt is ignored by Git.
+
+Session verification: MOCK (not a result) fixture benchmark completed 15 questions
+with 39 kept relations and zero skipped chunks; empty details/counts and a mode-only
+skipped_chunks.txt were produced. Artifact: project3_20261017T124446863284Z.json.
+Five new regression tests passed, covering configurable cap forwarding, provider
+finish metadata and JSON EOF truncation, continuation to the next chunk, no failure
+caching, and validation/timeout summary and file persistence. Full offline suite:
+1471 passed, 603 integration cases deselected in 111.68s. Lint passed.
+Live-provider token-limit behavior for this change: NOT YET RUN.
+
+## Constrained schema, repair and live verification (2026-10-18)
+
+Extraction now forwards the fixed Extraction JSON schema via LiteLLM json_schema
+response_format, adding maxItems=8 for entities and relations. Prompt requests only
+important explicit facts; EXTRACT_MAX_TOKENS defaults to 1000. Entity/relation type
+lists remain unchanged. Lenient repair handles string entities, blank names, requested
+entity aliases and OTHER fallback, unknown predicates as RELATED_TO, and dangling
+relations after typed-endpoint repair. Other malformed structures still fail strictly.
+
+Indexing summaries and README reporting count fresh attempted/clean/repaired/failed
+chunks, entity/relation type repair occurrences, dropped relations, string coercions
+and dropped entities. Cache hits retain zero new calls and are excluded from fresh
+classification because historical repair provenance is unknown. Failures remain uncached.
+Console diagnostics are one short skipped-chunk ID/reason; full per-attempt errors and
+raw replies append to extraction_failures.log. Test logs use temporary directories.
+
+Inspected installed LiteLLM 1.105.1 Ollama completion/chat adapters: json_schema maps
+to Ollama's schema-valued format. CLI and server API both report Ollama 0.40.5.
+Ran three fresh real ollama/llama3.2:3b calls on authored film, band and oil-field
+paragraphs; raw entity and relation objects were validated BEFORE repair. All three
+used only fixed allowed types and ended with finish_reason=stop (259/187/146 output
+tokens), without truncation. Attempted 3, clean 2, repaired 1, failed 0; entity-type
+repairs 0, relation-type repairs 0, dangling relations dropped 2, kept relations 6.
+Artifact: eval/results/extraction_schema_smoke_20261018T073650034507Z.json.
+This verifies the live schema path on three cases, not full-corpus semantic quality.
+Reproduce with python -m scripts.verify_graph_extraction in real mode at cap 1000.
+
+Fresh MOCK (not a result) fixture benchmark: 39 attempted/clean, 0 repaired/failed,
+0 type repairs or dropped relations; project3_20261018T073843118105Z.json.
+Full real benchmark for this change: NOT YET RUN.
+
+Validation: lint passed; full offline suite passed 1492 tests, with 603 integration
+cases deselected in 158.63s. Focused repair/report tests: 36 passed. Tests cover all
+requested aliases, fixed type lists, OTHER/RELATED_TO fallback, endpoint repairs,
+dropped blanks/dangling relations, schema forwarding and limits, summary/report
+accounting, one-line console failures and full temporary-file diagnostics.
+
+## Completion defaults and resilient graph benchmark (2026-10-18)
+
+Shared complete() now always forwards finite timeout/max_tokens and disables provider
+retries. Defaults: LLM_TIMEOUT_SECONDS=120, LLM_MAX_TOKENS=400; extraction retains
+explicit 90-second/1000-token bounds. rg over app/graphrag/eval/scripts confirmed the
+only direct LiteLLM completion call is this centrally bounded adapter; decomposition
+and all other complete() callers cannot inherit the provider's 600-second default.
+
+Graph benchmark now defaults to vector,graph_hybrid and supports comma-separated
+--systems with explicit decomposition opt-in. Each question/system generation exception
+becomes a failed result with reason/timeout status; remaining work continues. Summaries
+report completed/failed/timed_out/invalid_decomposition by system. Invalid planner JSON
+still falls back and its count survives fallback failure. Failed rows score zero quality
+and retain unknown partial usage as null; completed subset statistics remain available.
+
+Terminal question results are immediately checkpointed with flush/fsync to JSONL and
+reused on matching reruns, including recorded failures. Checkpoints isolate workload,
+mode/models/endpoint/limits/resolution, recover an interrupted trailing write, and reject
+earlier corruption. Model/corpus/config changes select a new checkpoint. New systems
+can reuse existing system results. Summary records resumed_results/new_results; reports
+support selected subsets and explicitly unknown failed-row usage. README/AGENTS and
+.env.example document controls, restart behavior and per-call timeout scope.
+
+Validation: lint passed; focused tests 46 passed. Full pytest collection in mock mode
+with live-service opt-ins cleared only in the child process:
+`1502 passed, 603 skipped in 66.54s (0:01:06)`.
+Skipped cases are live Neo4j/Qdrant integration tests. Added regression tests cover one
+timeout followed by successful questions, generation failures, checkpoint reuse after
+failure/interruption, invalid plans with failed fallbacks, limit forwarding/overrides,
+partial writes, configuration isolation and invalid system selections.
+Mock CLI verification (MOCK, not a result): two questions across two default systems;
+second run reused 4 terminal rows, new_results=0. Live provider timeout/recovery for this
+change: NOT YET RUN. No real performance or quality result is claimed.
+
+## Subset-safe entity resolution and extraction-cost provenance (2026-10-18)
+
+Replaced token_set_ratio with normalized plain RapidFuzz ratio >=92. Non-person token
+subsets stay separate even with optional embeddings; only PERSON two-token first/last
+names may match longer names with inserted middle tokens. Type separation, normalization,
+longest canonical names and complete-link checks remain. Merge reports and indexing
+summaries now contain merge_counts by normalized_equal/person_first_last/ratio/embedding;
+these count eliminated unique typed entities and sum to raw minus canonical count.
+
+Regenerated REAL merge_groups.txt from the exact same 20-question/200-paragraph HotpotQA
+sample, using 200 successful cache reads and forbidding new provider calls. Raw unique
+typed entities: 966; canonical: 956. Merges: 3 normalized-equal, 3 person first/last,
+4 plain-ratio, 0 embedding. All five user examples remain separate. This is resolver-only
+verification, not a fresh QA quality/performance result. Evidence:
+eval/results/resolution_rebuild_20261018T173547647813Z.json. The dataset was read from its
+cached Arrow file with in-memory sampling after the normal loader attempted a sandbox-
+blocked external cache lock; no dataset content was changed or downloaded.
+
+Added --fresh-extraction and first_fill_extraction summary fields. New successful cache
+fills persist original time/tokens/completed-call/reference-cost measurements in per-key
+provenance records; cache hits and forced regeneration preserve original measurements.
+Current-run counters remain separate. Failed extractions are not written as cache entries;
+first-fill totals deduplicate cache keys. All 200 legacy real entries lack provenance, so
+their historical totals are unknown/null, never zero. Later fresh measurement cannot
+reconstruct the past. Real fresh extraction/QA benchmarking for this change: NOT YET RUN.
+Resolved graph fingerprints invalidate stale QA checkpoints after evidence/merge changes.
+
+Validation: lint passed. Full offline test collection: 1513 passed, 603 live integration
+cases skipped in 152.50s (0:02:32). New cases cover all five subset examples, spelling
+similarity, PERSON-only exceptions, type separation, embedding-guard behavior, original
+fill persistence across cached/fresh runs, legacy unknowns and benchmark summary counts.
+Mock CLI (MOCK, not a result) fresh/cached verification: 0 then 39 cache hits, identical
+original-fill metrics across runs; artifacts under data/runtime/first fill verification.
+README/AGENTS/DECISIONS explain measurement scope and remaining fuzzy-match risks.

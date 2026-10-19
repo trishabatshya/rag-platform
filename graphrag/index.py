@@ -1,5 +1,7 @@
 """Build one shared vector/graph corpus and its independently accounted indexing usage."""
 
+import hashlib
+import json
 from dataclasses import asdict
 from pathlib import Path
 from time import perf_counter
@@ -7,7 +9,7 @@ from time import perf_counter
 from app.config import Settings
 from app.embed import embed
 from graphrag.dataset import Corpus
-from graphrag.extract import Extractor
+from graphrag.extract import ExtractionUnavailable, Extractor
 from graphrag.graph_store import GraphStore, MemoryGraphStore, Neo4jGraphStore
 from graphrag.resolve import resolve
 from graphrag.retrieve import GraphPipeline
@@ -20,16 +22,29 @@ def build_index(
     report_path: Path | None = None,
     embedding_resolution: bool = False,
     store: GraphStore | None = None,
+    fresh_extraction: bool = False,
 ) -> tuple[GraphPipeline, dict]:
     """Extract/resolve once and index all paragraphs; failed extraction retains vector evidence."""
     start = perf_counter()
     settings = Settings()
-    extractor = Extractor(cache_dir)
+    extractor = Extractor(
+        cache_dir,
+        failure_log=report_path.parent / "extraction_failures.log" if report_path else None,
+        fresh_extraction=fresh_extraction,
+    )
     extractions = {}
-    for paragraph in corpus.paragraphs:
-        extraction = extractor.extract(paragraph)
-        if extraction is not None:
-            extractions[paragraph.id] = extraction
+    try:
+        for paragraph in corpus.paragraphs:
+            extraction = extractor.extract(paragraph)
+            if extraction is not None:
+                extractions[paragraph.id] = extraction
+    except ExtractionUnavailable as exc:
+        exc.indexing = asdict(extractor.usage)
+        exc.indexing["first_fill_extraction"] = extractor.first_fill_summary()
+        raise
+    finally:
+        if report_path:
+            extractor.write_skipped(report_path.parent / "skipped_chunks.txt")
     resolution = resolve(
         [e for x in extractions.values() for e in x.entities], embedding_resolution
     )
@@ -63,6 +78,14 @@ def build_index(
         "raw_entities": len(resolution.mapping),
         "canonical_entities": len(set(resolution.mapping.values())),
         "embedding_resolution": embedding_resolution,
+        "merge_counts": resolution.merge_counts,
+        "first_fill_extraction": extractor.first_fill_summary(),
+        "fresh_extraction": fresh_extraction,
+        "graph_fingerprint": hashlib.sha256(
+            json.dumps(
+                {key: value.model_dump() for key, value in resolved.items()}, sort_keys=True
+            ).encode()
+        ).hexdigest(),
         "cost_scope": "new extraction LLM tokens at reference prices; "
         "excludes embeddings, reranker, storage and local compute charges",
     }
