@@ -23,3 +23,5 @@ data/eval_candidates.jsonl
 
 *.log
 eval/results/resume verification/
+
+*.log

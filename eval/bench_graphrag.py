@@ -107,11 +107,16 @@ def run_benchmark(
     rows = []
     try:
         for system in systems:
-            for question in corpus.questions:
+            for done, question in enumerate(corpus.questions, 1):
                 key = system, question.id
                 if key in finished:
                     rows.append(finished[key])
                     resumed += 1
+                    print(
+                        f"Evaluation [{label}] {system} {done}/{len(corpus.questions)} "
+                        f"checkpoint ({finished[key]['status']})",
+                        flush=True,
+                    )
                     continue
                 diagnostics = {}
                 start = perf_counter()
@@ -183,6 +188,10 @@ def run_benchmark(
                 append_checkpoint(checkpoint, row)
                 finished[key] = row
                 rows.append(row)
+                print(
+                    f"Evaluation [{label}] {system} {done}/{len(corpus.questions)} {row['status']}",
+                    flush=True,
+                )
     finally:
         pipeline.store.close()
     timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S%fZ")

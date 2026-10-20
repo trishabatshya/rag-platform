@@ -39,7 +39,9 @@ def test_default_completion_limits_and_explicit_overrides(monkeypatch):
 @pytest.mark.parametrize(
     "error", [TimeoutError("one slow request"), RuntimeError("generation failed")]
 )
-def test_question_failure_continues_and_resume_skips_terminal_results(monkeypatch, tmp_path, error):
+def test_question_failure_continues_and_resume_skips_terminal_results(
+    monkeypatch, tmp_path, error, capsys
+):
     original = GraphPipeline.answer
     calls = []
 
@@ -61,6 +63,7 @@ def test_question_failure_continues_and_resume_skips_terminal_results(monkeypatc
     rows = [json.loads(line) for line in lines]
     assert len(rows) == 4 and rows[0]["status"] == "failed"
     assert str(error) in rows[0]["failure_reason"] and rows[0]["in_tokens"] is None
+    assert "vector 1/2 failed" in capsys.readouterr().out
 
     def forbidden(*args, **kwargs):
         raise AssertionError("Finished checkpoint results must not generate again")
@@ -69,6 +72,11 @@ def test_question_failure_continues_and_resume_skips_terminal_results(monkeypatc
     _, resumed = run_benchmark(tmp_path, n=2, cache_dir=tmp_path / "cache")
     assert resumed["resumed_results"] == 4 and resumed["new_results"] == 0
     assert resumed["systems"] == summary["systems"]
+    progress = [
+        line for line in capsys.readouterr().out.splitlines() if line.startswith("Evaluation ")
+    ]
+    assert len(progress) == 4 and all("checkpoint (" in line for line in progress)
+    assert "vector 1/2 checkpoint (failed)" in progress[0]
 
 
 def test_interruption_retains_first_result_and_resumes_remaining(monkeypatch, tmp_path):

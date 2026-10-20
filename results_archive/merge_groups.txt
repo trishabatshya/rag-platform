@@ -1,0 +1,38 @@
+Mode: REAL
+Raw entities: 2898
+Canonical entities: 2859
+Merges by reason: {'normalized_equal': 9, 'person_first_last': 10, 'ratio': 20, 'embedding': 0}
+EVENT: World War II, World War I -> World War II
+ORG: A.P. Moller - Maersk Group, A.P. Moller-Maersk Group -> A.P. Moller - Maersk Group
+ORG: A. P. Møller Foundation, A.P. Møller Foundation -> A. P. Møller Foundation
+ORG: Kingdom of Hawaiʻ i, Kingdom of Hawaiʻi, Kingdom of Hawaii -> Kingdom of Hawaiʻ i
+ORG: Eastern Conference, Western Conference -> Eastern Conference
+ORG: TMS Entertainment, TS Entertainment -> TMS Entertainment
+PERSON: Jacques Alexandre César Charles, Jacques Charles -> Jacques Alexandre César Charles
+PERSON: Jacques Charles Francois Sturm, Jacques Charles François Sturm -> Jacques Charles Francois Sturm
+PERSON: José Gonzalo Rodríguez Gacha, José Gonzalo Rodrñguez Gacha -> José Gonzalo Rodríguez Gacha
+PERSON: Chester Charles Bennington, Chester Bennington -> Chester Charles Bennington
+PERSON: Keith Arnold Jacques Duffy, Keith Duffy -> Keith Arnold Jacques Duffy
+PERSON: Mårsk Mc-Kinney Møller, Mærsk Mc-Kinney Møller -> Mårsk Mc-Kinney Møller
+PERSON: Pale export India ale, Pale ale, pale ale -> Pale export India ale
+PERSON: Hadim Atik Ali Pasha, Hadım Atik Ali Pasha -> Hadim Atik Ali Pasha
+PERSON: Queen Liliʻ uokalani, Queen Lili’uokalani -> Queen Liliʻ uokalani
+PERSON: Omar Nelson Bradley, Omar Bradley -> Omar Nelson Bradley
+PERSON: Peter Mårsk Møller, Peter Mærsk Møller -> Peter Mårsk Møller
+PERSON: Rachel Anne Maddow, Rachel Maddow -> Rachel Anne Maddow
+PERSON: Keith Rodney Park, Keith Park -> Keith Rodney Park
+PERSON: Kurt Julian Weill, Kurt Weill -> Kurt Julian Weill
+PERSON: A. E. W. Mason, A.E.W. Mason -> A. E. W. Mason
+PERSON: Gasherbrum III, Gasherbrum II, Gasherbrum I -> Gasherbrum III
+PERSON: India Pale Ale, India pale ale, India ale -> India Pale Ale
+PERSON: Michael Curtis, Michael Curtiz -> Michael Curtis
+PERSON: Liliǲuokalani, Liliuokalani -> Liliǲuokalani
+PLACE: Northern Hemisphere, northern hemisphere -> Northern Hemisphere
+PLACE: Los Rodeos Airport, Los Rodeos airport -> Los Rodeos Airport
+PLACE: European Theatre, European theatre -> European Theatre
+PLACE: Gilgit Baltistan, Gilgit-Baltistan, Gilgit–Baltistan -> Gilgit Baltistan
+PLACE: Maków Mazowiecki, MakŃw Mazowiecki -> Maków Mazowiecki
+PLACE: Gasherbrum II, Gasherbrum I -> Gasherbrum II
+PLACE: Himalayas, Himalaya -> Himalayas
+PLACE: Hawaiʻi, Hawaii -> Hawaiʻi
+WORK: Nausicaâ of the Valley of the Wind, Nausicaä of the Valley of the Wind -> Nausicaâ of the Valley of the Wind

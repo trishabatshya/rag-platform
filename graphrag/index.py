@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import sys
 from dataclasses import asdict
 from pathlib import Path
 from time import perf_counter
@@ -33,11 +34,21 @@ def build_index(
         fresh_extraction=fresh_extraction,
     )
     extractions = {}
+    label = "MOCK (not a result)" if settings.mode == "mock" else "REAL"
+    total = len(corpus.paragraphs)
     try:
-        for paragraph in corpus.paragraphs:
+        for done, paragraph in enumerate(corpus.paragraphs, 1):
             extraction = extractor.extract(paragraph)
             if extraction is not None:
                 extractions[paragraph.id] = extraction
+            if done % 10 == 0 or done == total:
+                print(
+                    f"Extraction [{label}] {done}/{total} "
+                    f"failures={extractor.usage.failed_chunks} "
+                    f"elapsed={perf_counter() - start:.1f}s",
+                    file=sys.stderr,
+                    flush=True,
+                )
     except ExtractionUnavailable as exc:
         exc.indexing = asdict(extractor.usage)
         exc.indexing["first_fill_extraction"] = extractor.first_fill_summary()

@@ -11,6 +11,7 @@ from statistics import mean, median
 import numpy as np
 
 from app.config import ROOT
+from scripts.archive_report import ARCHIVE_MARKER, render_archive_results
 
 START = "<!-- RESULTS:START -->"
 END = "<!-- RESULTS:END -->"
@@ -400,7 +401,11 @@ def make_report(
     text = readme.read_text(encoding="utf-8")
     if text.count(START) != 1 or text.count(END) != 1 or text.index(START) >= text.index(END):
         raise ValueError("README must contain one ordered RESULTS:START/END marker pair")
-    body = render_results(results_dir)
+    body = (
+        render_archive_results(readme.parent / "results_archive")
+        if ARCHIVE_MARKER in text
+        else render_results(results_dir)
+    )
     before, rest = text.split(START)
     _, after = rest.split(END)
     updated = before + START + "\n" + body + END + after

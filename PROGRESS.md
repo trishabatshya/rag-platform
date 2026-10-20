@@ -494,3 +494,50 @@ fill persistence across cached/fresh runs, legacy unknowns and benchmark summary
 Mock CLI (MOCK, not a result) fresh/cached verification: 0 then 39 cache hits, identical
 original-fill metrics across runs; artifacts under data/runtime/first fill verification.
 README/AGENTS/DECISIONS explain measurement scope and remaining fuzzy-match risks.
+
+## Graph benchmark progress lines (2026-10-19)
+
+Extraction prints flushed progress every ten paragraphs and at the final remainder:
+done/total, failed chunks so far and elapsed seconds, with explicit runtime-mode labels.
+Extraction diagnostics go to stderr to preserve the standalone graph CLI's JSON stdout.
+Evaluation prints one done/total line per question/system, including completed/failed
+statuses and checkpoint-resumed results. New-result progress follows durable checkpoint
+writes; checkpoint data and resume behavior are unchanged.
+
+Extended existing regressions to verify extraction cadence/totals and evaluation progress
+for all systems, failures and checkpoint reuse. An initial full-suite run exposed stdout
+pollution of the public JSON CLI; moved extraction progress to stderr and reran all tests.
+Final validation: lint passed; 1513 tests passed, 603 live integration cases skipped in
+61.24s (0:01:01), with mock mode and live-service opt-ins disabled in the test child process.
+
+## Archived-evidence README refresh (2026-10-20)
+
+Rebuilt README as a compact pitch, architecture diagram, baseline/project tables,
+verification scope, limitations and Details link. Moved operational detail/design
+history into docs/IMPLEMENTATION_NOTES.md and removed obsolete run-status claims.
+Only decomposition retains NOT YET RUN. Numeric README results are computed from
+explicitly named results_archive files, with adjacent filename links; archives were
+not modified. The README is below the requested top-level length budget.
+
+Verified the provided evidence by script: hand_labels.csv contains 41/45 human-correct
+answers, reference/human agreement 39/45 (rounded 87%) and judge/human agreement 33/45
+(rounded 73%). The selected comparison CSV has 10 cache hits with matching references;
+the guarded sweep at 0.90 has 2 false hits among 50 near misses. Archived comparison
+latency deltas round to +4.2s/+22.5s, with 43% simple-route escalation. The comparison
+summary filename identifies threshold context but lacks explicit threshold/guard fields;
+README states the user's supplied settings and discloses this metadata gap.
+
+Graph tables use the final archived CSV/summary, disclose absent single-hop/decomposition
+results, partial first-fill measurements (400/600), mixed code versions and historical
+stalls/timeouts. Live Qdrant fixture evidence is separated from deterministic mock
+embeddings/SQLite audit and unverified PostgreSQL triggers/Docker API deployment.
+Observed archived timeouts and completed evaluation do not become a controlled recovery
+test claim. Local-model costs remain estimates at reference prices.
+
+Added an explicit archived-results report mode that regenerates the compact cited tables
+without replacing editorial limitations or reverting to newer mock runs. Generic latest
+real/mock reporting remains available for other documents. Tests cover calculations,
+citations, idempotence and summary/CSV mismatch rejection before rewriting.
+Ran the report generator and lint successfully. Focused report tests: 18 passed.
+Full offline collection: 1516 passed, 603 live integration cases skipped in 163.27s
+(0:02:43), with live opt-ins disabled only in the test child process.

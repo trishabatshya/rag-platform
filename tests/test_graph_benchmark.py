@@ -9,12 +9,25 @@ from eval.bench_graphrag import run_benchmark
 from scripts.failure_analysis import write_failures
 
 
-def test_benchmark_all_subsets_and_cached_indexing_accounting(tmp_path):
+def test_benchmark_all_subsets_and_cached_indexing_accounting(tmp_path, capsys):
     output = tmp_path / "results with spaces Ω"
     cache = tmp_path / "cache with spaces"
     path, summary = run_benchmark(
         output, cache_dir=cache, systems=("vector", "graph_hybrid", "decomposition")
     )
+    captured = capsys.readouterr()
+    lines = captured.out.splitlines()
+    progress = [line for line in captured.err.splitlines() if line.startswith("Extraction ")]
+    assert [line.split("] ")[1].split()[0] for line in progress] == [
+        "10/39",
+        "20/39",
+        "30/39",
+        "39/39",
+    ]
+    assert all("failures=0 elapsed=" in line for line in progress)
+    for system in ("vector", "graph_hybrid", "decomposition"):
+        progress = [line for line in lines if f"] {system} " in line]
+        assert len(progress) == 15 and "15/15 completed" in progress[-1]
     assert summary["label"] == "MOCK (not a result)"
     assert summary["question_count"] == 15 and summary["indexing"]["paragraph_count"] == 39
     assert summary["indexing"]["cache_hits"] == 0

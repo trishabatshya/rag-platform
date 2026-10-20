@@ -493,3 +493,38 @@ Rebuild merge_groups.txt from matching cached real HotpotQA paragraphs without m
 databases or a new QA benchmark. Read the cached Arrow dataset with in-memory sampling:
 the normal dataset loader attempted an unwritable external cache lock. Do not rewrite
 the earlier real benchmark summary/CSV with new graph counts and old QA measurements.
+
+## Graph benchmark progress output (2026-10-19)
+
+Print flushed stderr progress after every ten processed extraction paragraphs and the
+final remainder, including done/total, failed chunks so far and actual elapsed seconds.
+Keep the standalone graph CLI's stdout parseable as JSON. Print one stdout terminal
+progress line per benchmark question/system, after checkpoint persistence for
+new results and explicitly labeled checkpoint status for resumed results. Keep mode
+labels on progress lines so mock elapsed times cannot be mistaken for real measurements.
+Progress output does not change checkpoint contents, failure handling or resume selection.
+
+## File-backed README showcase (2026-10-20)
+
+Use an explicit REPORT:ARCHIVED marker inside the README result region to select the
+user-named results_archive files, superseding latest-run selection for this curated
+showcase. Preserve generic latest-REAL/latest-MOCK report behavior for other documents.
+The archive renderer computes review agreement, cache-hit correctness, rounded latency
+deltas and graph metrics directly from those selected files and validates mode and
+CSV/summary/corpus consistency before writing. Keep source filenames adjacent to
+numeric results and preserve all editorial text outside the original marker pair.
+
+The threshold-labelled comparison summary does not persist threshold/guard fields.
+Present the user's supplied configuration as run context, explicitly disclose that
+metadata gap and leave the archived evidence unchanged. Manual-label agreement is
+not judge accuracy against generated references; use the human_correct flag as the
+comparison target. All observed cache hits matching a reference do not establish
+cache safety: retain the guarded near-miss false-hit result beside that run.
+
+Document live Qdrant with mock embeddings/SQLite separately from PostgreSQL triggers
+and Docker API verification. Archived timeouts plus subsequent completed evaluation
+do not prove a controlled recovery experiment. Graph single-hop results are absent;
+decomposition alone retains NOT YET RUN. Partial first-fill coverage and mixed-version
+cache timing cannot become a complete indexing cost or clean throughput measurement.
+Move operational detail/design history to docs/IMPLEMENTATION_NOTES.md and keep the
+README pitch, architecture, source-linked tables, verified scope and limitations compact.
