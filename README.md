@@ -145,8 +145,4 @@ Postgres is mapped to host port **5433** because a local Windows Postgres often 
 - **Environment.** Real runs used Python 3.14 on Windows; the Qdrant Python client (1.19.1)
   is newer than the server (1.17.0), which prints a compatibility warning.
 
-## Failure analysis
 
-TODO: fill in after labeling the 10 failures per system in
-`failure_analysis_project3.md` (extraction miss, bad resolution, bad entity linking,
-reranker error, generation error).
